@@ -43,7 +43,7 @@ public class AutoService {
 
     public void printAll() {
         for (Auto auto : AUTO_REPOSITORY.getAll()) {
-            System.out.println(auto);
+            LOGGER.info(String.valueOf(auto));
         }
     }
 }
