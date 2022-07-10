@@ -14,12 +14,12 @@ public class AirplaneService {
     private static final AirplaneRepository AIRPLANE_REPOSITORY = new AirplaneRepository();
 
     public void print(Airplane airplane) {
-        LOGGER.info(String.valueOf(airplane));
+        LOGGER.info("Print info about airplane: {}", airplane);
     }
 
     public void print(List<Airplane> airplaneList) {
         for (Airplane airplane : airplaneList) {
-            LOGGER.info(String.valueOf(airplane));
+            LOGGER.info("Print info about airplane: {}", airplane);
         }
     }
 

@@ -14,12 +14,12 @@ public class MotorbikeService {
     private static final MotorbikeRepository MOTORBIKE_REPOSITORY = new MotorbikeRepository();
 
     public void print(Motorbike motorbike) {
-        LOGGER.info(String.valueOf(motorbike));
+        LOGGER.info("Print info about motorbike: {}", motorbike);
     }
 
     public void print(List<Motorbike> motorbikeList) {
         for (Motorbike motorbike : motorbikeList) {
-            LOGGER.info(String.valueOf(motorbike));
+            LOGGER.info("Print info about motorbike: {}", motorbike);
         }
     }
 
