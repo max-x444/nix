@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class Auto extends Car {
+public class Auto extends Vehicle {
     private String bodyType;
 
     public Auto(String model, Manufacturer manufacturer, BigDecimal price, String bodyType) {

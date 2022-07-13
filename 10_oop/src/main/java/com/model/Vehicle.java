@@ -8,13 +8,13 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public abstract class Car {
+public abstract class Vehicle {
     protected final String id;
     protected String model;
     protected BigDecimal price;
     protected Manufacturer manufacturer;
 
-    protected Car(String model, Manufacturer manufacturer, BigDecimal price) {
+    protected Vehicle(String model, Manufacturer manufacturer, BigDecimal price) {
         this.id = UUID.randomUUID().toString();
         this.model = model;
         this.manufacturer = manufacturer;
