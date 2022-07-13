@@ -16,8 +16,8 @@ import java.util.List;
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
     private static final AutoService AUTO_SERVICE = new AutoService();
-    private static final MotorbikeService MOTORBIKE_SERVICE = new MotorbikeService();
     private static final AirplaneService AIRPLANE_SERVICE = new AirplaneService();
+    private static final MotorbikeService MOTORBIKE_SERVICE = new MotorbikeService();
 
     public static void main(String[] args) {
         LOGGER.info("Create auto");
@@ -44,5 +44,37 @@ public class Main {
         if (MOTORBIKE_SERVICE.delete(motorbike1.getId())) {
             LOGGER.info("Delete all motorbikes");
         }
+
+        LOGGER.info("Lesson 12");
+        Motorbike motorbike3 = MOTORBIKE_SERVICE.create("S 3500 RR", Manufacturer.BMW, BigDecimal.valueOf(50_000), 55.0);
+        MOTORBIKE_SERVICE.save(motorbike3);
+        String id = "111";
+
+        LOGGER.info("Invalid id");
+        try {
+            MOTORBIKE_SERVICE.orElseThrow(id);
+        } catch (IllegalArgumentException exception) {
+            LOGGER.error(exception.getMessage());
+        }
+        MOTORBIKE_SERVICE.filter(id);
+        MOTORBIKE_SERVICE.map(id);
+        MOTORBIKE_SERVICE.ifPresentOrElse(id);
+        MOTORBIKE_SERVICE.orElse(id);
+        MOTORBIKE_SERVICE.or(id);
+        MOTORBIKE_SERVICE.orElseGet(id);
+        id = motorbike3.getId();
+
+        LOGGER.info("Valid id");
+        try {
+            MOTORBIKE_SERVICE.orElseThrow(id);
+        } catch (IllegalArgumentException exception) {
+            LOGGER.error(exception.getMessage());
+        }
+        MOTORBIKE_SERVICE.filter(id);
+        MOTORBIKE_SERVICE.map(id);
+        MOTORBIKE_SERVICE.ifPresentOrElse(id);
+        MOTORBIKE_SERVICE.orElse(id);
+        MOTORBIKE_SERVICE.or(id);
+        MOTORBIKE_SERVICE.orElseGet(id);
     }
 }

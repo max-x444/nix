@@ -4,6 +4,7 @@ import com.model.Airplane;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class AirplaneRepository implements CrudRepository<Airplane> {
     private final List<Airplane> airplanes;
@@ -13,20 +14,19 @@ public class AirplaneRepository implements CrudRepository<Airplane> {
     }
 
     @Override
-    public Airplane getById(String id) {
+    public Optional<Airplane> findById(String id) {
         for (Airplane airplane : airplanes) {
             if (airplane.getId().equals(id)) {
-                return airplane;
+                return Optional.of(airplane);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
     public List<Airplane> getAll() {
         return airplanes;
     }
-
 
     @Override
     public boolean create(Airplane airplane) {
@@ -40,17 +40,16 @@ public class AirplaneRepository implements CrudRepository<Airplane> {
 
     @Override
     public boolean update(Airplane airplane) {
-        Airplane newVersion = getById(airplane.getId());
-        if (newVersion != null) {
-            newVersion.setManufacturer(airplane.getManufacturer());
-            newVersion.setModel(airplane.getModel());
-            newVersion.setPrice(airplane.getPrice());
-            newVersion.setNumberOfPassengerSeats(airplane.getNumberOfPassengerSeats());
+        final Optional<Airplane> founded = findById(airplane.getId());
+        if (founded.isPresent()) {
+            founded.get().setManufacturer(airplane.getManufacturer());
+            founded.get().setModel(airplane.getModel());
+            founded.get().setPrice(airplane.getPrice());
+            founded.get().setNumberOfPassengerSeats(airplane.getNumberOfPassengerSeats());
             return true;
         }
         return false;
     }
-
 
     @Override
     public List<Airplane> delete(Airplane airplane) {
@@ -60,6 +59,6 @@ public class AirplaneRepository implements CrudRepository<Airplane> {
 
     @Override
     public boolean delete(String id) {
-        return airplanes.remove(getById(id));
+        return findById(id).isEmpty() && airplanes.remove(findById(id).get());
     }
 }
