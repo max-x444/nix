@@ -39,7 +39,7 @@ public class AirplaneService {
         return AIRPLANE_REPOSITORY.delete(airplane);
     }
 
-    public List<Airplane> delete(String id) {
+    public boolean delete(String id) {
         return AIRPLANE_REPOSITORY.delete(id);
     }
 }

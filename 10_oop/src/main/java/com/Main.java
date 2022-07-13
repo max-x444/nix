@@ -40,8 +40,9 @@ public class Main {
         motorbike2.setLeanAngle(60.0);
         MOTORBIKE_SERVICE.update(motorbike2);
         MOTORBIKE_SERVICE.print(motorbike2);
-        LOGGER.info("Delete all motorbikes");
         MOTORBIKE_SERVICE.delete(motorbike2);
-        MOTORBIKE_SERVICE.print(MOTORBIKE_SERVICE.delete(motorbike1.getId()));
+        if (MOTORBIKE_SERVICE.delete(motorbike1.getId())) {
+            LOGGER.info("Delete all motorbikes");
+        }
     }
 }

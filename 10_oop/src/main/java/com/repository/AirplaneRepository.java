@@ -5,14 +5,15 @@ import com.model.Airplane;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AirplaneRepository {
+public class AirplaneRepository implements CrudRepository<Airplane> {
     private final List<Airplane> airplanes;
 
     public AirplaneRepository() {
         this.airplanes = new LinkedList<>();
     }
 
-    public Airplane getMotorbikeById(String id) {
+    @Override
+    public Airplane getById(String id) {
         for (Airplane airplane : airplanes) {
             if (airplane.getId().equals(id)) {
                 return airplane;
@@ -21,34 +22,44 @@ public class AirplaneRepository {
         return null;
     }
 
+    @Override
     public List<Airplane> getAll() {
         return airplanes;
     }
 
-    public Airplane update(Airplane airplane) {
-        Airplane newVersion = getMotorbikeById(airplane.getId());
+
+    @Override
+    public boolean create(Airplane airplane) {
+        return airplanes.add(airplane);
+    }
+
+    @Override
+    public boolean create(List<Airplane> airplaneList) {
+        return airplanes.addAll(airplaneList);
+    }
+
+    @Override
+    public boolean update(Airplane airplane) {
+        Airplane newVersion = getById(airplane.getId());
         if (newVersion != null) {
             newVersion.setManufacturer(airplane.getManufacturer());
             newVersion.setModel(airplane.getModel());
             newVersion.setPrice(airplane.getPrice());
             newVersion.setNumberOfPassengerSeats(airplane.getNumberOfPassengerSeats());
-            return newVersion;
+            return true;
         }
-        return null;
+        return false;
     }
 
-    public List<Airplane> create(Airplane airplane) {
-        airplanes.add(airplane);
-        return airplanes;
-    }
 
+    @Override
     public List<Airplane> delete(Airplane airplane) {
         airplanes.remove(airplane);
         return airplanes;
     }
 
-    public List<Airplane> delete(String id) {
-        airplanes.remove(getMotorbikeById(id));
-        return airplanes;
+    @Override
+    public boolean delete(String id) {
+        return airplanes.remove(getById(id));
     }
 }

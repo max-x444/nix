@@ -39,7 +39,7 @@ public class MotorbikeService {
         return MOTORBIKE_REPOSITORY.delete(motorbike);
     }
 
-    public List<Motorbike> delete(String id) {
+    public boolean delete(String id) {
         return MOTORBIKE_REPOSITORY.delete(id);
     }
 }
