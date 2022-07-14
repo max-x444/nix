@@ -31,11 +31,17 @@ public class MotorbikeRepository implements CrudRepository<Motorbike> {
 
     @Override
     public boolean create(Motorbike motorbike) {
+        if (motorbike == null) {
+            return false;
+        }
         return motorbikes.add(motorbike);
     }
 
     @Override
     public boolean create(List<Motorbike> motorbikeList) {
+        if (motorbikeList.isEmpty()) {
+            return false;
+        }
         return motorbikes.addAll(motorbikeList);
     }
 
