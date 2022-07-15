@@ -10,11 +10,11 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MotorbikeService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MotorbikeService.class);
     private MotorbikeRepository motorbikeRepository = new MotorbikeRepository();
-    private Motorbike motorbike;
 
     public MotorbikeService() {
 
@@ -48,45 +48,28 @@ public class MotorbikeService {
         return motorbikeRepository.delete(id);
     }
 
-    public void orElse(String id) {
-        motorbike = motorbikeRepository.findById(id).orElse(createDefault());
-        LOGGER.info("Model motorbike: {}", motorbike.getModel());
-    }
-
-    public void orElseThrow(String id) {
-        motorbike = motorbikeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Cannot find motorbike with id " + id));
-        LOGGER.info("Model motorbike: {}", motorbike.getModel());
-    }
-
-    public void or(String id) {
+    public Motorbike findOrCreateDefault(String id) {
         Optional<Motorbike> optionalMotorbike = motorbikeRepository.findById(id).or(() -> Optional.of(createDefault()));
-        optionalMotorbike.ifPresent(motorbike -> LOGGER.info("Model motorbike: {}", motorbike.getModel()));
+        optionalMotorbike.ifPresent(motorbike -> motorbikeRepository.delete(motorbike));
+        return optionalMotorbike.orElseGet(this::createDefault);
     }
 
-    public void orElseGet(String id) {
-        motorbike = motorbikeRepository.findById(id).orElseGet(this::createDefault);
-        LOGGER.info("Model motorbike: {}", motorbike.getModel());
-    }
-
-    public void filter(String id) {
+    public boolean findOrException(String id) {
         motorbikeRepository.findById(id)
-                .filter(motorbike -> motorbike.getManufacturer().equals(Manufacturer.BMW))
-                .ifPresent(motorbike -> LOGGER.info("Manufacturer match found: {}", motorbike.getManufacturer()));
+                .orElseThrow(() -> new IllegalArgumentException("Cannot find motorbike with id " + id));
+        return true;
     }
 
-    public void map(String id) {
+    public boolean checkManufacturerById(String id, Manufacturer searchManufacturer) {
+        AtomicBoolean temp = new AtomicBoolean(false);
         motorbikeRepository.findById(id)
-                .map(Vehicle::getModel)
-                .ifPresent(model -> LOGGER.info("Model found: {}", model));
-    }
-
-    public void ifPresentOrElse(String id) {
-        motorbikeRepository.findById(id)
+                .map(Vehicle::getManufacturer)
+                .filter(m -> m.equals(searchManufacturer))
                 .ifPresentOrElse(
-                        motorbike -> LOGGER.info("Model motorbike: {}", motorbike.getModel()),
-                        () -> LOGGER.info("Cannot find motorbike with id: {}", id)
+                        manufacturer -> temp.set(true),
+                        () -> temp.set(false)
                 );
+        return temp.get();
     }
 
     private Motorbike createDefault() {

@@ -45,36 +45,46 @@ public class Main {
             LOGGER.info("Delete all motorbikes");
         }
 
-        LOGGER.info("Lesson 12");
+        LOGGER.info("Lesson 11-12");
         Motorbike motorbike3 = MOTORBIKE_SERVICE.create("S 3500 RR", Manufacturer.BMW, BigDecimal.valueOf(50_000), 55.0);
         MOTORBIKE_SERVICE.save(motorbike3);
-        String id = "111";
 
         LOGGER.info("Invalid id");
+        String id = "111";
         try {
-            MOTORBIKE_SERVICE.orElseThrow(id);
+            MOTORBIKE_SERVICE.findOrException(id);
         } catch (IllegalArgumentException exception) {
             LOGGER.error(exception.getMessage());
         }
-        MOTORBIKE_SERVICE.filter(id);
-        MOTORBIKE_SERVICE.map(id);
-        MOTORBIKE_SERVICE.ifPresentOrElse(id);
-        MOTORBIKE_SERVICE.orElse(id);
-        MOTORBIKE_SERVICE.or(id);
-        MOTORBIKE_SERVICE.orElseGet(id);
-        id = motorbike3.getId();
+        if (MOTORBIKE_SERVICE.checkManufacturerById(id, Manufacturer.BMW)) {
+            LOGGER.info("Manufacturer match found: {}", Manufacturer.BMW);
+        } else {
+            LOGGER.info("Manufacturer does not match given id: {}", id);
+        }
+        if (MOTORBIKE_SERVICE.checkManufacturerById(id, Manufacturer.MERCEDES)) {
+            LOGGER.info("Manufacturer match found: {}", Manufacturer.MERCEDES);
+        } else {
+            LOGGER.info("Manufacturer does not match given id: {}", id);
+        }
+        LOGGER.info(MOTORBIKE_SERVICE.findOrCreateDefault(id).toString());
 
         LOGGER.info("Valid id");
+        id = motorbike3.getId();
         try {
-            MOTORBIKE_SERVICE.orElseThrow(id);
+            MOTORBIKE_SERVICE.findOrException(id);
         } catch (IllegalArgumentException exception) {
             LOGGER.error(exception.getMessage());
         }
-        MOTORBIKE_SERVICE.filter(id);
-        MOTORBIKE_SERVICE.map(id);
-        MOTORBIKE_SERVICE.ifPresentOrElse(id);
-        MOTORBIKE_SERVICE.orElse(id);
-        MOTORBIKE_SERVICE.or(id);
-        MOTORBIKE_SERVICE.orElseGet(id);
+        if (MOTORBIKE_SERVICE.checkManufacturerById(id, Manufacturer.BMW)) {
+            LOGGER.info("Manufacturer match found: {}", Manufacturer.BMW);
+        } else {
+            LOGGER.info("Manufacturer does not match given id: {}", id);
+        }
+        if (MOTORBIKE_SERVICE.checkManufacturerById(id, Manufacturer.MERCEDES)) {
+            LOGGER.info("Manufacturer match found: {}", Manufacturer.MERCEDES);
+        } else {
+            LOGGER.info("Manufacturer does not match given id: {}", id);
+        }
+        LOGGER.info(MOTORBIKE_SERVICE.findOrCreateDefault(id).toString());
     }
 }

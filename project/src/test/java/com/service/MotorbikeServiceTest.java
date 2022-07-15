@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -97,31 +98,44 @@ class MotorbikeServiceTest {
     }
 
     @Test
-    void orElse() {
+    void findOrCreateDefault_find() {
+        Mockito.when(motorbikeRepository.findById(anyString())).thenReturn(Optional.of(createSimpleMotorbike()));
+        Assertions.assertEquals(Motorbike.class, target.findOrCreateDefault(anyString()).getClass());
     }
 
     @Test
-    void orElseThrow() {
+    void findOrCreateDefault_create_default() {
+        Mockito.when(motorbikeRepository.findById(anyString())).thenReturn(Optional.empty());
+        Mockito.when(motorbikeRepository.delete(any(Motorbike.class))).thenReturn(new LinkedList<>());
+        Assertions.assertEquals(Motorbike.class, target.findOrCreateDefault(createSimpleMotorbike().getId()).getClass());
     }
 
     @Test
-    void or() {
+    void findOrException_found() {
+        Mockito.when(motorbikeRepository.findById(anyString())).thenReturn(Optional.of(createSimpleMotorbike()));
+        Assertions.assertTrue(target.findOrException(anyString()));
     }
 
     @Test
-    void orElseGet() {
+    void findOrException_not_found() {
+        Mockito.when(motorbikeRepository.findById(anyString())).thenReturn(Optional.empty());
+        try {
+            Assertions.assertFalse(target.findOrException(anyString()));
+        } catch (IllegalArgumentException exception) {
+            LOGGER.error(exception.getMessage());
+        }
     }
 
     @Test
-    void filter() {
+    void checkManufacturerById_match_found() {
+        Mockito.when(motorbikeRepository.findById(anyString())).thenReturn(Optional.of(createSimpleMotorbike()));
+        Assertions.assertTrue(target.checkManufacturerById(anyString(), Manufacturer.BMW));
     }
 
     @Test
-    void map() {
-    }
-
-    @Test
-    void ifPresentOrElse() {
+    void checkManufacturerById_no_match_found() {
+        Mockito.when(motorbikeRepository.findById(anyString())).thenReturn(Optional.of(createSimpleMotorbike()));
+        Assertions.assertFalse(target.checkManufacturerById(anyString(), Manufacturer.MERCEDES));
     }
 
     private Motorbike createSimpleMotorbike() {
