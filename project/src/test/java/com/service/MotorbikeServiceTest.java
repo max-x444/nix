@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatcher;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 
 class MotorbikeServiceTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(MotorbikeServiceTest.class);
@@ -32,11 +32,10 @@ class MotorbikeServiceTest {
 
     @Test
     void create_default_motorbike() {
-        Assertions.assertEquals(Motorbike.class, argThat().getClass());
-    }
-
-    private Motorbike argThat() {
-        return new Motorbike("Model", Manufacturer.BMW, BigDecimal.ZERO, 0.0);
+        Motorbike actual = createSimpleMotorbike();
+        target.save(actual);
+        Mockito.verify(motorbikeRepository).create(argThat((ArgumentMatcher<Motorbike>)
+                motorbike -> actual.getModel().equals(motorbike.getModel())));
     }
 
     @Test
