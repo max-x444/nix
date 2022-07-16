@@ -4,6 +4,7 @@ import com.model.Motorbike;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 
 public class MotorbikeRepository implements CrudRepository<Motorbike> {
@@ -14,13 +15,13 @@ public class MotorbikeRepository implements CrudRepository<Motorbike> {
     }
 
     @Override
-    public Motorbike getById(String id) {
+    public Optional<Motorbike> findById(String id) {
         for (Motorbike motorbike : motorbikes) {
             if (motorbike.getId().equals(id)) {
-                return motorbike;
+                return Optional.of(motorbike);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
@@ -30,22 +31,29 @@ public class MotorbikeRepository implements CrudRepository<Motorbike> {
 
     @Override
     public boolean create(Motorbike motorbike) {
+        if (motorbike == null) {
+            return false;
+        }
         return motorbikes.add(motorbike);
     }
 
     @Override
     public boolean create(List<Motorbike> motorbikeList) {
+        if (motorbikeList.isEmpty()) {
+            return false;
+        }
         return motorbikes.addAll(motorbikeList);
     }
 
     @Override
     public boolean update(Motorbike motorbike) {
-        Motorbike newVersion = getById(motorbike.getId());
-        if (newVersion != null) {
-            newVersion.setManufacturer(motorbike.getManufacturer());
-            newVersion.setModel(motorbike.getModel());
-            newVersion.setPrice(motorbike.getPrice());
-            newVersion.setLeanAngle(motorbike.getLeanAngle());
+        final Optional<Motorbike> founded = findById(motorbike.getId());
+        if (founded.isPresent()) {
+            Motorbike foundedMotorbike = founded.get();
+            foundedMotorbike.setManufacturer(motorbike.getManufacturer());
+            foundedMotorbike.setModel(motorbike.getModel());
+            foundedMotorbike.setPrice(motorbike.getPrice());
+            foundedMotorbike.setLeanAngle(motorbike.getLeanAngle());
             return true;
         }
         return false;
@@ -59,6 +67,6 @@ public class MotorbikeRepository implements CrudRepository<Motorbike> {
 
     @Override
     public boolean delete(String id) {
-        return motorbikes.remove(getById(id));
+        return findById(id).isPresent() && motorbikes.remove(findById(id).get());
     }
 }
