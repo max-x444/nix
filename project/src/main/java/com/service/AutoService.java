@@ -2,7 +2,7 @@ package com.service;
 
 import com.model.Auto;
 import com.model.Manufacturer;
-import com.repository.AutoRepository;
+import com.repository.CrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,10 +11,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class AutoService {
+public class AutoService extends VehicleService<Auto> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AutoService.class);
     private static final Random RANDOM = new Random();
-    private static final AutoRepository AUTO_REPOSITORY = new AutoRepository();
+
+    public AutoService(CrudRepository<Auto> crudRepository) {
+        super(crudRepository);
+    }
 
     public List<Auto> createAutos(int count) {
         List<Auto> result = new LinkedList<>();
@@ -38,11 +41,11 @@ public class AutoService {
     }
 
     public void saveAutos(List<Auto> autos) {
-        AUTO_REPOSITORY.create(autos);
+        crudRepository.create(autos);
     }
 
     public void printAll() {
-        for (Auto auto : AUTO_REPOSITORY.getAll()) {
+        for (Auto auto : crudRepository.getAll()) {
             LOGGER.info(String.valueOf(auto));
         }
     }
