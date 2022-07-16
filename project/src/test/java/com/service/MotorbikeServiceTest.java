@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.LinkedList;
@@ -20,7 +18,6 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.*;
 
 class MotorbikeServiceTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MotorbikeServiceTest.class);
     private MotorbikeService target;
     private MotorbikeRepository motorbikeRepository;
 
@@ -62,7 +59,6 @@ class MotorbikeServiceTest {
 
     @Test
     void update_fail_if_callRealMethod() {
-        Mockito.when(motorbikeRepository.update(any(Motorbike.class))).thenReturn(true);
         Mockito.when(motorbikeRepository.update(any(Motorbike.class))).thenCallRealMethod();
         Assertions.assertFalse(target.update(createSimpleMotorbike()));
     }
@@ -77,11 +73,7 @@ class MotorbikeServiceTest {
     void delete_id_fail() {
         Mockito.when(motorbikeRepository.delete(anyString())).thenThrow(
                 new IllegalArgumentException("Cannot find motorbike with this id"));
-        try {
-            target.delete(anyString());
-        } catch (IllegalArgumentException exception) {
-            LOGGER.error(exception.getMessage());
-        }
+        Assertions.assertThrows(IllegalArgumentException.class, () -> target.delete(anyString()));
     }
 
     @Test
@@ -118,11 +110,7 @@ class MotorbikeServiceTest {
     @Test
     void findOrException_not_found() {
         Mockito.when(motorbikeRepository.findById(anyString())).thenReturn(Optional.empty());
-        try {
-            Assertions.assertFalse(target.findOrException(anyString()));
-        } catch (IllegalArgumentException exception) {
-            LOGGER.error(exception.getMessage());
-        }
+        Assertions.assertThrows(IllegalArgumentException.class, () -> target.findOrException(anyString()));
     }
 
     @Test

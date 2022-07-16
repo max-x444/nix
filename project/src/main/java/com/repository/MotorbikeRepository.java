@@ -49,10 +49,11 @@ public class MotorbikeRepository implements CrudRepository<Motorbike> {
     public boolean update(Motorbike motorbike) {
         final Optional<Motorbike> founded = findById(motorbike.getId());
         if (founded.isPresent()) {
-            founded.get().setManufacturer(motorbike.getManufacturer());
-            founded.get().setModel(motorbike.getModel());
-            founded.get().setPrice(motorbike.getPrice());
-            founded.get().setLeanAngle(motorbike.getLeanAngle());
+            Motorbike foundedMotorbike = founded.get();
+            foundedMotorbike.setManufacturer(motorbike.getManufacturer());
+            foundedMotorbike.setModel(motorbike.getModel());
+            foundedMotorbike.setPrice(motorbike.getPrice());
+            foundedMotorbike.setLeanAngle(motorbike.getLeanAngle());
             return true;
         }
         return false;
