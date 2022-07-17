@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public abstract class VehicleService<T extends Vehicle> {
+public class VehicleService<T extends Vehicle> {
     private static final Logger LOGGER = LoggerFactory.getLogger(VehicleService.class);
     protected CrudRepository<T> crudRepository;
 
