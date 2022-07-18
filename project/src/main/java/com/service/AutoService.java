@@ -26,7 +26,8 @@ public class AutoService extends VehicleService<Auto> {
                     "Model-" + RANDOM.nextInt(1000),
                     getRandomManufacturer(),
                     BigDecimal.valueOf(RANDOM.nextInt(1000)),
-                    "Model-" + RANDOM.nextInt(1000)
+                    "Model-" + RANDOM.nextInt(1000),
+                    RANDOM.nextInt(10)
             );
             result.add(auto);
             LOGGER.debug("Created auto {}", auto.getId());

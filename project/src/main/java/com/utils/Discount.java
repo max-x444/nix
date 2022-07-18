@@ -1,4 +1,4 @@
-package com.service;
+package com.utils;
 
 import com.model.Vehicle;
 import org.slf4j.Logger;
@@ -7,11 +7,11 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class MyContainer<T extends Vehicle> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MyContainer.class);
+public class Discount<T extends Vehicle> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Discount.class);
     private final T value;
 
-    public MyContainer(T value) {
+    public Discount(T value) {
         this.value = value;
     }
 

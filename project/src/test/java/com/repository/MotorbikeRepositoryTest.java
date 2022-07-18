@@ -99,6 +99,6 @@ class MotorbikeRepositoryTest {
     }
 
     private Motorbike createSimpleMotorbike() {
-        return new Motorbike("Model", Manufacturer.BMW, BigDecimal.ZERO, 0.0);
+        return new Motorbike("Model", Manufacturer.BMW, BigDecimal.ZERO, 0.0, 0);
     }
 }
