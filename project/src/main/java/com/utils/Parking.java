@@ -4,13 +4,10 @@ import com.model.Vehicle;
 import lombok.NonNull;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 
-public class Parking<T extends Vehicle> {
+public class Parking<T extends Vehicle> implements Iterable<T> {
     private Node head;
     private int size;
 
@@ -101,12 +98,6 @@ public class Parking<T extends Vehicle> {
         }
     }
 
-    public void forEach(@NonNull Consumer<? super T> action) {
-        for (Node temp = head; temp != null; temp = temp.next) {
-            action.accept(temp.data);
-        }
-    }
-
     public int getSize() {
         return size;
     }
@@ -154,5 +145,33 @@ public class Parking<T extends Vehicle> {
             temp = temp.next;
         }
         return stringBuilder.toString();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ParkingIterator();
+    }
+
+    private class ParkingIterator implements Iterator<T> {
+        private Node head;
+
+        public ParkingIterator() {
+            this.head = Parking.this.head;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return this.head != null;
+        }
+
+        @Override
+        public T next() {
+            if (!this.hasNext()) {
+                throw new NoSuchElementException();
+            }
+            T data = head.data;
+            head = head.next;
+            return data;
+        }
     }
 }

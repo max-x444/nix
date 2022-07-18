@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.StringJoiner;
 
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
@@ -41,7 +42,11 @@ public class Main {
         parking.add(airplane);
         parking.add(autoList.get(0));
         LOGGER.info(parking.print());
-        parking.forEach(node -> LOGGER.info(node.getClass().getSimpleName()));
+        StringJoiner stringJoiner = new StringJoiner("--");
+        for(Vehicle vehicle : parking) {
+            stringJoiner.add(vehicle.getClass().getSimpleName());
+        }
+        LOGGER.info(stringJoiner.toString());
         try {
             MOTORBIKE_SERVICE.print((Motorbike) parking.search(parking.getRestylingNumber(motorbike1)));
         } catch (NoSuchElementException exception) {
