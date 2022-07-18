@@ -1,6 +1,10 @@
 package com;
 
-import com.model.*;
+import com.model.Airplane;
+import com.model.Auto;
+import com.model.Manufacturer;
+import com.model.Motorbike;
+import com.model.Vehicle;
 import com.repository.AirplaneRepository;
 import com.repository.AutoRepository;
 import com.repository.MotorbikeRepository;
@@ -43,7 +47,7 @@ public class Main {
         parking.add(autoList.get(0));
         LOGGER.info(parking.print());
         StringJoiner stringJoiner = new StringJoiner("--");
-        for(Vehicle vehicle : parking) {
+        for (Vehicle vehicle : parking) {
             stringJoiner.add(vehicle.getClass().getSimpleName());
         }
         LOGGER.info(stringJoiner.toString());
