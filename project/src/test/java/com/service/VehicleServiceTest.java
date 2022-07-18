@@ -23,7 +23,8 @@ class VehicleServiceTest {
     @BeforeEach
     void setUp() {
         motorbikeRepository = Mockito.mock(MotorbikeRepository.class);
-        target = new VehicleService<>(motorbikeRepository);
+        target = new VehicleService<>(motorbikeRepository) {
+        };
     }
 
     @Test

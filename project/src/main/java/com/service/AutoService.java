@@ -19,7 +19,7 @@ public class AutoService extends VehicleService<Auto> {
         super(crudRepository);
     }
 
-    public List<Auto> createAutos(int count) {
+    public List<Auto> create(int count) {
         List<Auto> result = new LinkedList<>();
         for (int i = 0; i < count; i++) {
             final Auto auto = new Auto(
@@ -38,15 +38,5 @@ public class AutoService extends VehicleService<Auto> {
         final Manufacturer[] values = Manufacturer.values();
         final int index = RANDOM.nextInt(values.length);
         return values[index];
-    }
-
-    public void saveAutos(List<Auto> autos) {
-        crudRepository.create(autos);
-    }
-
-    public void printAll() {
-        for (Auto auto : crudRepository.getAll()) {
-            LOGGER.info(String.valueOf(auto));
-        }
     }
 }

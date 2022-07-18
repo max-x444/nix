@@ -7,11 +7,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class VehicleService<T extends Vehicle> {
+public abstract class VehicleService<T extends Vehicle> {
     private static final Logger LOGGER = LoggerFactory.getLogger(VehicleService.class);
     protected CrudRepository<T> crudRepository;
 
-    public VehicleService(CrudRepository<T> crudRepository) {
+    protected VehicleService(CrudRepository<T> crudRepository) {
         this.crudRepository = crudRepository;
     }
 
