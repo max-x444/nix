@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.StringJoiner;
 import java.util.UUID;
 
 
@@ -75,6 +76,7 @@ public class Parking<T extends Vehicle> implements Iterable<T> {
         if (elementToBeRemoved.previous == null) {
             if (elementToBeRemoved.next == null) {
                 head = null;
+                size--;
                 return true;
             }
             head = elementToBeRemoved.next;
@@ -84,9 +86,9 @@ public class Parking<T extends Vehicle> implements Iterable<T> {
             elementToBeRemoved.next = null;
         }
         if (elementToBeRemoved.previous != null && elementToBeRemoved.next != null) {
-            Node newTemp = elementToBeRemoved.next;
+            Node temp = elementToBeRemoved.next;
             elementToBeRemoved = elementToBeRemoved.previous;
-            elementToBeRemoved.next = newTemp;
+            elementToBeRemoved.next = temp;
         }
         size--;
         return true;
@@ -139,16 +141,13 @@ public class Parking<T extends Vehicle> implements Iterable<T> {
     }
 
     public String print() {
-        StringBuilder stringBuilder = new StringBuilder();
         Node temp = head;
+        StringJoiner stringJoiner = new StringJoiner("--");
         while (temp != null) {
-            stringBuilder.append(temp.data.getClass().getSimpleName());
-            if (temp.next != null) {
-                stringBuilder.append("--");
-            }
+            stringJoiner.add(temp.data.getClass().getSimpleName());
             temp = temp.next;
         }
-        return stringBuilder.toString();
+        return stringJoiner.toString();
     }
 
     @Override
