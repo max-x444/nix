@@ -14,8 +14,8 @@ public class MotorbikeService extends VehicleService<Motorbike> {
         super(crudRepository);
     }
 
-    public Motorbike create(String model, Manufacturer manufacturer, BigDecimal price, Double leanAngle) {
-        return new Motorbike(model, manufacturer, price, leanAngle);
+    public Motorbike create(String model, Manufacturer manufacturer, BigDecimal price, Double leanAngle, int count) {
+        return new Motorbike(model, manufacturer, price, leanAngle, count);
     }
 
     public Motorbike findOrCreateDefault(String id) {
@@ -43,6 +43,6 @@ public class MotorbikeService extends VehicleService<Motorbike> {
     }
 
     private Motorbike createDefault() {
-        return new Motorbike("Default model", Manufacturer.MERCEDES, BigDecimal.ZERO, 0.0);
+        return new Motorbike("Default model", Manufacturer.MERCEDES, BigDecimal.ZERO, 0.0, 0);
     }
 }

@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 public class Motorbike extends Vehicle {
     private Double leanAngle;
 
-    public Motorbike(String model, Manufacturer manufacturer, BigDecimal price, Double leanAngle) {
-        super(model, manufacturer, price);
+    public Motorbike(String model, Manufacturer manufacturer, BigDecimal price, Double leanAngle, int count) {
+        super(model, manufacturer, price, count);
         this.leanAngle = leanAngle;
     }
 

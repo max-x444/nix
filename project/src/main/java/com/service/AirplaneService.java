@@ -11,7 +11,7 @@ public class AirplaneService extends VehicleService<Airplane> {
         super(crudRepository);
     }
 
-    public Airplane create(String model, Manufacturer manufacturer, BigDecimal price, int numberOfPassengerSeats) {
-        return new Airplane(model, manufacturer, price, numberOfPassengerSeats);
+    public Airplane create(String model, Manufacturer manufacturer, BigDecimal price, int numberOfPassengerSeats, int count) {
+        return new Airplane(model, manufacturer, price, numberOfPassengerSeats, count);
     }
 }
