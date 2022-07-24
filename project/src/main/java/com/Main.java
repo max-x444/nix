@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -87,9 +88,13 @@ public class Main {
         }
         LOGGER.info(stringBuilder.toString());
 
-        Vehicle.VehicleComparator vehicleComparator = new Vehicle.VehicleComparator();
-        vehicleComparator.thenComparing(vehicle -> vehicle.getClass().getSimpleName()).thenComparing(Vehicle::getCount);
-        vehicleList.sort(vehicleComparator.reversed());
+
+        Comparator<Vehicle> comparator = Comparator.comparing(Vehicle::getPrice)
+                .reversed()
+                .thenComparing(vehicle -> vehicle.getClass().getSimpleName())
+                .thenComparing(Vehicle::getCount);
+        vehicleList.sort(comparator);
+
         LOGGER.info("List after sorting: ");
         stringBuilder = new StringBuilder();
         for (Vehicle vehicle : vehicleList) {

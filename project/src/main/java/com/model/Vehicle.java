@@ -23,11 +23,4 @@ public abstract class Vehicle {
         this.price = price;
         this.count = count;
     }
-
-    public static class VehicleComparator implements Comparator<Vehicle> {
-        @Override
-        public int compare(Vehicle o1, Vehicle o2) {
-            return o1.getPrice().compareTo(o2.getPrice());
-        }
-    }
 }
