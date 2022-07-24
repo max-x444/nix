@@ -89,7 +89,7 @@ public class Main {
 
         Vehicle.VehicleComparator vehicleComparator = new Vehicle.VehicleComparator();
         vehicleComparator.thenComparing(vehicle -> vehicle.getClass().getSimpleName()).thenComparing(Vehicle::getCount);
-        vehicleList.sort(vehicleComparator);
+        vehicleList.sort(vehicleComparator.reversed());
         LOGGER.info("List after sorting: ");
         stringBuilder = new StringBuilder();
         for (Vehicle vehicle : vehicleList) {
