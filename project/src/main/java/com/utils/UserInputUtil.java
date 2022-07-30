@@ -89,17 +89,17 @@ public class UserInputUtil {
 
             if (0 <= userInput && userInput < --j) {
                 LOGGER.info("Write a new value for the {} field: ", listFields.get(userInput));
-                updateField(vehicle, userInput, SCANNER.next());
+                updateField(vehicle, listFields, userInput, SCANNER.next());
             }
         } while (userInput != j);
     }
 
-    private static <T extends Vehicle> void updateField(T vehicle, int userInput, String line) {
-        switch (userInput) {
-            case 0 -> vehicle.setModel(line);
-            case 1 -> vehicle.setPrice(BigDecimal.valueOf(Long.parseLong(line)));
-            case 2 -> vehicle.setManufacturer(Manufacturer.valueOf(line));
-            case 3 -> vehicle.setCount(Integer.parseInt(line));
+    private static <T extends Vehicle> void updateField(T vehicle, List<String> list, int userInput, String line) {
+        switch (list.get(userInput)) {
+            case "Model" -> vehicle.setModel(line);
+            case "Price" -> vehicle.setPrice(BigDecimal.valueOf(Long.parseLong(line)));
+            case "Manufacturer" -> vehicle.setManufacturer(Manufacturer.valueOf(line));
+            case "Count" -> vehicle.setCount(Integer.parseInt(line));
         }
     }
 
