@@ -54,24 +54,15 @@ public class BinaryTree<T extends Vehicle> {
     }
 
     private void printTree(Node root, int space) {
-        // Base case
         if (root == null) {
             return;
         }
-
-        // Increase distance between levels
         space += INDENT;
-
-        // Process right child first
         printTree(root.rightChild, space);
-
-        // Print current node after space
         for (int i = INDENT; i < space; i++) {
             System.out.print(" ");
         }
         System.out.print(root.data.getPrice() + "\n");
-
-        // Process left child
         printTree(root.leftChild, space);
     }
 
