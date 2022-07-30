@@ -23,6 +23,7 @@ public class Auto extends Vehicle {
                 ", model='" + model + '\'' +
                 ", price=" + price +
                 ", manufacturer=" + manufacturer +
+                ", count=" + count +
                 '}';
     }
 }

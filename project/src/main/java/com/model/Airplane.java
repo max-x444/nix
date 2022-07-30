@@ -21,11 +21,12 @@ public class Airplane extends Vehicle {
     @Override
     public String toString() {
         return "Airplane{" +
-                "numberOfPassengerSeats='" + numberOfPassengerSeats + '\'' +
+                "numberOfPassengerSeats=" + numberOfPassengerSeats +
                 ", id='" + id + '\'' +
                 ", model='" + model + '\'' +
                 ", price=" + price +
                 ", manufacturer=" + manufacturer +
+                ", count=" + count +
                 '}';
     }
 }

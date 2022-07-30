@@ -26,6 +26,7 @@ public class Motorbike extends Vehicle {
                 ", model='" + model + '\'' +
                 ", price=" + price +
                 ", manufacturer=" + manufacturer +
+                ", count=" + count +
                 '}';
     }
 }
