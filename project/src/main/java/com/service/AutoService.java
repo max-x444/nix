@@ -2,6 +2,7 @@ package com.service;
 
 import com.model.Auto;
 import com.model.Manufacturer;
+import com.repository.AutoRepository;
 import com.repository.CrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +15,17 @@ import java.util.Random;
 public class AutoService extends VehicleService<Auto> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AutoService.class);
     private static final Random RANDOM = new Random();
+    private static AutoService instance;
 
     public AutoService(CrudRepository<Auto> crudRepository) {
         super(crudRepository);
+    }
+
+    public static AutoService getInstance() {
+        if (instance == null) {
+            instance = new AutoService(new AutoRepository());
+        }
+        return instance;
     }
 
     public List<Auto> create(int count) {
@@ -30,6 +39,7 @@ public class AutoService extends VehicleService<Auto> {
                     RANDOM.nextInt(10)
             );
             result.add(auto);
+            crudRepository.create(auto);
             LOGGER.debug("Created auto {}", auto.getId());
         }
         return result;

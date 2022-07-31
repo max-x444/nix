@@ -4,18 +4,30 @@ import com.model.Manufacturer;
 import com.model.Motorbike;
 import com.model.Vehicle;
 import com.repository.CrudRepository;
+import com.repository.MotorbikeRepository;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MotorbikeService extends VehicleService<Motorbike> {
+    private static MotorbikeService instance;
+
     public MotorbikeService(CrudRepository<Motorbike> crudRepository) {
         super(crudRepository);
     }
 
+    public static MotorbikeService getInstance() {
+        if (instance == null) {
+            instance = new MotorbikeService(new MotorbikeRepository());
+        }
+        return instance;
+    }
+
     public Motorbike create(String model, Manufacturer manufacturer, BigDecimal price, Double leanAngle, int count) {
-        return new Motorbike(model, manufacturer, price, leanAngle, count);
+        Motorbike motorbike = new Motorbike(model, manufacturer, price, leanAngle, count);
+        crudRepository.create(motorbike);
+        return motorbike;
     }
 
     public Motorbike findOrCreateDefault(String id) {

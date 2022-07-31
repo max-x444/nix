@@ -59,6 +59,6 @@ public class AirplaneRepository implements CrudRepository<Airplane> {
 
     @Override
     public boolean delete(String id) {
-        return findById(id).isEmpty() && airplanes.remove(findById(id).get());
+        return findById(id).isPresent() && airplanes.remove(findById(id).get());
     }
 }

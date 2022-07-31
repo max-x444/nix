@@ -31,6 +31,16 @@ public abstract class VehicleService<T extends Vehicle> {
         return crudRepository.delete(id);
     }
 
+    public void print() {
+        for (T vehicle : crudRepository.getAll()) {
+            LOGGER.info("Print info about vehicle: {}", vehicle);
+        }
+    }
+
+    public List<T> getAll() {
+        return crudRepository.getAll();
+    }
+
     public void print(T vehicle) {
         LOGGER.info("Print info about vehicle: {}", vehicle);
     }
