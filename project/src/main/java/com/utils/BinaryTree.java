@@ -70,7 +70,7 @@ public class BinaryTree<T extends Vehicle> {
         printTree(root, 0);
     }
 
-    public BigDecimal getValue(Node node, BigDecimal value) {
+    private BigDecimal getValue(Node node, BigDecimal value) {
         if (node == null) {
             return BigDecimal.ZERO;
         }
