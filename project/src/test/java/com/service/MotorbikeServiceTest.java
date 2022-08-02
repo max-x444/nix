@@ -1,5 +1,6 @@
 package com.service;
 
+import com.model.Engine;
 import com.model.Manufacturer;
 import com.model.Motorbike;
 import com.repository.MotorbikeRepository;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.Optional;
 
@@ -63,6 +65,14 @@ class MotorbikeServiceTest {
     }
 
     private Motorbike createSimpleMotorbike() {
-        return new Motorbike("Model", Manufacturer.BMW, BigDecimal.ZERO, 0.0, 0);
+        return new Motorbike(
+                "Model",
+                Manufacturer.BMW,
+                BigDecimal.ZERO,
+                0.0,
+                0,
+                LocalDateTime.now(),
+                "$",
+                new Engine(0, "Brand"));
     }
 }

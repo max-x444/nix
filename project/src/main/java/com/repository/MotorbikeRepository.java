@@ -54,6 +54,9 @@ public class MotorbikeRepository implements CrudRepository<Motorbike> {
             foundedMotorbike.setModel(motorbike.getModel());
             foundedMotorbike.setPrice(motorbike.getPrice());
             foundedMotorbike.setLeanAngle(motorbike.getLeanAngle());
+            foundedMotorbike.setCreated(motorbike.getCreated());
+            foundedMotorbike.setCurrency(motorbike.getCurrency());
+            foundedMotorbike.setEngine(motorbike.getEngine());
             return true;
         }
         return false;

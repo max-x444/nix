@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<autos>
+    <model>Model</model>
+    <manufacturer>BMW</manufacturer>
+    <price currency="$">1500</price>
+    <leanAngle>60.0</leanAngle>
+    <created>2022-07-25T18:58:23Z</created>
+    <count>15</count>
+    <engine>
+        <volume>2</volume>
+        <brand>Brand</brand>
+    </engine>
+</autos>

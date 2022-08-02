@@ -1,5 +1,6 @@
 package com.repository;
 
+import com.model.Engine;
 import com.model.Manufacturer;
 import com.model.Motorbike;
 import org.junit.jupiter.api.Assertions;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -99,6 +101,14 @@ class MotorbikeRepositoryTest {
     }
 
     private Motorbike createSimpleMotorbike() {
-        return new Motorbike("Model", Manufacturer.BMW, BigDecimal.ZERO, 0.0, 0);
+        return new Motorbike(
+                "Model",
+                Manufacturer.BMW,
+                BigDecimal.ZERO,
+                0.0,
+                0,
+                LocalDateTime.now(),
+                "$",
+                new Engine(0, "Brand"));
     }
 }
