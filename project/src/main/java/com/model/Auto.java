@@ -11,7 +11,7 @@ public class Auto extends Vehicle {
     private String bodyType;
 
     public Auto(String model, Manufacturer manufacturer, BigDecimal price, String bodyType, int count) {
-        super(model, manufacturer, price, count);
+        super(model, manufacturer, price, count, VehicleType.AUTO);
         this.bodyType = bodyType;
     }
 
@@ -20,9 +20,11 @@ public class Auto extends Vehicle {
         return "Auto{" +
                 "bodyType='" + bodyType + '\'' +
                 ", id='" + id + '\'' +
-                ", model='" + model + '\'' +
-                ", price=" + price +
                 ", manufacturer=" + manufacturer +
+                ", type=" + type +
+                ", details=" + details +
+                ", price=" + price +
+                ", model='" + model + '\'' +
                 ", count=" + count +
                 '}';
     }

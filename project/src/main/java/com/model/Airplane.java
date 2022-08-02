@@ -6,7 +6,7 @@ public class Airplane extends Vehicle {
     private int numberOfPassengerSeats;
 
     public Airplane(String model, Manufacturer manufacturer, BigDecimal price, int numberOfPassengerSeats, int count) {
-        super(model, manufacturer, price, count);
+        super(model, manufacturer, price, count, VehicleType.AIRPLANE);
         this.numberOfPassengerSeats = numberOfPassengerSeats;
     }
 
@@ -23,9 +23,11 @@ public class Airplane extends Vehicle {
         return "Airplane{" +
                 "numberOfPassengerSeats=" + numberOfPassengerSeats +
                 ", id='" + id + '\'' +
-                ", model='" + model + '\'' +
-                ", price=" + price +
                 ", manufacturer=" + manufacturer +
+                ", type=" + type +
+                ", details=" + details +
+                ", price=" + price +
+                ", model='" + model + '\'' +
                 ", count=" + count +
                 '}';
     }

@@ -6,7 +6,7 @@ public class Motorbike extends Vehicle {
     private Double leanAngle;
 
     public Motorbike(String model, Manufacturer manufacturer, BigDecimal price, Double leanAngle, int count) {
-        super(model, manufacturer, price, count);
+        super(model, manufacturer, price, count, VehicleType.MOTORBIKE);
         this.leanAngle = leanAngle;
     }
 
@@ -23,9 +23,11 @@ public class Motorbike extends Vehicle {
         return "Motorbike{" +
                 "leanAngle=" + leanAngle +
                 ", id='" + id + '\'' +
-                ", model='" + model + '\'' +
-                ", price=" + price +
                 ", manufacturer=" + manufacturer +
+                ", type=" + type +
+                ", details=" + details +
+                ", price=" + price +
+                ", model='" + model + '\'' +
                 ", count=" + count +
                 '}';
     }
