@@ -1,14 +1,19 @@
-package com.EXAMPLE;
+package com.example.utils;
 
-import com.EXAMPLE.moDEL.NotifiableProduct;
-import com.EXAMPLE.moDEL.Product;
-import com.EXAMPLE.moDEL.ProductBundle;
+import com.example.model.NotifiableProduct;
+import com.example.model.Product;
+import com.example.model.ProductBundle;
+import com.example.repository.ProductRepository;
 
 import java.util.List;
 import java.util.Random;
 
 public class ProductUtils {
-    private ProductRepository repository = new ProductRepository();
+    private final ProductRepository repository;
+
+    public ProductUtils(ProductRepository repository) {
+        this.repository = repository;
+    }
 
     public void saveNotifiableProduct(NotifiableProduct product) {
         repository.save(product);
@@ -20,7 +25,9 @@ public class ProductUtils {
 
     public int filterNotifiableProductsAndSendNotifications() {
         int notifications = 0;
-        List<NotifiableProduct> products = repository.getAll().stream().filter(it -> it instanceof NotifiableProduct).map(it -> (NotifiableProduct) it).toList();
+        List<NotifiableProduct> products = repository.getAll().stream()
+                .filter(it -> it instanceof NotifiableProduct)
+                .map(it -> (NotifiableProduct) it).toList();
         for (NotifiableProduct product : products) {
             if (product instanceof ProductBundle) {
                 continue;
@@ -36,16 +43,21 @@ public class ProductUtils {
     }
 
     public Product generateRandomProduct() {
-        Random random = new Random();
+        final Random random = new Random();
         if (random.nextBoolean()) {
-            ProductBundle productBundle = new ProductBundle();
-            productBundle.setAmount(random.nextInt(15));
-            productBundle.setAvailable(random.nextBoolean());
-            productBundle.setChannel(random.nextBoolean() + "" + random.nextDouble());
-            productBundle.setPrice(random.nextDouble());
-            productBundle.setId(random.nextLong());
-            productBundle.setTitle(random.nextFloat() + "" + random.nextDouble());
-            return productBundle;
+            try {
+                return new ProductBundle.Builder()
+                        .setId(random.nextLong())
+                        .setAvailable(random.nextBoolean())
+                        .setTitle(random.nextFloat() + "" + random.nextDouble())
+                        .setPrice(random.nextDouble())
+                        .setChannel(random.nextBoolean() + "" + random.nextDouble())
+                        .setAmount(random.nextInt(15))
+                        .build();
+            } catch (IllegalArgumentException exception) {
+                exception.printStackTrace();
+                return new ProductBundle();
+            }
         } else {
             NotifiableProduct product = new NotifiableProduct();
             product.setId(random.nextLong());

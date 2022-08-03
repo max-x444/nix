@@ -1,15 +1,17 @@
-package com.EXAMPLE;
+package com.example;
 
-import com.EXAMPLE.moDEL.NotifiableProduct;
-import com.EXAMPLE.moDEL.Product;
-import com.EXAMPLE.moDEL.ProductBundle;
+import com.example.model.NotifiableProduct;
+import com.example.model.Product;
+import com.example.model.ProductBundle;
+import com.example.repository.ProductRepository;
+import com.example.utils.ProductUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        ProductUtils utils = new ProductUtils();
+        ProductUtils utils = new ProductUtils(new ProductRepository());
         List<Product> products = new ArrayList<>();
         products.add(utils.generateRandomProduct());
         products.add(utils.generateRandomProduct());

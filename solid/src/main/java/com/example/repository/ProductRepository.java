@@ -1,6 +1,6 @@
-package com.EXAMPLE;
+package com.example.repository;
 
-import com.EXAMPLE.moDEL.Product;
+import com.example.model.Product;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 public class ProductRepository {
-    private Map<Long, Product> storage = new HashMap<>();
+    private final Map<Long, Product> storage = new HashMap<>();
 
-    public Product save(Product product) {
-        return storage.put(product.getId(), product);
+    public void save(Product product) {
+        storage.put(product.getId(), product);
     }
 
     public List<Product> getAll() {

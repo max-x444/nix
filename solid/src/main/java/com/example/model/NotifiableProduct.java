@@ -1,30 +1,24 @@
-package com.EXAMPLE.moDEL;
+package com.example.model;
 
 import lombok.Setter;
 
 @Setter
-public class ProductBundle extends NotifiableProduct {
-    protected int amount;
+public class NotifiableProduct extends Product implements Notification {
+    protected String channel;
 
     @Override
     public String generateAddressForNotification() {
-        throw new UnsupportedOperationException("Bundle can't be notified");
-    }
-
-    @Override
-    public int getAmountInBundle() {
-        return amount;
+        return "somerandommail@gmail.com";
     }
 
     @Override
     public String getBasicInfo() {
-        return "ProductBundle{" +
+        return "NotifiableProduct{" +
                 "channel='" + channel + '\'' +
                 ", id=" + id +
                 ", available=" + available +
                 ", title='" + title + '\'' +
                 ", price=" + price +
-                ", amountInBundle=" + amount +
                 '}';
     }
 }
