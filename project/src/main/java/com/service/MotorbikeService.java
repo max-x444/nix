@@ -92,7 +92,7 @@ public class MotorbikeService extends VehicleService<Motorbike> {
         return list;
     }
 
-    private String parseData(@NonNull final List<String> list, String regex) {
+    private String parseData(@NonNull final List<String> list, @NonNull final String regex) {
         final Pattern pattern = Pattern.compile(regex);
         Matcher matcher;
         for (String s : list) {
@@ -108,14 +108,14 @@ public class MotorbikeService extends VehicleService<Motorbike> {
         final Map<String, Object> map = new HashMap<>();
         getRegex(fileName);
         try {
-            return mapFilling(list, new HashMap<>());
-        } catch (IllegalArgumentException exception) {
-            LOGGER.error("IllegalArgumentException: " + exception.getMessage());
+            return mapFilling(list, map);
+        } catch (RuntimeException exception) {
+            LOGGER.error("RuntimeException: " + exception.getMessage());
         }
         return map;
     }
 
-    private Map<String, Object> mapFilling(List<String> list, @NonNull final Map<String, Object> map) {
+    private Map<String, Object> mapFilling(@NonNull final List<String> list, @NonNull final Map<String, Object> map) {
         map.put("model", parseData(list, head + "[Mm][Oo][Dd][Ee][Ll]" + tail));
         map.put("manufacturer", Manufacturer.valueOf(parseData(list, head + "[Mm][Aa][Nn][Uu][Ff][Aa][Cc][Tt][Uu][Rr][Ee][Rr]" + tail)));
         map.put("price", BigDecimal.valueOf(Double.parseDouble(parseData(list, head + "[Pp][Rr][Ii][Cc][Ee].*" + tail))));
@@ -130,7 +130,7 @@ public class MotorbikeService extends VehicleService<Motorbike> {
         return map;
     }
 
-    private void getRegex(String fileName) {
+    private void getRegex(@NonNull final String fileName) {
         switch (fileName) {
             case "xml" -> {
                 head = "[<]";

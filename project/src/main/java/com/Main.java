@@ -19,7 +19,6 @@ public class Main {
             + File.separator + "resources" + File.separator + "xml";
 
     public static void main(String[] args) {
-
         LOGGER.info("Creating motorbike with using a function: {}",
                 MOTORBIKE_SERVICE.function.apply(
                         MOTORBIKE_SERVICE.createMap(
