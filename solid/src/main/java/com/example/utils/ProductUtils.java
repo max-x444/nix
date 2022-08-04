@@ -25,15 +25,10 @@ public class ProductUtils {
 
     public int filterNotifiableProductsAndSendNotifications() {
         int notifications = 0;
-        List<NotifiableProduct> products = repository.getAll().stream()
-                .filter(it -> it instanceof NotifiableProduct)
-                .map(it -> (NotifiableProduct) it).toList();
-        for (NotifiableProduct product : products) {
-            if (product instanceof ProductBundle) {
-                continue;
+        for (Product product : getAll()) {
+            if (product.getClass().getSuperclass().getSimpleName().equals("Product")) {
+                notifications++;
             }
-            //sending some notifications here
-            notifications++;
         }
         return notifications;
     }
@@ -56,7 +51,7 @@ public class ProductUtils {
                         .build();
             } catch (IllegalArgumentException exception) {
                 exception.printStackTrace();
-                return new ProductBundle();
+                return null;
             }
         } else {
             NotifiableProduct product = new NotifiableProduct();
