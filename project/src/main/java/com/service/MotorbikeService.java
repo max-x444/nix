@@ -7,8 +7,10 @@ import com.repository.CrudRepository;
 import com.repository.MotorbikeRepository;
 
 import java.math.BigDecimal;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 
 public class MotorbikeService extends VehicleService<Motorbike> {
     private static MotorbikeService instance;
@@ -53,6 +55,14 @@ public class MotorbikeService extends VehicleService<Motorbike> {
                 );
         return temp.get();
     }
+
+    public Function<Map<String, Object>, Motorbike> function = map -> new Motorbike(
+            (String) map.getOrDefault("model", "Model"),
+            (Manufacturer) map.getOrDefault("manufacturer", Manufacturer.BMW),
+            (BigDecimal) map.getOrDefault("price", BigDecimal.ZERO),
+            (Double) map.getOrDefault("leanAngle", 0.0),
+            (int) map.getOrDefault("count", 0)
+    );
 
     private Motorbike createDefault() {
         return new Motorbike("Default model", Manufacturer.MERCEDES, BigDecimal.ZERO, 0.0, 0);

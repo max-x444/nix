@@ -36,7 +36,7 @@ public class AutoService extends VehicleService<Auto> {
                     getRandomManufacturer(),
                     BigDecimal.valueOf(RANDOM.nextInt(1000)),
                     "Model-" + RANDOM.nextInt(1000),
-                    RANDOM.nextInt(10)
+                    RANDOM.nextInt(9) + 1
             );
             result.add(auto);
             crudRepository.create(auto);
