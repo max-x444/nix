@@ -1,0 +1,15 @@
+[
+    {
+    "model": "Model",
+    "manufacturer": "BMW",
+    "price": "1500",
+    "currency": "$",
+    "leanAngle": "60.0",
+    "created": "2022-07-25T18:58:23Z",
+    "count": "15",
+    "engine": {
+        "volume": "2",
+        "brand": "Brand"
+       }
+    }
+]

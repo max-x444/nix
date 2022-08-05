@@ -5,6 +5,7 @@ import com.model.VehicleType;
 import lombok.NonNull;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.DoubleSummaryStatistics;
 import java.util.LinkedHashMap;
@@ -36,13 +37,15 @@ public class StreamUtil<T extends Vehicle> {
 
     public boolean checkDetails(@NonNull final List<T> list, @NonNull final String detail) {
         return list.stream()
-                .flatMap(x -> x.getDetails().stream())
+                .map(Vehicle::getDetails)
+                .flatMap(Collection::stream)
                 .anyMatch(y -> y.equals(detail));
     }
 
     public DoubleSummaryStatistics statistics(@NonNull final List<T> list) {
         return list.stream()
-                .mapToDouble(x -> x.getPrice().doubleValue())
+                .map(Vehicle::getPrice)
+                .mapToDouble(BigDecimal::doubleValue)
                 .summaryStatistics();
     }
 

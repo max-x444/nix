@@ -1,5 +1,6 @@
 package com.command;
 
+import com.model.Engine;
 import com.model.Manufacturer;
 import com.model.VehicleType;
 import com.service.AirplaneService;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class Create implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(Create.class);
@@ -23,7 +25,8 @@ public class Create implements Command {
         final VehicleType value = values[UserInputUtil.getNames("What you want to create:", values)];
         switch (value) {
             case AUTO -> AUTO_SERVICE.create(1);
-            case MOTORBIKE -> MOTORBIKE_SERVICE.create("S 3400 RR", Manufacturer.BMW, BigDecimal.valueOf(7), 35.0, 3);
+            case MOTORBIKE ->
+                    MOTORBIKE_SERVICE.create("S 3400 RR", Manufacturer.BMW, BigDecimal.valueOf(7), 35.0, 3, LocalDateTime.now(), "$", new Engine(3, "BMW"));
             case AIRPLANE -> AIRPLANE_SERVICE.create("Боинг-777", Manufacturer.BMW, BigDecimal.valueOf(11), 1000, 1);
             default -> throw new IllegalArgumentException("Cannot build " + value);
         }
