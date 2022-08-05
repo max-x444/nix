@@ -132,12 +132,12 @@ public class MotorbikeService extends VehicleService<Motorbike> {
 
     private void getRegex(@NonNull final String fileName) {
         switch (fileName) {
-            case "xml" -> {
+            case "vehicle.xml" -> {
                 head = "[<]";
                 tail = "[>](.*)[<][/]";
                 currency = "[Cc][Uu][Rr][Rr][Ee][Nn][Cc][Yy][=][\\\"](.*)[\\\"][>]";
             }
-            case "json" -> {
+            case "vehicle.json" -> {
                 head = "[\\\"]";
                 tail = "[\\\"][:][ ][\\\"](.*)[\\\"]";
                 currency = head + "[Cc][Uu][Rr][Rr][Ee][Nn][Cc][Yy]" + tail;
