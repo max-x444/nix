@@ -3,6 +3,7 @@ package com;
 import com.service.AirplaneService;
 import com.service.AutoService;
 import com.service.MotorbikeService;
+import com.utils.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,13 +21,10 @@ public class Main {
             Objects.requireNonNull(Main.class.getClassLoader().getResource("vehicle.xml")).getFile();
 
     public static void main(String[] args) {
+        IOUtil ioUtil = new IOUtil();
         LOGGER.info("Creating motorbike with using a function: {}",
-                MOTORBIKE_SERVICE.function.apply(
-                        MOTORBIKE_SERVICE.createMap(
-                                MOTORBIKE_SERVICE.readFile(new File(XML_PATH)), "vehicle.xml")));
+                MOTORBIKE_SERVICE.function.apply(ioUtil.readFile(new File(XML_PATH))));
         LOGGER.info("Creating motorbike with using a function: {}",
-                MOTORBIKE_SERVICE.function.apply(
-                        MOTORBIKE_SERVICE.createMap(
-                                MOTORBIKE_SERVICE.readFile(new File(JSON_PATH)), "vehicle.json")));
+                MOTORBIKE_SERVICE.function.apply(ioUtil.readFile(new File(JSON_PATH))));
     }
 }
