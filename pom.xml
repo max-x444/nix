@@ -11,6 +11,7 @@
     <modules>
         <module>project</module>
         <module>solid</module>
+        <module>module2</module>
     </modules>
 
     <properties>
