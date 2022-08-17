@@ -46,11 +46,11 @@ public class InvoiceService<T extends Electronics> {
                 .count();
     }
 
-    public List<Invoice<T>> onlyOneTypeOfElectronic(@NonNull final String nameElectronic) {
+    public List<Invoice<T>> onlyOneTypeOfElectronic(@NonNull final String category) {
         return invoiceList.stream()
                 .filter(x -> x.getElectronics()
                         .stream()
-                        .allMatch(y -> y.getClass().getSimpleName().equals(nameElectronic)))
+                        .allMatch(y -> y.getClass().getSimpleName().equals(category)))
                 .collect(Collectors.toList());
     }
 
@@ -77,7 +77,7 @@ public class InvoiceService<T extends Electronics> {
                 .collect(Collectors.toList());
     }
 
-    private BigDecimal calculateTotalSumInvoice(Invoice<T> invoice) {
+    private BigDecimal calculateTotalSumInvoice(@NonNull final Invoice<T> invoice) {
         return invoice.getElectronics().stream()
                 .map(Electronics::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
