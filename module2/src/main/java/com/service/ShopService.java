@@ -134,13 +134,16 @@ public class ShopService<T extends Electronics> {
     }
 
     private Type getType() {
-        BigDecimal totalSum = electronicsList.stream()
-                .map(Electronics::getPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        if (criteria.test(totalSum)) {
+        if (criteria.test(getTotalSum())) {
             return Type.WHOLESALE;
         } else {
             return Type.RETAIL;
         }
+    }
+
+    private BigDecimal getTotalSum() {
+        return electronicsList.stream()
+                .map(Electronics::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

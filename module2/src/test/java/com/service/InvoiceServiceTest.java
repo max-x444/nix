@@ -66,14 +66,14 @@ class InvoiceServiceTest<T extends Electronics> {
     void minSumInvoices_Customer_with_lowest_purchase_price_not_found() {
         final Map<Customer, BigDecimal> map = new HashMap<>();
         final BigDecimal incorrectSumInvoice = BigDecimal.valueOf(100.0);
-        map.put(CUSTOMER_YOUNG, incorrectSumInvoice);
+        map.put(CUSTOMER_OLD, incorrectSumInvoice);
         Assertions.assertNotEquals(map, target.minSumInvoice());
     }
 
     @Test
     void totalSumInvoices_is_correct() {
-        final BigDecimal totalSumSoldPrice = BigDecimal.valueOf(7400.0);
-        Assertions.assertEquals(totalSumSoldPrice, target.totalSumInvoices());
+        final BigDecimal totalSumInvoices = BigDecimal.valueOf(7400.0);
+        Assertions.assertEquals(totalSumInvoices, target.totalSumInvoices());
     }
 
     @Test

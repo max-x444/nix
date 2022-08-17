@@ -73,9 +73,7 @@ public class InvoiceService<T extends Electronics> {
                 .sorted(Comparator.comparing((Invoice<T> x) -> x.getCustomer().getAge())
                         .reversed()
                         .thenComparing(x -> x.getElectronics().size())
-                        .thenComparing(x -> x.getElectronics().stream()
-                                .mapToDouble(y -> y.getPrice().doubleValue())
-                                .sum()))
+                        .thenComparing(this::calculateTotalSumInvoice))
                 .collect(Collectors.toList());
     }
 
