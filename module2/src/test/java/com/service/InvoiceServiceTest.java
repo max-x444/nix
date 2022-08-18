@@ -29,7 +29,6 @@ class InvoiceServiceTest<T extends Electronics> {
     private final List<Invoice<T>> invoiceList = new ArrayList<>();
     private InvoiceService<T> target;
 
-
     @BeforeEach
     void setUp() {
         createListInvoices();
@@ -190,14 +189,14 @@ class InvoiceServiceTest<T extends Electronics> {
         }
     }
 
-    private Invoice<T> createInvoice(@NonNull final int numberInvoices) {
-        return new Invoice<>(createElectronic(numberInvoices), CUSTOMER_OLD, Type.RETAIL);
+    private Invoice<T> createInvoice(@NonNull final int sequenceNumber) {
+        return new Invoice<>(createElectronic(sequenceNumber), CUSTOMER_OLD, Type.RETAIL);
     }
 
     @SuppressWarnings("unchecked")
-    private List<T> createElectronic(@NonNull final int numberInvoices) {
+    private List<T> createElectronic(@NonNull final int sequenceNumber) {
         final List<T> electronicsList = new ArrayList<>();
-        switch (numberInvoices) {
+        switch (sequenceNumber) {
             case 1 ->
                     electronicsList.add((T) new Telephone("S-10", ScreenType.QLED, BigDecimal.valueOf(200.0), Manufacture.SAMSUNG));
             case 2 -> {
