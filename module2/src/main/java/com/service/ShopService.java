@@ -29,10 +29,10 @@ public class ShopService<T extends Electronics> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ShopService.class);
     private static final Random RANDOM = new Random();
     private final List<Invoice<T>> invoiceList = new ArrayList<>();
+    private final List<T> electronicsList = new ArrayList<>();
     private final Predicate<BigDecimal> criteria;
     private final int maxListSize;
     private final int minListSize;
-    private List<T> electronicsList = new ArrayList<>();
     private int maxCountElectronics;
 
     public ShopService(Predicate<BigDecimal> criteria, int maxListSize, int minListSize) {
@@ -68,7 +68,7 @@ public class ShopService<T extends Electronics> {
         if (maxCountElectronics == electronicsList.size()) {
             invoiceList.add(createInvoice());
             maxCountElectronics = RANDOM.nextInt(maxListSize) + minListSize;
-            electronicsList = new ArrayList<>();
+            electronicsList.clear();
         }
     }
 
@@ -81,8 +81,7 @@ public class ShopService<T extends Electronics> {
         } else {
             try {
                 if (checkValidString(map, strings)) {
-                    electronicsList.add(createElectronic(map));
-                    return true;
+                    return electronicsList.add(createElectronic(map));
                 }
             } catch (InvalidStringException exception) {
                 LOGGER.error(exception.getMessage());
