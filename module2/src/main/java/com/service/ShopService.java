@@ -1,14 +1,14 @@
 package com.service;
 
 import com.exception.InvalidStringException;
-import com.model.Electronics;
 import com.model.Invoice;
-import com.model.Telephone;
-import com.model.Television;
 import com.model.constants.Country;
 import com.model.constants.Manufacture;
 import com.model.constants.ScreenType;
 import com.model.constants.Type;
+import com.model.electronics.Electronics;
+import com.model.electronics.Telephone;
+import com.model.electronics.Television;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +29,8 @@ public class ShopService<T extends Electronics> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ShopService.class);
     private static final Random RANDOM = new Random();
     private final List<Invoice<T>> invoiceList = new ArrayList<>();
-    private final List<T> electronicsList = new ArrayList<>();
     private final Predicate<BigDecimal> criteria;
+    private List<T> electronicsList = new ArrayList<>();
     private final int maxListSize;
     private final int minListSize;
     private int maxCountElectronics;
@@ -68,7 +68,7 @@ public class ShopService<T extends Electronics> {
         if (maxCountElectronics == electronicsList.size()) {
             invoiceList.add(createInvoice());
             maxCountElectronics = RANDOM.nextInt(maxListSize) + minListSize;
-            electronicsList.clear();
+            electronicsList = new ArrayList<>();
         }
     }
 
@@ -133,11 +133,7 @@ public class ShopService<T extends Electronics> {
     }
 
     private Type getType() {
-        if (criteria.test(getTotalSum())) {
-            return Type.WHOLESALE;
-        } else {
-            return Type.RETAIL;
-        }
+        return criteria.test(getTotalSum()) ? Type.WHOLESALE : Type.RETAIL;
     }
 
     private BigDecimal getTotalSum() {

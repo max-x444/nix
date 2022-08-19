@@ -1,12 +1,12 @@
 package com.service;
 
 import com.model.Customer;
-import com.model.Electronics;
 import com.model.Invoice;
-import com.model.Telephone;
 import com.model.constants.Manufacture;
 import com.model.constants.ScreenType;
 import com.model.constants.Type;
+import com.model.electronics.Electronics;
+import com.model.electronics.Telephone;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

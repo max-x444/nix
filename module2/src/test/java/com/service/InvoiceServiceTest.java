@@ -1,14 +1,14 @@
 package com.service;
 
 import com.model.Customer;
-import com.model.Electronics;
 import com.model.Invoice;
-import com.model.Telephone;
-import com.model.Television;
 import com.model.constants.Country;
 import com.model.constants.Manufacture;
 import com.model.constants.ScreenType;
 import com.model.constants.Type;
+import com.model.electronics.Electronics;
+import com.model.electronics.Telephone;
+import com.model.electronics.Television;
 import lombok.NonNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

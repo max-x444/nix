@@ -1,9 +1,9 @@
 package com;
 
 import com.model.Customer;
-import com.model.Electronics;
 import com.model.Invoice;
 import com.model.constants.Type;
+import com.model.electronics.Electronics;
 import com.service.InvoiceService;
 import com.service.ShopService;
 import org.slf4j.Logger;

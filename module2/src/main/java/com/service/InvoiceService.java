@@ -1,9 +1,9 @@
 package com.service;
 
 import com.model.Customer;
-import com.model.Electronics;
 import com.model.Invoice;
 import com.model.constants.Type;
+import com.model.electronics.Electronics;
 import lombok.NonNull;
 
 import java.math.BigDecimal;
