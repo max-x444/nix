@@ -40,12 +40,8 @@ class ShopServiceTest<T extends Electronics> {
         final int maxListSize = 5;
         final int minListSize = 1;
         target = new ShopService<>(criteria, maxListSize, minListSize);
-        invoiceList.add(new Invoice<>(
-                List.of((T) new Telephone("S-10", ScreenType.QLED, BigDecimal.valueOf(200.0), Manufacture.SAMSUNG)),
-                CUSTOMER,
-                Type.RETAIL));
-        stringList = List.of(
-                "type,series,model,diagonal,screen type,country,price",
+        invoiceList.add(new Invoice<>(List.of((T) createTelephone()), CUSTOMER, Type.RETAIL));
+        stringList = List.of("type,series,model,diagonal,screen type,country,price",
                 "Telephone,S-10,Samsung,none,QLED,none,200");
     }
 
@@ -74,5 +70,14 @@ class ShopServiceTest<T extends Electronics> {
 
             Assertions.assertEquals(invoiceList, target.readFile(file));
         }
+    }
+
+    private Telephone createTelephone() {
+        return new Telephone.Builder()
+                .setSeries("S-10")
+                .setScreenType(ScreenType.QLED)
+                .setPrice(BigDecimal.valueOf(200.0))
+                .setModel(Manufacture.SAMSUNG)
+                .build();
     }
 }

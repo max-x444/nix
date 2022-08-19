@@ -2,13 +2,8 @@ package com.service;
 
 import com.exception.InvalidStringException;
 import com.model.Invoice;
-import com.model.constants.Country;
-import com.model.constants.Manufacture;
-import com.model.constants.ScreenType;
 import com.model.constants.Type;
 import com.model.electronics.Electronics;
-import com.model.electronics.Telephone;
-import com.model.electronics.Television;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,6 +67,7 @@ public class ShopService<T extends Electronics> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private boolean addElectronicToList(@NonNull final Map<String, String> map, @NonNull final String line) {
         final String[] strings = line.split(",");
         if (map.isEmpty()) {
@@ -81,7 +77,7 @@ public class ShopService<T extends Electronics> {
         } else {
             try {
                 if (checkValidString(map, strings)) {
-                    return electronicsList.add(createElectronic(map));
+                    return electronicsList.add((T) ElectronicsFactory.createElectronic(map));
                 }
             } catch (InvalidStringException exception) {
                 LOGGER.error(exception.getMessage());
@@ -100,32 +96,6 @@ public class ShopService<T extends Electronics> {
             map.put(entry.getKey(), strings[index++]);
         }
         return true;
-    }
-
-    @SuppressWarnings("unchecked")
-    private T createElectronic(@NonNull final Map<String, String> map) throws InvalidStringException {
-        try {
-            switch (map.get("type")) {
-                case "Telephone" -> {
-                    return (T) new Telephone(
-                            map.get("series"),
-                            ScreenType.valueOf(map.get("screen type").toUpperCase()),
-                            BigDecimal.valueOf(Double.parseDouble(String.valueOf(map.get("price")))),
-                            Manufacture.valueOf(map.get("model").toUpperCase()));
-                }
-                case "Television" -> {
-                    return (T) new Television(
-                            map.get("series"),
-                            ScreenType.valueOf(map.get("screen type").toUpperCase()),
-                            BigDecimal.valueOf(Double.parseDouble(String.valueOf(map.get("price")))),
-                            Integer.parseInt(map.get("diagonal").toUpperCase()),
-                            Country.valueOf(map.get("country").toUpperCase()));
-                }
-                default -> throw new InvalidStringException("Invalid string: " + map.get("type"));
-            }
-        } catch (RuntimeException exception) {
-            throw new InvalidStringException(exception.getMessage());
-        }
     }
 
     private Invoice<T> createInvoice() {

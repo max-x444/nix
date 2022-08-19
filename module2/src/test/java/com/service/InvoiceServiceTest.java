@@ -197,24 +197,53 @@ class InvoiceServiceTest<T extends Electronics> {
     private List<T> createElectronic(@NonNull final int sequenceNumber) {
         final List<T> electronicsList = new ArrayList<>();
         switch (sequenceNumber) {
-            case 1 ->
-                    electronicsList.add((T) new Telephone("S-10", ScreenType.QLED, BigDecimal.valueOf(200.0), Manufacture.SAMSUNG));
+            case 1 -> electronicsList.add((T) createTelephone(
+                    "S-10", ScreenType.QLED, BigDecimal.valueOf(200.0), Manufacture.SONY));
             case 2 -> {
-                electronicsList.add((T) new Telephone("S-10", ScreenType.QLED, BigDecimal.valueOf(200.0), Manufacture.SAMSUNG));
-                electronicsList.add((T) new Television("RTI-14", ScreenType.LED, BigDecimal.valueOf(1_500.0), 25, Country.CHINA));
-                electronicsList.add((T) new Telephone("S-7", ScreenType.IPS, BigDecimal.valueOf(350.0), Manufacture.SAMSUNG));
-                electronicsList.add((T) new Television("RTI-13", ScreenType.QLED, BigDecimal.valueOf(1_400.0), 27, Country.CHINA));
+                electronicsList.add((T) createTelephone(
+                        "S-10", ScreenType.QLED, BigDecimal.valueOf(200.0), Manufacture.SONY));
+                electronicsList.add((T) createTelevision("RTI-14", ScreenType.LED, BigDecimal.valueOf(1_500.0),
+                        25, Country.CHINA));
+                electronicsList.add((T) createTelephone(
+                        "S-7", ScreenType.IPS, BigDecimal.valueOf(350.0), Manufacture.SAMSUNG));
+                electronicsList.add((T) createTelevision("RTI-13", ScreenType.QLED, BigDecimal.valueOf(1_400.0),
+                        27, Country.JAPAN));
             }
             case 3 -> {
-                electronicsList.add((T) new Telephone("S-10", ScreenType.QLED, BigDecimal.valueOf(200.0), Manufacture.SAMSUNG));
-                electronicsList.add((T) new Television("RTI-14", ScreenType.LED, BigDecimal.valueOf(1_500.0), 25, Country.CHINA));
-                electronicsList.add((T) new Telephone("S-7", ScreenType.IPS, BigDecimal.valueOf(350.0), Manufacture.SAMSUNG));
+                electronicsList.add((T) createTelephone(
+                        "S-10", ScreenType.QLED, BigDecimal.valueOf(200.0), Manufacture.SONY));
+                electronicsList.add((T) createTelevision("RTI-14", ScreenType.LED, BigDecimal.valueOf(1_500.0),
+                        25, Country.CHINA));
+                electronicsList.add((T) createTelephone(
+                        "S-7", ScreenType.IPS, BigDecimal.valueOf(350.0), Manufacture.SAMSUNG));
             }
             case 4 -> {
-                electronicsList.add((T) new Telephone("S-10", ScreenType.QLED, BigDecimal.valueOf(200.0), Manufacture.SAMSUNG));
-                electronicsList.add((T) new Television("RTI-14", ScreenType.LED, BigDecimal.valueOf(1_500.0), 25, Country.CHINA));
+                electronicsList.add((T) createTelephone(
+                        "S-10", ScreenType.QLED, BigDecimal.valueOf(200.0), Manufacture.SONY));
+                electronicsList.add((T) createTelevision("RTI-14", ScreenType.LED, BigDecimal.valueOf(1_500.0),
+                        25, Country.CHINA));
             }
         }
         return electronicsList;
+    }
+
+    private Telephone createTelephone(String series, ScreenType screenType, BigDecimal price, Manufacture model) {
+        return new Telephone.Builder()
+                .setSeries(series)
+                .setScreenType(screenType)
+                .setPrice(price)
+                .setModel(model)
+                .build();
+    }
+
+    private Television createTelevision(String series, ScreenType screenType, BigDecimal price, int diagonal,
+                                        Country country) {
+        return new Television.Builder()
+                .setSeries(series)
+                .setScreenType(screenType)
+                .setPrice(price)
+                .setDiagonal(diagonal)
+                .setCountry(country)
+                .build();
     }
 }
