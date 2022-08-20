@@ -15,7 +15,6 @@ public class Telephone extends Electronics {
     private Manufacture model;
 
     private Telephone() {
-        super(null, null, null);
     }
 
     public static class Builder {

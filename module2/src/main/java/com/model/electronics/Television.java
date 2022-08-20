@@ -16,7 +16,6 @@ public class Television extends Electronics {
     private Country country;
 
     private Television() {
-        super(null, null, null);
     }
 
     public static class Builder {
