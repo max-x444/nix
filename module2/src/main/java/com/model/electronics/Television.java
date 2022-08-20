@@ -12,47 +12,50 @@ import java.math.BigDecimal;
 @Setter
 @ToString(callSuper = true)
 public class Television extends Electronics {
-    private int diagonal;
     private Country country;
+    private int diagonal;
 
-    private Television() {
+    private Television(String series, ScreenType screenType, BigDecimal price) {
+        super(series, screenType, price);
     }
 
     public static class Builder {
-        private final Television television;
-
-        public Builder() {
-            television = new Television();
-        }
+        private String series;
+        private ScreenType screenType;
+        private BigDecimal price;
+        private Country country;
+        private int diagonal;
 
         public Builder setSeries(String series) {
-            television.setSeries(series);
+            this.series = series;
             return this;
         }
 
         public Builder setScreenType(ScreenType screenType) {
-            television.setScreenType(screenType);
+            this.screenType = screenType;
             return this;
         }
 
         public Builder setPrice(BigDecimal price) {
-            television.setPrice(price);
-            return this;
-        }
-
-        public Builder setDiagonal(int diagonal) {
-            television.setDiagonal(diagonal);
+            this.price = price;
             return this;
         }
 
         public Builder setCountry(Country country) {
-            television.setCountry(country);
+            this.country = country;
+            return this;
+        }
+
+        public Builder setDiagonal(int diagonal) {
+            this.diagonal = diagonal;
             return this;
         }
 
         public Television build() {
-            if (television.series != null && television.screenType != null &&
-                    television.price != null && television.country != null) {
+            if (series != null && screenType != null && price != null && country != null) {
+                final Television television = new Television(series, screenType, price);
+                television.setCountry(country);
+                television.setDiagonal(diagonal);
                 return television;
             } else {
                 throw new NullPointerException("An object cannot be created without filling in all the fields");

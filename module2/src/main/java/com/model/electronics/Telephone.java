@@ -14,39 +14,40 @@ import java.math.BigDecimal;
 public class Telephone extends Electronics {
     private Manufacture model;
 
-    private Telephone() {
+    private Telephone(String series, ScreenType screenType, BigDecimal price) {
+        super(series, screenType, price);
     }
 
     public static class Builder {
-        private final Telephone telephone;
-
-        public Builder() {
-            telephone = new Telephone();
-        }
+        private String series;
+        private ScreenType screenType;
+        private BigDecimal price;
+        private Manufacture model;
 
         public Builder setSeries(String series) {
-            telephone.setSeries(series);
+            this.series = series;
             return this;
         }
 
         public Builder setScreenType(ScreenType screenType) {
-            telephone.setScreenType(screenType);
+            this.screenType = screenType;
             return this;
         }
 
         public Builder setPrice(BigDecimal price) {
-            telephone.setPrice(price);
+            this.price = price;
             return this;
         }
 
         public Builder setModel(Manufacture model) {
-            telephone.setModel(model);
+            this.model = model;
             return this;
         }
 
         public Telephone build() {
-            if (telephone.series != null && telephone.screenType != null &&
-                    telephone.price != null && telephone.model != null) {
+            if (series != null && screenType != null && price != null && model != null) {
+                final Telephone telephone = new Telephone(series, screenType, price);
+                telephone.setModel(model);
                 return telephone;
             } else {
                 throw new NullPointerException("An object cannot be created without filling in all the fields");

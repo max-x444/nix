@@ -13,10 +13,6 @@ public abstract class Electronics {
     protected ScreenType screenType;
     protected BigDecimal price;
 
-    public Electronics() {
-        this.id = UUID.randomUUID().toString();
-    }
-
     public Electronics(String series, ScreenType screenType, BigDecimal price) {
         this.id = UUID.randomUUID().toString();
         this.series = series;
