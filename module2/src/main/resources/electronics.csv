@@ -1,0 +1,17 @@
+type,series,model,diagonal,screen type,country,price
+Telephone,S-10,Samsung,none,QLED,none,200
+Television,RTI-14,none,25,LED,China,1500
+Telephone,S-7,Samsung,none,IPS,none,350
+Television,RTI-13,none,27,QLED,China,1400
+Television,RTI-11,none,18,IPS,SLOVAKIA,1000
+Television,TI-24,none,19,IPS,JAPAN,650
+Telephone,AS-5,SHARP,none,LED,none,300
+Telephone,DR-11,SONY,none,IPS,none,777
+Television,PI-23,none,25,LED,CZECH,800
+Television,IS-8,none,18,LED,CZECH,1100
+Television,RT-5,none,22,QLED,CZECH,550
+Telephone,PL-14,SHARP,none,IPS,none,450
+Telephone,DD-55,SAMSUNG,none,LED,none,900
+Telephone,RTX-11,SHARP,none,IPS,none,1300
+Television,PLT-7,none,27,IPS,CZECH,1800
+Television,,none,19,QLED,CZECH,2000
