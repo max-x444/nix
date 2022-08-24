@@ -1,7 +1,9 @@
 package com.service;
 
-import com.model.Auto;
-import com.model.Manufacturer;
+import com.model.annotations.MyAutowired;
+import com.model.annotations.MySingleton;
+import com.model.constants.Manufacturer;
+import com.model.vehicle.Auto;
 import com.repository.AutoRepository;
 import com.repository.CrudRepository;
 import org.slf4j.Logger;
@@ -12,18 +14,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+@MySingleton
 public class AutoService extends VehicleService<Auto> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AutoService.class);
     private static final Random RANDOM = new Random();
     private static AutoService instance;
 
+    @MyAutowired(AutoRepository.class)
     public AutoService(CrudRepository<Auto> crudRepository) {
         super(crudRepository);
     }
 
     public static AutoService getInstance() {
         if (instance == null) {
-            instance = new AutoService(new AutoRepository());
+            instance = new AutoService(AutoRepository.getInstance());
         }
         return instance;
     }

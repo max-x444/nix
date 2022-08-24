@@ -1,8 +1,8 @@
 package com.service;
 
-import com.model.Engine;
-import com.model.Manufacturer;
-import com.model.Motorbike;
+import com.model.constants.Manufacturer;
+import com.model.vehicle.Engine;
+import com.model.vehicle.Motorbike;
 import com.repository.MotorbikeRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

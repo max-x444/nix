@@ -1,4 +1,4 @@
-package com.model;
+package com.model.vehicle;
 
 import lombok.Getter;
 import lombok.Setter;

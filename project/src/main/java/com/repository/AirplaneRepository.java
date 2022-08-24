@@ -1,16 +1,26 @@
 package com.repository;
 
-import com.model.Airplane;
+import com.model.annotations.MySingleton;
+import com.model.vehicle.Airplane;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+@MySingleton
 public class AirplaneRepository implements CrudRepository<Airplane> {
+    private static AirplaneRepository instance;
     private final List<Airplane> airplanes;
 
-    public AirplaneRepository() {
+    private AirplaneRepository() {
         this.airplanes = new LinkedList<>();
+    }
+
+    public static AirplaneRepository getInstance() {
+        if (instance == null) {
+            instance = new AirplaneRepository();
+        }
+        return instance;
     }
 
     @Override

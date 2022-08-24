@@ -1,6 +1,6 @@
 package com.repository;
 
-import com.model.Vehicle;
+import com.model.vehicle.Vehicle;
 
 import java.util.List;
 import java.util.Optional;

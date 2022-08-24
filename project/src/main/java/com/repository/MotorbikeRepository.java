@@ -1,17 +1,27 @@
 package com.repository;
 
-import com.model.Motorbike;
+import com.model.annotations.MySingleton;
+import com.model.vehicle.Motorbike;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 
+@MySingleton
 public class MotorbikeRepository implements CrudRepository<Motorbike> {
+    private static MotorbikeRepository instance;
     private final List<Motorbike> motorbikes;
 
-    public MotorbikeRepository() {
+    private MotorbikeRepository() {
         this.motorbikes = new LinkedList<>();
+    }
+
+    public static MotorbikeRepository getInstance() {
+        if (instance == null) {
+            instance = new MotorbikeRepository();
+        }
+        return instance;
     }
 
     @Override

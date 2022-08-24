@@ -1,6 +1,6 @@
 package com.utils;
 
-import com.model.Vehicle;
+import com.model.vehicle.Vehicle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

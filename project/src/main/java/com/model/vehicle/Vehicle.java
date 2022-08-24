@@ -1,5 +1,7 @@
-package com.model;
+package com.model.vehicle;
 
+import com.model.constants.Manufacturer;
+import com.model.constants.VehicleType;
 import lombok.Getter;
 import lombok.Setter;
 

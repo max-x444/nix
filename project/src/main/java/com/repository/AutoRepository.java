@@ -1,17 +1,27 @@
 package com.repository;
 
-import com.model.Auto;
+import com.model.annotations.MySingleton;
+import com.model.vehicle.Auto;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+@MySingleton
 public class AutoRepository implements CrudRepository<Auto> {
+    private static AutoRepository instance;
     private final List<Auto> autos;
 
-    public AutoRepository() {
-        autos = new LinkedList<>();
+    private AutoRepository() {
+        this.autos = new LinkedList<>();
+    }
+
+    public static AutoRepository getInstance() {
+        if (instance == null) {
+            instance = new AutoRepository();
+        }
+        return instance;
     }
 
     @Override
