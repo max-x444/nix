@@ -59,22 +59,22 @@ public final class SingletonUtil {
     private static void createObject(@NonNull final Constructor<?> constructor) {
         constructor.setAccessible(true);
         if (constructor.getParameterCount() == 0) {
-            for (Object o : CACHE) {
-                if (o.getClass().getName().contains(constructor.getName())) {
+            for (Object object : CACHE) {
+                if (object.getClass().equals(constructor.getDeclaringClass())) {
                     return;
                 }
             }
             CACHE.add(constructor.newInstance());
         } else {
-            for (Object o : CACHE) {
-                if (constructor.getAnnotation(MyAutowired.class).value().getName().contains(o.getClass().getName())) {
-                    CACHE.add(constructor.newInstance(o));
+            for (Object objet : CACHE) {
+                if (constructor.getAnnotation(MyAutowired.class).value().equals(objet.getClass())) {
+                    CACHE.add(constructor.newInstance(objet));
                     return;
                 }
             }
             final Constructor<?> innerConstructor = constructor.getAnnotation(MyAutowired.class).value().getDeclaredConstructor();
             innerConstructor.setAccessible(true);
-            Object repository = innerConstructor.newInstance();
+            final Object repository = innerConstructor.newInstance();
             CACHE.add(constructor.newInstance(repository));
             CACHE.add(repository);
         }
