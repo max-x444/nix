@@ -66,9 +66,9 @@ public final class SingletonUtil {
             }
             CACHE.add(constructor.newInstance());
         } else {
-            for (Object objet : CACHE) {
-                if (constructor.getAnnotation(MyAutowired.class).value().equals(objet.getClass())) {
-                    CACHE.add(constructor.newInstance(objet));
+            for (Object object : CACHE) {
+                if (constructor.getAnnotation(MyAutowired.class).value().equals(object.getClass())) {
+                    CACHE.add(constructor.newInstance(object));
                     return;
                 }
             }
