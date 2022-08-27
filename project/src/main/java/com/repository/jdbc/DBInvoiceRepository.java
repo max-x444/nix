@@ -214,8 +214,7 @@ public class DBInvoiceRepository {
         final String sql = """
                 SELECT COUNT(invoice_id) as total_count
                 FROM public."vehicle"
-                WHERE vehicle_id = ? AND invoice_id IS NOT NULL
-                """;
+                WHERE vehicle_id = ? AND invoice_id IS NOT NULL;""";
         final PreparedStatement preparedStatement = dbVehicleRepository.connection.prepareStatement(sql);
         ResultSet resultSet;
         for (Vehicle vehicle : invoice.getVehicles()) {

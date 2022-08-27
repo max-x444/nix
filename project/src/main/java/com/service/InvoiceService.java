@@ -2,7 +2,6 @@ package com.service;
 
 import com.model.vehicle.Invoice;
 import com.repository.jdbc.DBInvoiceRepository;
-import lombok.NonNull;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -56,7 +55,7 @@ public class InvoiceService {
         return dbInvoiceRepository.groupByTotalPrice();
     }
 
-    public List<Invoice> getInvoiceMoreExpensiveThanAmount(@NonNull final BigDecimal amount) {
+    public List<Invoice> getInvoiceMoreExpensiveThanAmount(BigDecimal amount) {
         return dbInvoiceRepository.getInvoiceMoreExpensiveThanAmount(amount);
     }
 
