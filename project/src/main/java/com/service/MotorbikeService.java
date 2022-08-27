@@ -1,9 +1,11 @@
 package com.service;
 
-import com.model.Engine;
-import com.model.Manufacturer;
-import com.model.Motorbike;
-import com.model.Vehicle;
+import com.model.annotations.MyAutowired;
+import com.model.annotations.MySingleton;
+import com.model.constants.Manufacturer;
+import com.model.vehicle.Engine;
+import com.model.vehicle.Motorbike;
+import com.model.vehicle.Vehicle;
 import com.repository.CrudRepository;
 import com.repository.MotorbikeRepository;
 
@@ -15,16 +17,18 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
+@MySingleton
 public class MotorbikeService extends VehicleService<Motorbike> {
     private static MotorbikeService instance;
 
+    @MyAutowired(MotorbikeRepository.class)
     public MotorbikeService(CrudRepository<Motorbike> crudRepository) {
         super(crudRepository);
     }
 
     public static MotorbikeService getInstance() {
         if (instance == null) {
-            instance = new MotorbikeService(new MotorbikeRepository());
+            instance = new MotorbikeService(MotorbikeRepository.getInstance());
         }
         return instance;
     }

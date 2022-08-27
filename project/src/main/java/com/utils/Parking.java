@@ -1,6 +1,6 @@
 package com.utils;
 
-import com.model.Vehicle;
+import com.model.vehicle.Vehicle;
 import lombok.NonNull;
 
 import java.text.SimpleDateFormat;

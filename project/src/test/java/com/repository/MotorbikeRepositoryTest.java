@@ -1,8 +1,8 @@
 package com.repository;
 
-import com.model.Engine;
-import com.model.Manufacturer;
-import com.model.Motorbike;
+import com.model.constants.Manufacturer;
+import com.model.vehicle.Engine;
+import com.model.vehicle.Motorbike;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,90 +14,89 @@ import java.util.List;
 import java.util.Optional;
 
 class MotorbikeRepositoryTest {
-    private MotorbikeRepository target;
+    private static final MotorbikeRepository TARGET = MotorbikeRepository.getInstance();
     private Motorbike motorbike;
 
     @BeforeEach
     void setUp() {
-        target = new MotorbikeRepository();
         motorbike = createSimpleMotorbike();
-        target.create(motorbike);
+        TARGET.create(motorbike);
     }
 
     @Test
     void findById_motorbike_found() {
-        final Optional<Motorbike> actual = target.findById(motorbike.getId());
+        final Optional<Motorbike> actual = TARGET.findById(motorbike.getId());
         Assertions.assertTrue(actual.isPresent());
         Assertions.assertEquals(motorbike.getId(), actual.get().getId());
     }
 
     @Test
     void findById_motorbike_not_found() {
-        final Optional<Motorbike> actual = target.findById("111");
+        final Optional<Motorbike> actual = TARGET.findById("111");
         Assertions.assertFalse(actual.isPresent());
     }
 
     @Test
     void getAll_same_list() {
-        final List<Motorbike> actual = target.getAll();
-        Assertions.assertEquals(actual, target.getAll());
+        final List<Motorbike> actual = TARGET.getAll();
+        Assertions.assertEquals(actual, TARGET.getAll());
     }
 
     @Test
     void getAll_not_same_list() {
         final List<Motorbike> actual = new LinkedList<>();
-        Assertions.assertNotEquals(actual, target.getAll());
+        Assertions.assertNotEquals(actual, TARGET.getAll());
     }
 
     @Test
     void create_motorbike_successfully() {
-        Assertions.assertTrue(target.create(createSimpleMotorbike()));
+        Assertions.assertTrue(TARGET.create(createSimpleMotorbike()));
     }
 
     @Test
     void create_motorbike_fail() {
-        Assertions.assertFalse(target.create((Motorbike) null));
+        Assertions.assertFalse(TARGET.create((Motorbike) null));
     }
 
     @Test
     void create_listMotorbike_successfully() {
-        Assertions.assertTrue(target.create(List.of(createSimpleMotorbike())));
+        Assertions.assertTrue(TARGET.create(List.of(createSimpleMotorbike())));
     }
 
     @Test
     void create_listMotorbike_fail() {
-        Assertions.assertFalse(target.create(new LinkedList<>()));
+        Assertions.assertFalse(TARGET.create(new LinkedList<>()));
     }
 
     @Test
     void update_has_changed() {
         motorbike.setPrice(BigDecimal.ONE);
-        Assertions.assertTrue(target.update(motorbike));
+        Assertions.assertTrue(TARGET.update(motorbike));
     }
 
     @Test
     void update_has_not_changed() {
-        Assertions.assertFalse(target.update(createSimpleMotorbike()));
+        Assertions.assertFalse(TARGET.update(createSimpleMotorbike()));
     }
 
     @Test
     void delete_id_successfully() {
-        Assertions.assertTrue(target.delete(motorbike.getId()));
+        Assertions.assertTrue(TARGET.delete(motorbike.getId()));
     }
 
     @Test
     void delete_id_fail() {
-        Assertions.assertFalse(target.delete("111"));
+        Assertions.assertFalse(TARGET.delete("111"));
     }
 
     @Test
     void delete_motorbike_successfully() {
-        Assertions.assertEquals(0, target.delete(motorbike).size());
+        Assertions.assertEquals(TARGET.getAll().size() - 1, TARGET.delete(motorbike).size());
     }
 
     @Test
     void delete_motorbike_fail() {
-        Assertions.assertEquals(1, target.delete(createSimpleMotorbike()).size());
+        Assertions.assertNotEquals(TARGET.getAll().size(), TARGET.delete(createSimpleMotorbike()).size());
     }
 
     private Motorbike createSimpleMotorbike() {

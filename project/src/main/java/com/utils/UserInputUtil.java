@@ -1,7 +1,7 @@
 package com.utils;
 
 import com.command.Action;
-import com.model.VehicleType;
+import com.model.constants.VehicleType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

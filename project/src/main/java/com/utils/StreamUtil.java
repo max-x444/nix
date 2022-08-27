@@ -1,7 +1,7 @@
 package com.utils;
 
-import com.model.Vehicle;
-import com.model.VehicleType;
+import com.model.constants.VehicleType;
+import com.model.vehicle.Vehicle;
 import lombok.NonNull;
 
 import java.math.BigDecimal;
