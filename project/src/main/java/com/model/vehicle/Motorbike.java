@@ -17,9 +17,9 @@ public class Motorbike extends Vehicle {
     private String currency;
 
 
-    public Motorbike(String model, Manufacturer manufacturer, BigDecimal price, Double leanAngle, int count,
+    public Motorbike(String id, String model, Manufacturer manufacturer, BigDecimal price, Double leanAngle, int count,
                      LocalDateTime created, String currency, Engine engine) {
-        super(model, manufacturer, price, count, VehicleType.MOTORBIKE);
+        super(id, model, manufacturer, price, count, VehicleType.MOTORBIKE);
         this.leanAngle = leanAngle;
         this.created = created;
         this.currency = currency;

@@ -7,13 +7,15 @@ import com.model.vehicle.Engine;
 import com.model.vehicle.Motorbike;
 import com.model.vehicle.Vehicle;
 import com.repository.CrudRepository;
-import com.repository.MotorbikeRepository;
+import com.repository.jdbc.DBMotorbikeRepository;
+import com.repository.list.MotorbikeRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
@@ -28,15 +30,15 @@ public class MotorbikeService extends VehicleService<Motorbike> {
 
     public static MotorbikeService getInstance() {
         if (instance == null) {
-            instance = new MotorbikeService(MotorbikeRepository.getInstance());
+            instance = new MotorbikeService(DBMotorbikeRepository.getInstance());
         }
         return instance;
     }
 
-    public Motorbike create(String model, Manufacturer manufacturer, BigDecimal price, Double leanAngle, int count,
+    public Motorbike create(String id, String model, Manufacturer manufacturer, BigDecimal price, Double leanAngle, int count,
                             LocalDateTime created, String currency, Engine engine) {
-        Motorbike motorbike = new Motorbike(model, manufacturer, price, leanAngle, count, created, currency, engine);
-        crudRepository.create(motorbike);
+        final Motorbike motorbike = new Motorbike(id, model, manufacturer, price, leanAngle, count, created, currency, engine);
+        crudRepository.save(motorbike);
         return motorbike;
     }
 
@@ -65,6 +67,7 @@ public class MotorbikeService extends VehicleService<Motorbike> {
     }
 
     public Function<Map<String, Object>, Motorbike> function = map -> new Motorbike(
+            UUID.randomUUID().toString(),
             String.valueOf(map.getOrDefault("model", "Model")),
             Manufacturer.valueOf(String.valueOf(map.getOrDefault("manufacturer", Manufacturer.BMW))),
             BigDecimal.valueOf(Double.parseDouble(String.valueOf(map.getOrDefault("price", BigDecimal.ZERO)))),
@@ -79,6 +82,7 @@ public class MotorbikeService extends VehicleService<Motorbike> {
 
     private Motorbike createDefault() {
         return new Motorbike(
+                UUID.randomUUID().toString(),
                 "Default model",
                 Manufacturer.MERCEDES,
                 BigDecimal.ZERO,

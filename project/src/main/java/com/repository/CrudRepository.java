@@ -10,9 +10,9 @@ public interface CrudRepository<T extends Vehicle> {
 
     List<T> getAll();
 
-    boolean create(T t);
+    boolean save(T t);
 
-    boolean create(List<T> t);
+    boolean save(List<T> t);
 
     boolean update(T t);
 

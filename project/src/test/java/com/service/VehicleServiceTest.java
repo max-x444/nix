@@ -3,7 +3,7 @@ package com.service;
 import com.model.constants.Manufacturer;
 import com.model.vehicle.Engine;
 import com.model.vehicle.Motorbike;
-import com.repository.MotorbikeRepository;
+import com.repository.list.MotorbikeRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -36,22 +37,22 @@ class VehicleServiceTest {
     void create_default_motorbike() {
         Motorbike actual = createSimpleMotorbike();
         target.save(actual);
-        Mockito.verify(motorbikeRepository).create(argThat((ArgumentMatcher<Motorbike>)
+        Mockito.verify(motorbikeRepository).save(argThat((ArgumentMatcher<Motorbike>)
                 motorbike -> actual.getModel().equals(motorbike.getModel())));
     }
 
     @Test
     void save_successfully() {
-        Mockito.when(motorbikeRepository.create(any(Motorbike.class))).thenReturn(true);
+        Mockito.when(motorbikeRepository.save(any(Motorbike.class))).thenReturn(true);
         Assertions.assertTrue(target.save(createSimpleMotorbike()));
-        Mockito.verify(motorbikeRepository).create(any(Motorbike.class));
+        Mockito.verify(motorbikeRepository).save(any(Motorbike.class));
     }
 
     @Test
     void save_fail() {
-        Mockito.when(motorbikeRepository.create(any(Motorbike.class))).thenReturn(false);
+        Mockito.when(motorbikeRepository.save(any(Motorbike.class))).thenReturn(false);
         Assertions.assertFalse(target.save(createSimpleMotorbike()));
-        Mockito.verify(motorbikeRepository, Mockito.times(1)).create(any(Motorbike.class));
+        Mockito.verify(motorbikeRepository, Mockito.times(1)).save(any(Motorbike.class));
     }
 
     @Test
@@ -95,6 +96,7 @@ class VehicleServiceTest {
 
     private Motorbike createSimpleMotorbike() {
         return new Motorbike(
+                UUID.randomUUID().toString(),
                 "Model",
                 Manufacturer.BMW,
                 BigDecimal.ZERO,

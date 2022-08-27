@@ -1,7 +1,8 @@
-package com.repository;
+package com.repository.list;
 
 import com.model.annotations.MySingleton;
 import com.model.vehicle.Airplane;
+import com.repository.CrudRepository;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -39,12 +40,12 @@ public class AirplaneRepository implements CrudRepository<Airplane> {
     }
 
     @Override
-    public boolean create(Airplane airplane) {
+    public boolean save(Airplane airplane) {
         return airplanes.add(airplane);
     }
 
     @Override
-    public boolean create(List<Airplane> airplaneList) {
+    public boolean save(List<Airplane> airplaneList) {
         return airplanes.addAll(airplaneList);
     }
 

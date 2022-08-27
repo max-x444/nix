@@ -1,7 +1,8 @@
-package com.repository;
+package com.repository.list;
 
 import com.model.annotations.MySingleton;
 import com.model.vehicle.Motorbike;
+import com.repository.CrudRepository;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class MotorbikeRepository implements CrudRepository<Motorbike> {
     }
 
     @Override
-    public boolean create(Motorbike motorbike) {
+    public boolean save(Motorbike motorbike) {
         if (motorbike == null) {
             return false;
         }
@@ -48,7 +49,7 @@ public class MotorbikeRepository implements CrudRepository<Motorbike> {
     }
 
     @Override
-    public boolean create(List<Motorbike> motorbikeList) {
+    public boolean save(List<Motorbike> motorbikeList) {
         if (motorbikeList.isEmpty()) {
             return false;
         }
