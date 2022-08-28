@@ -1,4 +1,4 @@
-package com.repository.list;
+package com.repository.collection;
 
 import com.model.annotations.MySingleton;
 import com.model.vehicle.Auto;

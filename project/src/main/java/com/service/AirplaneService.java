@@ -5,8 +5,8 @@ import com.model.annotations.MySingleton;
 import com.model.constants.Manufacturer;
 import com.model.vehicle.Airplane;
 import com.repository.CrudRepository;
+import com.repository.collection.AirplaneRepository;
 import com.repository.jdbc.DBAirplaneRepository;
-import com.repository.list.AirplaneRepository;
 
 import java.math.BigDecimal;
 

@@ -7,8 +7,8 @@ import com.model.vehicle.Engine;
 import com.model.vehicle.Motorbike;
 import com.model.vehicle.Vehicle;
 import com.repository.CrudRepository;
+import com.repository.collection.MotorbikeRepository;
 import com.repository.jdbc.DBMotorbikeRepository;
-import com.repository.list.MotorbikeRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

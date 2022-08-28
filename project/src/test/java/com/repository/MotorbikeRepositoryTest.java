@@ -3,7 +3,7 @@ package com.repository;
 import com.model.constants.Manufacturer;
 import com.model.vehicle.Engine;
 import com.model.vehicle.Motorbike;
-import com.repository.list.MotorbikeRepository;
+import com.repository.collection.MotorbikeRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -5,8 +5,8 @@ import com.model.annotations.MySingleton;
 import com.model.constants.Manufacturer;
 import com.model.vehicle.Auto;
 import com.repository.CrudRepository;
+import com.repository.collection.AutoRepository;
 import com.repository.jdbc.DBAutoRepository;
-import com.repository.list.AutoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
