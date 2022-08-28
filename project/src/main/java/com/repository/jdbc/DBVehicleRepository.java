@@ -14,7 +14,6 @@ import lombok.SneakyThrows;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -202,7 +201,7 @@ public class DBVehicleRepository implements CrudRepository<Vehicle> {
                 resultSet.getBigDecimal("price"),
                 resultSet.getBigDecimal("lean_angle").doubleValue(),
                 resultSet.getInt("count"),
-                resultSet.getObject("created", Timestamp.class).toLocalDateTime(),
+                resultSet.getTimestamp("created").toLocalDateTime(),
                 resultSet.getString("currency"),
                 new Engine(resultSet.getInt("volume"), resultSet.getString("brand")));
     }

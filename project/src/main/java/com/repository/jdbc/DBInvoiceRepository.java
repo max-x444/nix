@@ -8,7 +8,6 @@ import lombok.SneakyThrows;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -45,7 +44,7 @@ public class DBInvoiceRepository {
         final ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
             final String invoiceId = resultSet.getString("invoice_id");
-            final LocalDateTime created = resultSet.getObject("created", Timestamp.class).toLocalDateTime();
+            final LocalDateTime created = resultSet.getTimestamp("created").toLocalDateTime();
             final List<Vehicle> vehicleList = new ArrayList<>();
             dbVehicleRepository.findById(resultSet.getString("vehicle_id")).ifPresent(vehicleList::add);
             while (resultSet.next()) {
