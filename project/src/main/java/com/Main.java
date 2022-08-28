@@ -38,7 +38,9 @@ public class Main {
 
     @SneakyThrows
     public static void main(String[] args) {
-//        DBTableService.getInstance().dropTables();
+        System.out.println("Drop all tables");
+        DBTableService.getInstance().dropTables();
+        System.out.println("Create all tables");
         DBTableService.getInstance().createTables();
         final Auto auto = AUTO_SERVICE.create(1).get(0);
         final Auto secondAuto = AUTO_SERVICE.create(1).get(0);
@@ -60,11 +62,6 @@ public class Main {
                 LocalDateTime.now(),
                 "$",
                 new Engine(3, "BMW"));
-        final Invoice invoice = new Invoice(
-                UUID.randomUUID().toString(),
-                LocalDateTime.now(),
-                List.of(auto, airplane, motorbike, secondAuto));
-        System.out.println("Save first invoice: " + INVOICE_SERVICE.save(invoice));
 
         System.out.println("Airplane:");
         System.out.println("Save airplane: " + AIRPLANE_SERVICE.save(airplane));
@@ -81,7 +78,7 @@ public class Main {
         System.out.println("Print all motorbikes: " + Arrays.toString(MOTORBIKE_SERVICE.getAll().toArray()));
         motorbike.setCurrency("#");
         motorbike.setLeanAngle(1.0);
-        motorbike.setCreated(LocalDateTime.now());
+        motorbike.setCreatedMotorbike(LocalDateTime.now());
         motorbike.getEngine().setVolume(110);
         motorbike.getEngine().setBrand("AUDI");
         System.out.println("Update motorbike: " + MOTORBIKE_SERVICE.save(motorbike));
@@ -103,7 +100,12 @@ public class Main {
 //        System.out.println("Print all autos: " + Arrays.toString(AUTO_SERVICE.delete(secondAuto).toArray()));
 
         System.out.println("Invoice:");
-        List<Vehicle> fourAuto = AUTO_SERVICE.create(4)
+        final Invoice invoice = new Invoice(
+                UUID.randomUUID().toString(),
+                LocalDateTime.now(),
+                List.of(auto, airplane, motorbike, secondAuto));
+        System.out.println("Save first invoice: " + INVOICE_SERVICE.save(invoice));
+        final List<Vehicle> fourAuto = AUTO_SERVICE.create(4)
                 .stream()
                 .map(x -> (Vehicle) x)
                 .collect(Collectors.toList());
@@ -114,6 +116,7 @@ public class Main {
         System.out.println("Save second invoice: " + INVOICE_SERVICE.save(secondInvoice));
         System.out.println("First invoice id: " + invoice.getId());
         System.out.println("Second invoice id: " + secondInvoice.getId());
+        //Exception when deleting all vehicles
         System.out.println("Get first invoice: " + INVOICE_SERVICE.findById(invoice.getId()));
         invoice.setCreated(LocalDateTime.now());
         System.out.println("Update first invoice: " + INVOICE_SERVICE.update(invoice));
@@ -127,6 +130,7 @@ public class Main {
             System.out.println(value);
         }
         System.out.println("Get count of invoices: " + INVOICE_SERVICE.getTotalCountInvoices());
-//        System.out.println("Delete first invoice: " + Arrays.toString(INVOICE_SERVICE.delete(invoice).toArray()));
+        System.out.println("Delete first invoice: " + INVOICE_SERVICE.delete(invoice.getId()));
+        System.out.println("Delete second invoice: " + Arrays.toString(INVOICE_SERVICE.delete(secondInvoice).toArray()));
     }
 }

@@ -16,7 +16,7 @@ public abstract class Vehicle {
     protected final String id;
     protected Manufacturer manufacturer;
     protected VehicleType type;
-    protected Invoice invoice;
+    protected String invoiceId;
     protected List<String> details = new ArrayList<>();
     protected BigDecimal price;
     protected String model;

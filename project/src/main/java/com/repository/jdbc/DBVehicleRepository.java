@@ -42,11 +42,12 @@ public class DBVehicleRepository implements CrudRepository<Vehicle> {
         }
         final String sql = """
                 SELECT * FROM public."vehicle"
-                FULL OUTER JOIN public."auto" USING("vehicle_id")
-                FULL OUTER JOIN public."airplane" USING("vehicle_id")
-                FULL OUTER JOIN public."motorbike" USING("vehicle_id")
-                FULL OUTER JOIN public."engine" USING("vehicle_id")
-                FULL OUTER JOIN public."detail" USING("vehicle_id")
+                FULL OUTER JOIN public."invoice" USING("invoice_id")
+                   FULL OUTER JOIN public."auto" USING("vehicle_id")
+                   FULL OUTER JOIN public."airplane" USING("vehicle_id")
+                   FULL OUTER JOIN public."motorbike" USING("vehicle_id")
+                   FULL OUTER JOIN public."engine" USING("vehicle_id")
+                   FULL OUTER JOIN public."detail" USING("vehicle_id")
                 WHERE vehicle.vehicle_id = ?;""";
         final PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, id);
@@ -183,38 +184,44 @@ public class DBVehicleRepository implements CrudRepository<Vehicle> {
 
     @SneakyThrows
     private Auto createAuto(@NonNull final ResultSet resultSet) {
-        return new Auto(
+        final Auto auto = new Auto(
                 resultSet.getString("vehicle_id"),
                 resultSet.getString("model"),
                 Manufacturer.valueOf(resultSet.getString("manufacturer")),
                 resultSet.getBigDecimal("price"),
                 resultSet.getString("body_type"),
                 resultSet.getInt("count"));
+        auto.setInvoiceId(resultSet.getString("invoice_id"));
+        return auto;
     }
 
     @SneakyThrows
     private Motorbike createMotorbike(@NonNull final ResultSet resultSet) {
-        return new Motorbike(
+        final Motorbike motorbike = new Motorbike(
                 resultSet.getString("vehicle_id"),
                 resultSet.getString("model"),
                 Manufacturer.valueOf(resultSet.getString("manufacturer")),
                 resultSet.getBigDecimal("price"),
                 resultSet.getBigDecimal("lean_angle").doubleValue(),
                 resultSet.getInt("count"),
-                resultSet.getTimestamp("created").toLocalDateTime(),
+                resultSet.getTimestamp("created_motorbike").toLocalDateTime(),
                 resultSet.getString("currency"),
                 new Engine(resultSet.getInt("volume"), resultSet.getString("brand")));
+        motorbike.setInvoiceId(resultSet.getString("invoice_id"));
+        return motorbike;
     }
 
     @SneakyThrows
     private Airplane createAirplane(@NonNull final ResultSet resultSet) {
-        return new Airplane(
+        final Airplane airplane = new Airplane(
                 resultSet.getString("vehicle_id"),
                 resultSet.getString("model"),
                 Manufacturer.valueOf(resultSet.getString("manufacturer")),
                 resultSet.getBigDecimal("price"),
                 resultSet.getInt("number_of_passenger_seats"),
                 resultSet.getInt("count"));
+        airplane.setInvoiceId(resultSet.getString("invoice_id"));
+        return airplane;
     }
 
     @SneakyThrows

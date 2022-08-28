@@ -50,7 +50,7 @@ public class DBMotorbikeRepository implements CrudRepository<Motorbike> {
             if (dbVehicleRepository.save(motorbike)) {
                 final String sql = """
                         WITH ins AS (
-                        INSERT INTO public."motorbike" (created, lean_angle, currency, vehicle_id)
+                        INSERT INTO public."motorbike" (created_motorbike, lean_angle, currency, vehicle_id)
                             VALUES (?, ?, ?, ?)
                             RETURNING vehicle_id AS ins_id)
                         INSERT INTO public."engine" (vehicle_id, volume, brand)
@@ -83,7 +83,7 @@ public class DBMotorbikeRepository implements CrudRepository<Motorbike> {
             final String sql = """
                     WITH ins AS (
                         UPDATE public."motorbike"
-                                     SET created = ?, lean_angle = ?, currency = ?
+                                     SET created_motorbike = ?, lean_angle = ?, currency = ?
                                      WHERE motorbike.vehicle_id = ?
                                      RETURNING vehicle_id AS ins_id)
                         UPDATE public."engine"
@@ -114,7 +114,7 @@ public class DBMotorbikeRepository implements CrudRepository<Motorbike> {
 
     @SneakyThrows
     private void mapObjectToRow(@NonNull final PreparedStatement preparedStatement, @NonNull final Motorbike motorbike) {
-        preparedStatement.setObject(1, motorbike.getCreated());
+        preparedStatement.setObject(1, motorbike.getCreatedMotorbike());
         preparedStatement.setDouble(2, motorbike.getLeanAngle());
         preparedStatement.setString(3, motorbike.getCurrency());
         preparedStatement.setString(4, motorbike.getId());

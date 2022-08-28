@@ -111,7 +111,7 @@ public class DBTableService {
         final String sql = """
                 CREATE TABLE IF NOT EXISTS motorbike (
                 vehicle_id VARCHAR(255) NOT NULL PRIMARY KEY REFERENCES vehicle(vehicle_id) ON DELETE CASCADE,
-                created TIMESTAMPTZ,
+                created_motorbike TIMESTAMPTZ,
                 lean_angle DOUBLE PRECISION,
                 currency VARCHAR(255));""";
         statement.executeUpdate(sql);

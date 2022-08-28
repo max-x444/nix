@@ -28,6 +28,7 @@ public class Airplane extends Vehicle {
                 ", id='" + id + '\'' +
                 ", manufacturer=" + manufacturer +
                 ", type=" + type +
+                ", invoiceId='" + invoiceId + '\'' +
                 ", details=" + details +
                 ", price=" + price +
                 ", model='" + model + '\'' +
