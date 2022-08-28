@@ -149,7 +149,7 @@ public class DBInvoiceRepository {
     public Map<Invoice, BigDecimal> groupByTotalPrice() {
         final Map<Invoice, BigDecimal> map = new LinkedHashMap<>();
         final String sql = """
-                SELECT invoice_id, SUM(count * price) as total_price
+                SELECT invoice_id, SUM(count * price) AS total_price
                 FROM public."vehicle"
                 GROUP BY invoice_id ORDER BY total_price DESC;""";
         final PreparedStatement preparedStatement = dbVehicleRepository.connection.prepareStatement(sql);
@@ -164,12 +164,20 @@ public class DBInvoiceRepository {
         return map;
     }
 
+    @SneakyThrows
     public List<Invoice> getInvoiceMoreExpensiveThanAmount(@NonNull final BigDecimal amount) {
-        List<Invoice> invoiceList = new ArrayList<>();
-        for (Map.Entry<Invoice, BigDecimal> entry : groupByTotalPrice().entrySet()) {
-            if (entry.getValue().compareTo(amount) > 0) {
-                invoiceList.add(entry.getKey());
-            }
+        final List<Invoice> invoiceList = new ArrayList<>();
+        final String sql = """
+                SELECT invoice_id, SUM(count * price) AS total_price
+                FROM public."vehicle"
+                GROUP BY invoice_id
+                HAVING SUM(count * price) > ?
+                ORDER BY total_price DESC""";
+        final PreparedStatement preparedStatement = dbVehicleRepository.connection.prepareStatement(sql);
+        preparedStatement.setBigDecimal(1, amount);
+        final ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            findById(resultSet.getString("invoice_id")).ifPresent(invoiceList::add);
         }
         return invoiceList;
     }
@@ -212,7 +220,7 @@ public class DBInvoiceRepository {
     private int checkInvoice(@NonNull final Invoice invoice) {
         int countInvoices = 0;
         final String sql = """
-                SELECT COUNT(invoice_id) as total_count
+                SELECT COUNT(invoice_id) AS total_count
                 FROM public."vehicle"
                 WHERE vehicle_id = ? AND invoice_id IS NOT NULL;""";
         final PreparedStatement preparedStatement = dbVehicleRepository.connection.prepareStatement(sql);
