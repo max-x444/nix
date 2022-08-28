@@ -6,9 +6,9 @@ import lombok.SneakyThrows;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class DBAirplaneRepository implements CrudRepository<Airplane> {
     private static DBAirplaneRepository instance;
@@ -32,11 +32,18 @@ public class DBAirplaneRepository implements CrudRepository<Airplane> {
     }
 
     @Override
+    @SneakyThrows
     public List<Airplane> getAll() {
-        return dbVehicleRepository.getAll().stream()
-                .filter(vehicle -> vehicle.getType().getTitle().equalsIgnoreCase("airplane"))
-                .map(vehicle -> (Airplane) vehicle)
-                .collect(Collectors.toList());
+        final List<Airplane> result = new ArrayList<>();
+        final String sql = """
+                SELECT vehicle_id FROM public."vehicle"
+                WHERE type = 'AIRPLANE';""";
+        final PreparedStatement preparedStatement = dbVehicleRepository.connection.prepareStatement(sql);
+        final ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            findById(resultSet.getString("vehicle_id")).ifPresent(result::add);
+        }
+        return result;
     }
 
     @Override

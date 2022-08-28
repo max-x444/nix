@@ -7,9 +7,9 @@ import lombok.SneakyThrows;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class DBMotorbikeRepository implements CrudRepository<Motorbike> {
     private static DBMotorbikeRepository instance;
@@ -33,11 +33,18 @@ public class DBMotorbikeRepository implements CrudRepository<Motorbike> {
     }
 
     @Override
+    @SneakyThrows
     public List<Motorbike> getAll() {
-        return dbVehicleRepository.getAll().stream()
-                .filter(vehicle -> vehicle.getType().getTitle().equalsIgnoreCase("motorbike"))
-                .map(vehicle -> (Motorbike) vehicle)
-                .collect(Collectors.toList());
+        final List<Motorbike> result = new ArrayList<>();
+        final String sql = """
+                SELECT vehicle_id FROM public."vehicle"
+                WHERE type = 'MOTORBIKE';""";
+        final PreparedStatement preparedStatement = dbVehicleRepository.connection.prepareStatement(sql);
+        final ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            findById(resultSet.getString("vehicle_id")).ifPresent(result::add);
+        }
+        return result;
     }
 
     @Override
