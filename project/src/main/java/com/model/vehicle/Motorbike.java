@@ -11,17 +11,17 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class Motorbike extends Vehicle {
-    private LocalDateTime created;
+    private LocalDateTime createdMotorbike;
     private Engine engine;
     private Double leanAngle;
     private String currency;
 
 
-    public Motorbike(String model, Manufacturer manufacturer, BigDecimal price, Double leanAngle, int count,
-                     LocalDateTime created, String currency, Engine engine) {
-        super(model, manufacturer, price, count, VehicleType.MOTORBIKE);
+    public Motorbike(String id, String model, Manufacturer manufacturer, BigDecimal price, Double leanAngle, int count,
+                     LocalDateTime createdMotorbike, String currency, Engine engine) {
+        super(id, model, manufacturer, price, count, VehicleType.MOTORBIKE);
         this.leanAngle = leanAngle;
-        this.created = created;
+        this.createdMotorbike = createdMotorbike;
         this.currency = currency;
         this.engine = engine;
     }
@@ -29,13 +29,14 @@ public class Motorbike extends Vehicle {
     @Override
     public String toString() {
         return "Motorbike{" +
-                "created=" + created +
+                "createdMotorbike=" + createdMotorbike +
                 ", engine=" + engine +
                 ", leanAngle=" + leanAngle +
                 ", currency='" + currency + '\'' +
                 ", id='" + id + '\'' +
                 ", manufacturer=" + manufacturer +
                 ", type=" + type +
+                ", invoiceId='" + invoiceId + '\'' +
                 ", details=" + details +
                 ", price=" + price +
                 ", model='" + model + '\'' +

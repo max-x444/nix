@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class Create implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(Create.class);
@@ -26,8 +27,9 @@ public class Create implements Command {
         switch (value) {
             case AUTO -> AUTO_SERVICE.create(1);
             case MOTORBIKE ->
-                    MOTORBIKE_SERVICE.create("S 3400 RR", Manufacturer.BMW, BigDecimal.valueOf(7), 35.0, 3, LocalDateTime.now(), "$", new Engine(3, "BMW"));
-            case AIRPLANE -> AIRPLANE_SERVICE.create("Боинг-777", Manufacturer.BMW, BigDecimal.valueOf(11), 1000, 1);
+                    MOTORBIKE_SERVICE.create(UUID.randomUUID().toString(), "S 3400 RR", Manufacturer.BMW, BigDecimal.valueOf(7), 35.0, 3, LocalDateTime.now(), "$", new Engine(3, "BMW"));
+            case AIRPLANE ->
+                    AIRPLANE_SERVICE.create(UUID.randomUUID().toString(), "Боинг-777", Manufacturer.BMW, BigDecimal.valueOf(11), 1000, 1);
             default -> throw new IllegalArgumentException("Cannot build " + value);
         }
 

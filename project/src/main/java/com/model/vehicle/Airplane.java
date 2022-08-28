@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 public class Airplane extends Vehicle {
     private int numberOfPassengerSeats;
 
-    public Airplane(String model, Manufacturer manufacturer, BigDecimal price, int numberOfPassengerSeats, int count) {
-        super(model, manufacturer, price, count, VehicleType.AIRPLANE);
+    public Airplane(String id, String model, Manufacturer manufacturer, BigDecimal price, int numberOfPassengerSeats, int count) {
+        super(id, model, manufacturer, price, count, VehicleType.AIRPLANE);
         this.numberOfPassengerSeats = numberOfPassengerSeats;
     }
 
@@ -28,6 +28,7 @@ public class Airplane extends Vehicle {
                 ", id='" + id + '\'' +
                 ", manufacturer=" + manufacturer +
                 ", type=" + type +
+                ", invoiceId='" + invoiceId + '\'' +
                 ", details=" + details +
                 ", price=" + price +
                 ", model='" + model + '\'' +

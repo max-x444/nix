@@ -3,6 +3,7 @@ package com.repository;
 import com.model.constants.Manufacturer;
 import com.model.vehicle.Engine;
 import com.model.vehicle.Motorbike;
+import com.repository.collection.MotorbikeRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 class MotorbikeRepositoryTest {
     private static final MotorbikeRepository TARGET = MotorbikeRepository.getInstance();
@@ -20,7 +22,7 @@ class MotorbikeRepositoryTest {
     @BeforeEach
     void setUp() {
         motorbike = createSimpleMotorbike();
-        TARGET.create(motorbike);
+        TARGET.save(motorbike);
     }
 
     @Test
@@ -50,22 +52,22 @@ class MotorbikeRepositoryTest {
 
     @Test
     void create_motorbike_successfully() {
-        Assertions.assertTrue(TARGET.create(createSimpleMotorbike()));
+        Assertions.assertTrue(TARGET.save(createSimpleMotorbike()));
     }
 
     @Test
     void create_motorbike_fail() {
-        Assertions.assertFalse(TARGET.create((Motorbike) null));
+        Assertions.assertFalse(TARGET.save((Motorbike) null));
     }
 
     @Test
     void create_listMotorbike_successfully() {
-        Assertions.assertTrue(TARGET.create(List.of(createSimpleMotorbike())));
+        Assertions.assertTrue(TARGET.save(List.of(createSimpleMotorbike())));
     }
 
     @Test
     void create_listMotorbike_fail() {
-        Assertions.assertFalse(TARGET.create(new LinkedList<>()));
+        Assertions.assertFalse(TARGET.save(new LinkedList<>()));
     }
 
     @Test
@@ -101,6 +103,7 @@ class MotorbikeRepositoryTest {
 
     private Motorbike createSimpleMotorbike() {
         return new Motorbike(
+                UUID.randomUUID().toString(),
                 "Model",
                 Manufacturer.BMW,
                 BigDecimal.ZERO,

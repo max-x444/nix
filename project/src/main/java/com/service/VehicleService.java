@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Optional;
 
 public abstract class VehicleService<T extends Vehicle> {
     private static final Logger LOGGER = LoggerFactory.getLogger(VehicleService.class);
@@ -15,8 +16,16 @@ public abstract class VehicleService<T extends Vehicle> {
         this.crudRepository = crudRepository;
     }
 
+    public Optional<T> findById(String id) {
+        return crudRepository.findById(id);
+    }
+
     public boolean save(T vehicle) {
-        return crudRepository.create(vehicle);
+        return crudRepository.save(vehicle);
+    }
+
+    public boolean save(List<T> vehicleList) {
+        return crudRepository.save(vehicleList);
     }
 
     public boolean update(T vehicle) {

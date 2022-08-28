@@ -4,8 +4,9 @@ import com.model.annotations.MyAutowired;
 import com.model.annotations.MySingleton;
 import com.model.constants.Manufacturer;
 import com.model.vehicle.Auto;
-import com.repository.AutoRepository;
 import com.repository.CrudRepository;
+import com.repository.collection.AutoRepository;
+import com.repository.jdbc.DBAutoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 @MySingleton
 public class AutoService extends VehicleService<Auto> {
@@ -27,7 +29,7 @@ public class AutoService extends VehicleService<Auto> {
 
     public static AutoService getInstance() {
         if (instance == null) {
-            instance = new AutoService(AutoRepository.getInstance());
+            instance = new AutoService(DBAutoRepository.getInstance());
         }
         return instance;
     }
@@ -36,6 +38,7 @@ public class AutoService extends VehicleService<Auto> {
         List<Auto> result = new LinkedList<>();
         for (int i = 0; i < count; i++) {
             final Auto auto = new Auto(
+                    UUID.randomUUID().toString(),
                     "Model-" + RANDOM.nextInt(1000),
                     getRandomManufacturer(),
                     BigDecimal.valueOf(RANDOM.nextInt(1000)),
@@ -43,7 +46,7 @@ public class AutoService extends VehicleService<Auto> {
                     RANDOM.nextInt(9) + 1
             );
             result.add(auto);
-            crudRepository.create(auto);
+            crudRepository.save(auto);
             LOGGER.debug("Created auto {}", auto.getId());
         }
         return result;

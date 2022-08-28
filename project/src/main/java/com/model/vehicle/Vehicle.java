@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,13 +16,14 @@ public abstract class Vehicle {
     protected final String id;
     protected Manufacturer manufacturer;
     protected VehicleType type;
+    protected String invoiceId;
     protected List<String> details = new ArrayList<>();
     protected BigDecimal price;
     protected String model;
     protected int count;
 
-    protected Vehicle(String model, Manufacturer manufacturer, BigDecimal price, int count, VehicleType type) {
-        this.id = UUID.randomUUID().toString();
+    protected Vehicle(String id, String model, Manufacturer manufacturer, BigDecimal price, int count, VehicleType type) {
+        this.id = id;
         this.model = model;
         this.manufacturer = manufacturer;
         this.price = price;

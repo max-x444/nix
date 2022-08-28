@@ -1,7 +1,8 @@
-package com.repository;
+package com.repository.collection;
 
 import com.model.annotations.MySingleton;
 import com.model.vehicle.Auto;
+import com.repository.CrudRepository;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -40,12 +41,12 @@ public class AutoRepository implements CrudRepository<Auto> {
     }
 
     @Override
-    public boolean create(Auto auto) {
+    public boolean save(Auto auto) {
         return autos.add(auto);
     }
 
     @Override
-    public boolean create(List<Auto> auto) {
+    public boolean save(List<Auto> auto) {
         return autos.addAll(auto);
     }
 
