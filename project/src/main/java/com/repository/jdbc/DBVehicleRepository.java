@@ -4,6 +4,7 @@ import com.config.JDBCConfig;
 import com.model.constants.Manufacturer;
 import com.model.vehicle.Airplane;
 import com.model.vehicle.Auto;
+import com.model.vehicle.Detail;
 import com.model.vehicle.Engine;
 import com.model.vehicle.Motorbike;
 import com.model.vehicle.Vehicle;
@@ -17,21 +18,20 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public class DBVehicleRepository implements CrudRepository<Vehicle> {
     protected final Connection connection;
     private static DBVehicleRepository instance;
+
+    private DBVehicleRepository() {
+        connection = JDBCConfig.getConnection();
+    }
 
     public static DBVehicleRepository getInstance() {
         if (instance == null) {
             instance = new DBVehicleRepository();
         }
         return instance;
-    }
-
-    private DBVehicleRepository() {
-        connection = JDBCConfig.getConnection();
     }
 
     @Override
@@ -54,10 +54,10 @@ public class DBVehicleRepository implements CrudRepository<Vehicle> {
         final ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
             final Vehicle vehicle = mapRowToObject(resultSet);
-            final List<String> details = new ArrayList<>();
-            details.add(resultSet.getString("name"));
+            final List<Detail> details = new ArrayList<>();
+            details.add(new Detail(resultSet.getString("detail_id"), resultSet.getString("name")));
             while (resultSet.next()) {
-                details.add(resultSet.getString("name"));
+                details.add(new Detail(resultSet.getString("detail_id"), resultSet.getString("name")));
             }
             vehicle.setDetails(details);
             return Optional.of(vehicle);
@@ -184,20 +184,18 @@ public class DBVehicleRepository implements CrudRepository<Vehicle> {
 
     @SneakyThrows
     private Auto createAuto(@NonNull final ResultSet resultSet) {
-        final Auto auto = new Auto(
+        return new Auto(
                 resultSet.getString("vehicle_id"),
                 resultSet.getString("model"),
                 Manufacturer.valueOf(resultSet.getString("manufacturer")),
                 resultSet.getBigDecimal("price"),
                 resultSet.getString("body_type"),
                 resultSet.getInt("count"));
-        auto.setInvoiceId(resultSet.getString("invoice_id"));
-        return auto;
     }
 
     @SneakyThrows
     private Motorbike createMotorbike(@NonNull final ResultSet resultSet) {
-        final Motorbike motorbike = new Motorbike(
+        return new Motorbike(
                 resultSet.getString("vehicle_id"),
                 resultSet.getString("model"),
                 Manufacturer.valueOf(resultSet.getString("manufacturer")),
@@ -206,22 +204,18 @@ public class DBVehicleRepository implements CrudRepository<Vehicle> {
                 resultSet.getInt("count"),
                 resultSet.getTimestamp("created_motorbike").toLocalDateTime(),
                 resultSet.getString("currency"),
-                new Engine(resultSet.getInt("volume"), resultSet.getString("brand")));
-        motorbike.setInvoiceId(resultSet.getString("invoice_id"));
-        return motorbike;
+                new Engine(resultSet.getString("vehicle_id"), resultSet.getInt("volume"), resultSet.getString("brand")));
     }
 
     @SneakyThrows
     private Airplane createAirplane(@NonNull final ResultSet resultSet) {
-        final Airplane airplane = new Airplane(
+        return new Airplane(
                 resultSet.getString("vehicle_id"),
                 resultSet.getString("model"),
                 Manufacturer.valueOf(resultSet.getString("manufacturer")),
                 resultSet.getBigDecimal("price"),
                 resultSet.getInt("number_of_passenger_seats"),
                 resultSet.getInt("count"));
-        airplane.setInvoiceId(resultSet.getString("invoice_id"));
-        return airplane;
     }
 
     @SneakyThrows
@@ -252,9 +246,9 @@ public class DBVehicleRepository implements CrudRepository<Vehicle> {
             final String sql = """
                     INSERT INTO public."detail" (detail_id, name, vehicle_id) VALUES (?, ?, ?);""";
             final PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            for (String detail : vehicle.getDetails()) {
-                preparedStatement.setString(1, UUID.randomUUID().toString());
-                preparedStatement.setString(2, detail);
+            for (Detail detail : vehicle.getDetails()) {
+                preparedStatement.setString(1, detail.getId());
+                preparedStatement.setString(2, detail.getName());
                 preparedStatement.setString(3, vehicleId);
                 preparedStatement.addBatch();
             }

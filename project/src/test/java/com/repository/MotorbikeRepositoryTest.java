@@ -98,12 +98,13 @@ class MotorbikeRepositoryTest {
 
     @Test
     void delete_motorbike_fail() {
-        Assertions.assertNotEquals(TARGET.getAll().size(), TARGET.delete(createSimpleMotorbike()).size());
+        Assertions.assertNotEquals(TARGET.getAll().size(), TARGET.delete(motorbike).size());
     }
 
     private Motorbike createSimpleMotorbike() {
+        final String randomId = UUID.randomUUID().toString();
         return new Motorbike(
-                UUID.randomUUID().toString(),
+                randomId,
                 "Model",
                 Manufacturer.BMW,
                 BigDecimal.ZERO,
@@ -111,6 +112,6 @@ class MotorbikeRepositoryTest {
                 0,
                 LocalDateTime.now(),
                 "$",
-                new Engine(0, "Brand"));
+                new Engine(randomId, 0, "Brand"));
     }
 }

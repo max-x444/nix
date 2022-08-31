@@ -26,8 +26,10 @@ public class Create implements Command {
         final VehicleType value = values[UserInputUtil.getNames("What you want to create:", values)];
         switch (value) {
             case AUTO -> AUTO_SERVICE.create(1);
-            case MOTORBIKE ->
-                    MOTORBIKE_SERVICE.create(UUID.randomUUID().toString(), "S 3400 RR", Manufacturer.BMW, BigDecimal.valueOf(7), 35.0, 3, LocalDateTime.now(), "$", new Engine(3, "BMW"));
+            case MOTORBIKE -> {
+                final String randomId = UUID.randomUUID().toString();
+                MOTORBIKE_SERVICE.create(randomId, "S 3400 RR", Manufacturer.BMW, BigDecimal.valueOf(7), 35.0, 3, LocalDateTime.now(), "$", new Engine(randomId, 3, "BMW"));
+            }
             case AIRPLANE ->
                     AIRPLANE_SERVICE.create(UUID.randomUUID().toString(), "Боинг-777", Manufacturer.BMW, BigDecimal.valueOf(11), 1000, 1);
             default -> throw new IllegalArgumentException("Cannot build " + value);

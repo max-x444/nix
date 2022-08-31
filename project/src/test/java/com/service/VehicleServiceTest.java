@@ -95,8 +95,9 @@ class VehicleServiceTest {
     }
 
     private Motorbike createSimpleMotorbike() {
+        final String randomId = UUID.randomUUID().toString();
         return new Motorbike(
-                UUID.randomUUID().toString(),
+                randomId,
                 "Model",
                 Manufacturer.BMW,
                 BigDecimal.ZERO,
@@ -104,6 +105,6 @@ class VehicleServiceTest {
                 0,
                 LocalDateTime.now(),
                 "$",
-                new Engine(0, "Brand"));
+                new Engine(randomId, 0, "Brand"));
     }
 }

@@ -2,22 +2,42 @@ package com.model.vehicle;
 
 import com.model.constants.Manufacturer;
 import com.model.constants.VehicleType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Vehicle {
-    protected final String id;
+    @Id
+    @Column(name = "vehicle_id")
+    protected String id;
     protected Manufacturer manufacturer;
+    @ManyToOne
+    @JoinColumn(name = "invoice_id")
+    protected Invoice invoice;
     protected VehicleType type;
-    protected String invoiceId;
-    protected List<String> details = new ArrayList<>();
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    protected List<Detail> details = new ArrayList<>();
     protected BigDecimal price;
     protected String model;
     protected int count;
@@ -32,15 +52,15 @@ public abstract class Vehicle {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Vehicle vehicle = (Vehicle) o;
-        return model.equals(vehicle.model);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(model);
+    public String toString() {
+        return "Vehicle{" +
+                "id='" + id + '\'' +
+                ", manufacturer=" + manufacturer +
+                ", type=" + type +
+                ", details=" + details +
+                ", price=" + price +
+                ", model='" + model + '\'' +
+                ", count=" + count +
+                '}';
     }
 }

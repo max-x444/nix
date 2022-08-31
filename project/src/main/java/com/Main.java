@@ -3,13 +3,12 @@ package com;
 import com.model.constants.Manufacturer;
 import com.model.vehicle.Airplane;
 import com.model.vehicle.Auto;
+import com.model.vehicle.Detail;
 import com.model.vehicle.Engine;
 import com.model.vehicle.Invoice;
 import com.model.vehicle.Motorbike;
-import com.model.vehicle.Vehicle;
 import com.service.AirplaneService;
 import com.service.AutoService;
-import com.service.DBTableService;
 import com.service.InvoiceService;
 import com.service.MotorbikeService;
 import lombok.SneakyThrows;
@@ -22,8 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
@@ -38,99 +37,90 @@ public class Main {
 
     @SneakyThrows
     public static void main(String[] args) {
-        System.out.println("Drop all tables");
-        DBTableService.getInstance().dropTables();
-        System.out.println("Create all tables");
-        DBTableService.getInstance().createTables();
+        final Invoice invoice = new Invoice();
+        invoice.setId(UUID.randomUUID().toString());
+        invoice.setCreated(LocalDateTime.now());
         final Auto auto = AUTO_SERVICE.create(1).get(0);
+        System.out.println("Save first auto: " + AUTO_SERVICE.save(auto));
+        System.out.println("Get first auto: " + AUTO_SERVICE.findById(auto.getId()));
+        auto.setPrice(BigDecimal.valueOf(1_000));
+        auto.setCount(1);
+        auto.setBodyType("coupe");
+        System.out.println("Update first auto: " + AUTO_SERVICE.update(auto));
+        System.out.println("Get first auto: " + AUTO_SERVICE.findById(auto.getId()));
+        auto.setInvoice(invoice);
+
+        final Invoice secondInvoice = new Invoice();
         final Auto secondAuto = AUTO_SERVICE.create(1).get(0);
-        final List<Auto> autoList = List.of(auto, secondAuto);
+        secondAuto.setCount(1);
+        secondAuto.setPrice(BigDecimal.valueOf(2_000));
+        secondAuto.setInvoice(secondInvoice);
+
+        secondInvoice.setId(UUID.randomUUID().toString());
+        secondInvoice.setCreated(LocalDateTime.now());
+        secondInvoice.setVehicles(Set.of(secondAuto));
+        System.out.println("Save second invoice: " + INVOICE_SERVICE.save(secondInvoice));
+        System.out.println("Get second auto: " + AUTO_SERVICE.findById(secondAuto.getId()));
+        System.out.println("Get all autos:");
+        for (Auto a : AUTO_SERVICE.getAll()) {
+            System.out.println(a);
+        }
+
         final Airplane airplane = AIRPLANE_SERVICE.create(
                 UUID.randomUUID().toString(),
                 "S 3500 RR",
                 Manufacturer.BMW,
-                BigDecimal.valueOf(6),
+                BigDecimal.valueOf(500),
                 5,
                 1);
+        airplane.setInvoice(invoice);
         final Motorbike motorbike = MOTORBIKE_SERVICE.create(
                 UUID.randomUUID().toString(),
                 "S 3500 RR",
                 Manufacturer.BMW,
-                BigDecimal.valueOf(800),
+                BigDecimal.valueOf(400),
                 55.0,
                 1,
                 LocalDateTime.now(),
                 "$",
-                new Engine(3, "BMW"));
+                new Engine(UUID.randomUUID().toString(), 3, "BMW"));
+        final Detail firstDetail = new Detail(UUID.randomUUID().toString(), "wheels");
+        firstDetail.setVehicle(motorbike);
+        final Detail secondDetail = new Detail(UUID.randomUUID().toString(), "spoiler");
+        secondDetail.setVehicle(motorbike);
 
-        System.out.println("Airplane:");
-        System.out.println("Save airplane: " + AIRPLANE_SERVICE.save(airplane));
-        System.out.println("Print all airplanes: " + Arrays.toString(AIRPLANE_SERVICE.getAll().toArray()));
-        airplane.setPrice(BigDecimal.valueOf(1000));
-        airplane.setNumberOfPassengerSeats(5);
-        System.out.println("Update airplane: " + AIRPLANE_SERVICE.save(airplane));
-        System.out.println("Get airplane: " + AIRPLANE_SERVICE.findById(airplane.getId()));
-//        System.out.println("Delete airplane: " + AIRPLANE_SERVICE.delete(airplane.getId()));
-//        System.out.println("Get airplane: " + AIRPLANE_SERVICE.findById(airplane.getId()) + "\n");
+        motorbike.setDetails(List.of(firstDetail, secondDetail));
+        motorbike.setInvoice(invoice);
 
-        System.out.println("Motorbike: ");
-        System.out.println("Save motorbike: " + MOTORBIKE_SERVICE.save(motorbike));
-        System.out.println("Print all motorbikes: " + Arrays.toString(MOTORBIKE_SERVICE.getAll().toArray()));
-        motorbike.setCurrency("#");
-        motorbike.setLeanAngle(1.0);
-        motorbike.setCreatedMotorbike(LocalDateTime.now());
-        motorbike.getEngine().setVolume(110);
-        motorbike.getEngine().setBrand("AUDI");
-        System.out.println("Update motorbike: " + MOTORBIKE_SERVICE.save(motorbike));
-        System.out.println("Get motorbike: " + MOTORBIKE_SERVICE.findById(motorbike.getId()));
-//        System.out.println("Delete motorbike: " + MOTORBIKE_SERVICE.delete(motorbike.getId()));
-//        System.out.println("Get motorbike: " + MOTORBIKE_SERVICE.findById(motorbike.getId()) + "\n");
-
-        System.out.println("Auto:");
-        auto.setDetails(List.of("wheels", "spoiler"));
-        auto.setBodyType("MODEL");
-        System.out.println("Save all autos: " + AUTO_SERVICE.save(autoList));
-        System.out.println("Print all autos: " + Arrays.toString(AUTO_SERVICE.getAll().toArray()));
-        auto.setCount(2);
-        auto.setPrice(BigDecimal.ZERO);
-        System.out.println("Update first auto: " + AUTO_SERVICE.update(auto));
-        System.out.println("Get first auto: " + AUTO_SERVICE.findById(auto.getId()));
-//        System.out.println("Delete first auto: " + AUTO_SERVICE.delete(auto.getId()));
-//        System.out.println("Get first auto: " + AUTO_SERVICE.findById(auto.getId()));
-//        System.out.println("Print all autos: " + Arrays.toString(AUTO_SERVICE.delete(secondAuto).toArray()));
-
-        System.out.println("Invoice:");
-        final Invoice invoice = new Invoice(
-                UUID.randomUUID().toString(),
-                LocalDateTime.now(),
-                List.of(auto, airplane, motorbike, secondAuto));
+        invoice.setVehicles(Set.of(airplane, auto, motorbike));
         System.out.println("Save first invoice: " + INVOICE_SERVICE.save(invoice));
-        final List<Vehicle> fourAuto = AUTO_SERVICE.create(4)
-                .stream()
-                .map(x -> (Vehicle) x)
-                .collect(Collectors.toList());
-        final Invoice secondInvoice = new Invoice(
-                UUID.randomUUID().toString(),
-                LocalDateTime.now(),
-                fourAuto);
-        System.out.println("Save second invoice: " + INVOICE_SERVICE.save(secondInvoice));
-        System.out.println("First invoice id: " + invoice.getId());
-        System.out.println("Second invoice id: " + secondInvoice.getId());
-        //Exception when deleting all vehicles
-        System.out.println("Get first invoice: " + INVOICE_SERVICE.findById(invoice.getId()));
         invoice.setCreated(LocalDateTime.now());
         System.out.println("Update first invoice: " + INVOICE_SERVICE.update(invoice));
-        System.out.println("Print all invoices: " + Arrays.toString(INVOICE_SERVICE.getAll().toArray()));
-        System.out.println("Group invoices by amount:");
-        for (Map.Entry<Invoice, BigDecimal> entry : INVOICE_SERVICE.groupByTotalPrice().entrySet()) {
+        System.out.println("Get first invoice: " + INVOICE_SERVICE.findById(invoice.getId()));
+        System.out.println("Get all invoices:");
+        for (Invoice in : INVOICE_SERVICE.getAll()) {
+            System.out.println(in);
+        }
+        System.out.println("Group by invoice use dto:");
+        for (Map.Entry<Invoice, BigDecimal> entry : INVOICE_SERVICE.groupByInvoiceDTO().entrySet()) {
             System.out.println("Key: " + entry.getKey().getId() + " Value: " + entry.getValue());
         }
-        System.out.println("Get invoices more expensive than 3000 amount:");
-        for (Invoice value : INVOICE_SERVICE.getInvoiceMoreExpensiveThanAmount(BigDecimal.valueOf(3_000))) {
-            System.out.println(value);
+        System.out.println("Group by invoice use criteria:");
+        for (Map.Entry<Invoice, BigDecimal> entry : INVOICE_SERVICE.groupByInvoiceCriteria().entrySet()) {
+            System.out.println("Key: " + entry.getKey().getId() + " Value: " + entry.getValue());
         }
-        System.out.println("Get count of invoices: " + INVOICE_SERVICE.getTotalCountInvoices());
+        System.out.println("Get invoice more expensive than 1000 use dto:");
+        for (Invoice i : INVOICE_SERVICE.getInvoiceMoreExpensiveThanAmountDTO(BigDecimal.valueOf(1_000))) {
+            System.out.println(i.getId());
+        }
+        System.out.println("Get total count invoices: " + INVOICE_SERVICE.getTotalCountInvoices());
+
         System.out.println("Delete first invoice: " + INVOICE_SERVICE.delete(invoice.getId()));
-        System.out.println("Delete second invoice: " + Arrays.toString(INVOICE_SERVICE.delete(secondInvoice).toArray()));
+        System.out.println("Delete second invoice: " + INVOICE_SERVICE.delete(secondInvoice.getId()));
+        System.out.println("Get all autos:");
+        for (Auto a : AUTO_SERVICE.getAll()) {
+            System.out.println(a);
+        }
+        System.out.println("Get all invoices: " + Arrays.toString(INVOICE_SERVICE.getAll().toArray()));
     }
 }

@@ -9,9 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class UserInputUtil {
+public final class UserInputUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserInputUtil.class);
     private static final Scanner SCANNER = new Scanner(System.in);
+
+    private UserInputUtil() {
+    }
 
     private static int getUserInput(String line, List<String> list) {
         int userInput;

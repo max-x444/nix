@@ -11,9 +11,11 @@ import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class DBInvoiceRepository {
     private static DBInvoiceRepository instance;
@@ -45,12 +47,12 @@ public class DBInvoiceRepository {
         if (resultSet.next()) {
             final String invoiceId = resultSet.getString("invoice_id");
             final LocalDateTime created = resultSet.getTimestamp("created").toLocalDateTime();
-            final List<Vehicle> vehicleList = new ArrayList<>();
-            dbVehicleRepository.findById(resultSet.getString("vehicle_id")).ifPresent(vehicleList::add);
+            final Set<Vehicle> vehicleSet = new LinkedHashSet<>();
+            dbVehicleRepository.findById(resultSet.getString("vehicle_id")).ifPresent(vehicleSet::add);
             while (resultSet.next()) {
-                dbVehicleRepository.findById(resultSet.getString("vehicle_id")).ifPresent(vehicleList::add);
+                dbVehicleRepository.findById(resultSet.getString("vehicle_id")).ifPresent(vehicleSet::add);
             }
-            return Optional.of(mapRowToObject(invoiceId, created, vehicleList));
+            return Optional.of(mapRowToObject(invoiceId, created, vehicleSet));
         } else {
             return Optional.empty();
         }
@@ -145,7 +147,7 @@ public class DBInvoiceRepository {
     }
 
     @SneakyThrows
-    public Map<Invoice, BigDecimal> groupByTotalPrice() {
+    public Map<Invoice, BigDecimal> groupByInvoice() {
         final Map<Invoice, BigDecimal> map = new LinkedHashMap<>();
         final String sql = """
                 SELECT invoice_id, SUM(count * price) AS total_price
@@ -192,19 +194,19 @@ public class DBInvoiceRepository {
     }
 
     @SneakyThrows
-    private Invoice mapRowToObject(String invoiceId, LocalDateTime created, List<Vehicle> vehicleList) {
+    private Invoice mapRowToObject(String invoiceId, LocalDateTime created, Set<Vehicle> vehicleList) {
         return new Invoice(invoiceId, created, vehicleList);
     }
 
     @SneakyThrows
-    private boolean updateInvoiceIdInVehicle(@NonNull final List<Vehicle> vehicleList, @NonNull final String invoice_id) {
+    private boolean updateInvoiceIdInVehicle(@NonNull final Set<Vehicle> vehicleSet, @NonNull final String invoice_id) {
         dbVehicleRepository.connection.setAutoCommit(false);
         final String sql = """
                 UPDATE public."vehicle"
                 SET invoice_id = ?
                 WHERE vehicle_id = ? AND invoice_id IS NULL;""";
         final PreparedStatement preparedStatement = dbVehicleRepository.connection.prepareStatement(sql);
-        for (Vehicle vehicle : vehicleList) {
+        for (Vehicle vehicle : vehicleSet) {
             preparedStatement.setString(1, invoice_id);
             preparedStatement.setString(2, vehicle.getId());
             preparedStatement.addBatch();
