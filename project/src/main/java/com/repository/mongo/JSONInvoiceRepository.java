@@ -139,7 +139,7 @@ public class JSONInvoiceRepository extends JSONRepository<Invoice> implements Cr
                 .forEach(vehicles::add);
         return new Invoice(
                 invoice.getString("id"),
-                LocalDateTime.parse(invoice.getString("created"), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS")),
+                LocalDateTime.parse(invoice.getString("created"), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")),
                 vehicles
         );
     }
