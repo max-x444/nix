@@ -8,7 +8,7 @@ import com.model.vehicle.Motorbike;
 import com.model.vehicle.Vehicle;
 import com.repository.CrudRepository;
 import com.repository.collection.MotorbikeRepository;
-import com.repository.hibernate.JPAMotorbikeRepository;
+import com.repository.mongo.JSONMotorbikeRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -30,7 +30,7 @@ public class MotorbikeService extends VehicleService<Motorbike> {
 
     public static MotorbikeService getInstance() {
         if (instance == null) {
-            instance = new MotorbikeService(JPAMotorbikeRepository.getInstance());
+            instance = new MotorbikeService(JSONMotorbikeRepository.getInstance());
         }
         return instance;
     }

@@ -15,11 +15,11 @@ public class DBAutoRepository implements CrudRepository<Auto> {
     private static DBVehicleRepository dbVehicleRepository;
 
     private DBAutoRepository() {
+        dbVehicleRepository = DBVehicleRepository.getInstance();
     }
 
     public static DBAutoRepository getInstance() {
         if (instance == null) {
-            dbVehicleRepository = DBVehicleRepository.getInstance();
             instance = new DBAutoRepository();
         }
         return instance;

@@ -16,11 +16,11 @@ public class DBMotorbikeRepository implements CrudRepository<Motorbike> {
     private static DBVehicleRepository dbVehicleRepository;
 
     private DBMotorbikeRepository() {
+        dbVehicleRepository = DBVehicleRepository.getInstance();
     }
 
     public static DBMotorbikeRepository getInstance() {
         if (instance == null) {
-            dbVehicleRepository = DBVehicleRepository.getInstance();
             instance = new DBMotorbikeRepository();
         }
         return instance;

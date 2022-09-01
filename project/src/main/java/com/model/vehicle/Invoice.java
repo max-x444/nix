@@ -28,5 +28,5 @@ public class Invoice {
     private String id;
     private LocalDateTime created;
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Vehicle> vehicles = new LinkedHashSet<>();
+    private transient Set<Vehicle> vehicles = new LinkedHashSet<>();
 }

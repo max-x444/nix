@@ -6,7 +6,7 @@ import com.model.constants.Manufacturer;
 import com.model.vehicle.Airplane;
 import com.repository.CrudRepository;
 import com.repository.collection.AirplaneRepository;
-import com.repository.hibernate.JPAAirplaneRepository;
+import com.repository.mongo.JSONAirplaneRepository;
 
 import java.math.BigDecimal;
 
@@ -21,7 +21,7 @@ public class AirplaneService extends VehicleService<Airplane> {
 
     public static AirplaneService getInstance() {
         if (instance == null) {
-            instance = new AirplaneService(JPAAirplaneRepository.getInstance());
+            instance = new AirplaneService(JSONAirplaneRepository.getInstance());
         }
         return instance;
     }

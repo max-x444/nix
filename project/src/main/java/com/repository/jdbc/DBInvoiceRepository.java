@@ -22,11 +22,11 @@ public class DBInvoiceRepository {
     private static DBVehicleRepository dbVehicleRepository;
 
     private DBInvoiceRepository() {
+        dbVehicleRepository = DBVehicleRepository.getInstance();
     }
 
     public static DBInvoiceRepository getInstance() {
         if (instance == null) {
-            dbVehicleRepository = DBVehicleRepository.getInstance();
             instance = new DBInvoiceRepository();
         }
         return instance;
