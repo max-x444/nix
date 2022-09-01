@@ -64,27 +64,23 @@ public class MotorbikeService extends VehicleService<Motorbike> {
         return temp.get();
     }
 
-    public Function<Map<String, Object>, Motorbike> function = map -> {
-        final String randomId = UUID.randomUUID().toString();
-        return new Motorbike(
-                randomId,
-                String.valueOf(map.getOrDefault("model", "Model")),
-                Manufacturer.valueOf(String.valueOf(map.getOrDefault("manufacturer", Manufacturer.BMW))),
-                BigDecimal.valueOf(Double.parseDouble(String.valueOf(map.getOrDefault("price", BigDecimal.ZERO)))),
-                Double.valueOf(String.valueOf(map.getOrDefault("leanAngle", 0.0))),
-                Integer.parseInt(String.valueOf(map.getOrDefault("count", 0))),
-                LocalDateTime.parse(String.valueOf(map.getOrDefault("created", LocalDateTime.now())),
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")),
-                String.valueOf(map.getOrDefault("currency", "$")),
-                new Engine(randomId, Integer.parseInt(String.valueOf(map.getOrDefault("volume", 0))),
-                        String.valueOf(map.getOrDefault("brand", "Brand")))
-        );
-    };
+    public Function<Map<String, Object>, Motorbike> function = map -> new Motorbike(
+            UUID.randomUUID().toString(),
+            String.valueOf(map.getOrDefault("model", "Model")),
+            Manufacturer.valueOf(String.valueOf(map.getOrDefault("manufacturer", Manufacturer.BMW))),
+            BigDecimal.valueOf(Double.parseDouble(String.valueOf(map.getOrDefault("price", BigDecimal.ZERO)))),
+            Double.valueOf(String.valueOf(map.getOrDefault("leanAngle", 0.0))),
+            Integer.parseInt(String.valueOf(map.getOrDefault("count", 0))),
+            LocalDateTime.parse(String.valueOf(map.getOrDefault("created", LocalDateTime.now())),
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")),
+            String.valueOf(map.getOrDefault("currency", "$")),
+            new Engine(UUID.randomUUID().toString(), Integer.parseInt(String.valueOf(map.getOrDefault("volume", 0))),
+                    String.valueOf(map.getOrDefault("brand", "Brand")))
+    );
 
     private Motorbike createDefault() {
-        final String randomId = UUID.randomUUID().toString();
         return new Motorbike(
-                randomId,
+                UUID.randomUUID().toString(),
                 "Default model",
                 Manufacturer.MERCEDES,
                 BigDecimal.ZERO,
@@ -92,6 +88,6 @@ public class MotorbikeService extends VehicleService<Motorbike> {
                 0,
                 LocalDateTime.now(),
                 "$",
-                new Engine(randomId, 0, "Brand"));
+                new Engine(UUID.randomUUID().toString(), 0, "Brand"));
     }
 }
