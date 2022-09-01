@@ -10,6 +10,8 @@ import lombok.Setter;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -31,10 +33,12 @@ public abstract class Vehicle {
     @Id
     @Column(name = "vehicle_id")
     protected String id;
+    @Enumerated(value = EnumType.STRING)
     protected Manufacturer manufacturer;
     @ManyToOne
     @JoinColumn(name = "invoice_id")
     protected Invoice invoice;
+    @Enumerated(value = EnumType.STRING)
     protected VehicleType type;
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     protected List<Detail> details = new ArrayList<>();
