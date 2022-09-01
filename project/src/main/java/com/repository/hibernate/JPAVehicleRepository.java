@@ -36,6 +36,9 @@ public class JPAVehicleRepository implements CrudRepository<Vehicle> {
 
     @Override
     public boolean save(Vehicle vehicle) {
+        if (vehicle == null) {
+            throw new IllegalArgumentException("Vehicle must not be null");
+        }
         entityManager.getTransaction().begin();
         entityManager.merge(vehicle);
         entityManager.flush();
@@ -76,7 +79,6 @@ public class JPAVehicleRepository implements CrudRepository<Vehicle> {
             throw new IllegalArgumentException("Id must not be empty");
         }
         findById(id).ifPresent(vehicle -> {
-            System.out.println(vehicle.getId());
             entityManager.getTransaction().begin();
             entityManager.remove(vehicle);
             entityManager.flush();
