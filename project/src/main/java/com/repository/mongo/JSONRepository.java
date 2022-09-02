@@ -7,6 +7,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
 import com.mongodb.client.MongoCollection;
+import com.repository.CrudRepository;
 import lombok.NonNull;
 import org.bson.Document;
 
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class JSONRepository<T> {
+public abstract class JSONRepository<T> implements CrudRepository<T> {
     private static final JsonSerializer<LocalDateTime> SERIALIZER = (src, typeOfSrc, context) -> src == null ? null
             : new JsonPrimitive(src.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")));
     private static final JsonDeserializer<LocalDateTime> DESERIALIZER = (jSon, typeOfT, context) -> jSon == null ? null
@@ -30,14 +31,6 @@ public abstract class JSONRepository<T> {
     protected JSONRepository(@NonNull final String collectionName) {
         this.collection = MongoFactoryUtil.connect("nix").getCollection(collectionName);
     }
-
-    public abstract boolean save(T item);
-
-    public abstract boolean save(List<T> tList);
-
-    public abstract boolean update(T item);
-
-    public abstract List<T> delete(T item);
 
     protected Optional<T> findById(Class<T> type, String id) {
         if (id.isEmpty()) {
@@ -56,7 +49,8 @@ public abstract class JSONRepository<T> {
                 .into(new ArrayList<>());
     }
 
-    protected boolean delete(String id) {
+    @Override
+    public boolean delete(String id) {
         if (id.isEmpty()) {
             throw new IllegalArgumentException("Id must not be empty");
         }

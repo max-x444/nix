@@ -8,7 +8,6 @@ import com.model.vehicle.Motorbike;
 import com.model.vehicle.Vehicle;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.repository.CrudRepository;
 import lombok.NonNull;
 import org.bson.Document;
 
@@ -23,7 +22,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class JSONInvoiceRepository extends JSONRepository<Invoice> implements CrudRepository<Invoice> {
+public class JSONInvoiceRepository extends JSONRepository<Invoice> {
     private static final MongoCollection<Document> COLLECTION_AUTO =
             MongoFactoryUtil.connect("nix").getCollection("auto");
     private static final MongoCollection<Document> COLLECTION_AIRPLANE =

@@ -1,13 +1,12 @@
 package com.repository.mongo;
 
 import com.model.vehicle.Motorbike;
-import com.repository.CrudRepository;
 import org.bson.Document;
 
 import java.util.List;
 import java.util.Optional;
 
-public class JSONMotorbikeRepository extends JSONRepository<Motorbike> implements CrudRepository<Motorbike> {
+public class JSONMotorbikeRepository extends JSONRepository<Motorbike> {
     private static JSONMotorbikeRepository instance;
 
     private JSONMotorbikeRepository() {

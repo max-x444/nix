@@ -1,13 +1,12 @@
 package com.repository.mongo;
 
 import com.model.vehicle.Auto;
-import com.repository.CrudRepository;
 import org.bson.Document;
 
 import java.util.List;
 import java.util.Optional;
 
-public class JSONAutoRepository extends JSONRepository<Auto> implements CrudRepository<Auto> {
+public class JSONAutoRepository extends JSONRepository<Auto> {
     private static JSONAutoRepository instance;
 
     private JSONAutoRepository() {

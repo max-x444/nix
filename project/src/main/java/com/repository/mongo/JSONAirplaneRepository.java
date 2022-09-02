@@ -1,13 +1,12 @@
 package com.repository.mongo;
 
 import com.model.vehicle.Airplane;
-import com.repository.CrudRepository;
 import org.bson.Document;
 
 import java.util.List;
 import java.util.Optional;
 
-public class JSONAirplaneRepository extends JSONRepository<Airplane> implements CrudRepository<Airplane> {
+public class JSONAirplaneRepository extends JSONRepository<Airplane> {
     private static JSONAirplaneRepository instance;
 
     private JSONAirplaneRepository() {
