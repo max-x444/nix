@@ -63,7 +63,7 @@ public class JSONAirplaneRepository extends JSONRepository<Airplane> implements 
     @Override
     public List<Airplane> delete(Airplane item) {
         super.delete(item.getId());
-        return this.getAll();
+        return super.getAll(Airplane.class);
     }
 
     @Override

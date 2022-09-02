@@ -115,21 +115,21 @@ public class JSONInvoiceRepository extends JSONRepository<Invoice> implements Cr
     public Map<BigDecimal, Long> groupByTotalPrice() {
         return getAll()
                 .stream()
-                .collect(Collectors.groupingBy(x -> x.getVehicles()
-                        .stream()
-                        .map(y -> y.getPrice().multiply(BigDecimal.valueOf(y.getCount())))
-                        .reduce(BigDecimal.ZERO, BigDecimal::add), Collectors.counting()));
+                .collect(Collectors.groupingBy(this::calculateTotalSumInvoice, Collectors.counting()));
     }
 
     public List<Invoice> getInvoiceMoreExpensiveThanAmount(@NonNull final BigDecimal amount) {
         return getAll()
                 .stream()
-                .filter(y -> y.getVehicles()
-                        .stream()
-                        .map(x -> x.getPrice().multiply(BigDecimal.valueOf(x.getCount())))
-                        .reduce(BigDecimal.ZERO, BigDecimal::add).compareTo(amount) > 0
-                )
+                .filter(x -> calculateTotalSumInvoice(x).compareTo(amount) > 0)
                 .collect(Collectors.toList());
+    }
+
+    private BigDecimal calculateTotalSumInvoice(@NonNull final Invoice invoice) {
+        return invoice.getVehicles()
+                .stream()
+                .map(x -> x.getPrice().multiply(BigDecimal.valueOf(x.getCount())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     private Invoice createInvoice(Document invoice) {

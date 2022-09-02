@@ -63,7 +63,7 @@ public class JSONAutoRepository extends JSONRepository<Auto> implements CrudRepo
     @Override
     public List<Auto> delete(Auto item) {
         super.delete(item.getId());
-        return this.getAll();
+        return super.getAll(Auto.class);
     }
 
     @Override

@@ -66,7 +66,7 @@ public class JSONMotorbikeRepository extends JSONRepository<Motorbike> implement
     @Override
     public List<Motorbike> delete(Motorbike item) {
         super.delete(item.getId());
-        return this.getAll();
+        return super.getAll(Motorbike.class);
     }
 
     @Override
