@@ -17,7 +17,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public class DBVehicleRepository implements CrudRepository<Vehicle> {
     protected final Connection connection;
@@ -244,12 +243,11 @@ public class DBVehicleRepository implements CrudRepository<Vehicle> {
         if (!vehicle.getDetails().isEmpty()) {
             connection.setAutoCommit(false);
             final String sql = """
-                    INSERT INTO public."detail" (detail_id, name, vehicle_id) VALUES (?, ?, ?);""";
+                    INSERT INTO public."detail" (name, vehicle_id) VALUES (?, ?);""";
             final PreparedStatement preparedStatement = connection.prepareStatement(sql);
             for (String detail : vehicle.getDetails()) {
-                preparedStatement.setString(1, UUID.randomUUID().toString());
-                preparedStatement.setString(2, detail);
-                preparedStatement.setString(3, vehicleId);
+                preparedStatement.setString(1, detail);
+                preparedStatement.setString(2, vehicleId);
                 preparedStatement.addBatch();
             }
             preparedStatement.executeBatch();

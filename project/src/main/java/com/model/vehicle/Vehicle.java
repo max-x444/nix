@@ -39,7 +39,8 @@ public abstract class Vehicle {
     @Enumerated(value = EnumType.STRING)
     protected VehicleType type;
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "detail")
+    @CollectionTable(name = "detail", joinColumns = @JoinColumn(name = "vehicle_id", referencedColumnName = "vehicle_id"))
+    @Column
     protected List<String> details = new ArrayList<>();
     protected BigDecimal price;
     protected String model;
