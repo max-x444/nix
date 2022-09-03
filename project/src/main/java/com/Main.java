@@ -46,10 +46,13 @@ public class Main {
         auto.setPrice(BigDecimal.valueOf(1_000.0));
         auto.setCount(1);
         auto.setBodyType("coupe");
+        auto.setInvoice(invoice);
         System.out.println("Update auto: " + AUTO_SERVICE.update(auto));
         System.out.println("Get first auto: " + AUTO_SERVICE.findById(auto.getId()));
 
         final Invoice secondInvoice = new Invoice();
+        secondInvoice.setId(UUID.randomUUID().toString());
+        secondInvoice.setCreated(LocalDateTime.now());
         final Auto secondAuto = AUTO_SERVICE.create(1).get(0);
         secondAuto.setCount(1);
         secondAuto.setPrice(BigDecimal.valueOf(2_000.0));
@@ -58,11 +61,7 @@ public class Main {
 //        System.out.println("Delete first auto: " + AUTO_SERVICE.delete(auto.getId()));
 //        System.out.println("Delete second auto: " + AUTO_SERVICE.delete(secondAuto));
         System.out.println("Get all autos: " + Arrays.toString(AUTO_SERVICE.getAll().toArray()));
-
-        secondInvoice.setId(UUID.randomUUID().toString());
-        secondInvoice.setCreated(LocalDateTime.now());
         secondInvoice.setVehicles(Set.of(secondAuto));
-
         System.out.println("Save second invoice: " + INVOICE_SERVICE.save(secondInvoice));
 
         final Airplane airplane = AIRPLANE_SERVICE.create(

@@ -25,7 +25,7 @@ public class JSONAirplaneRepository extends JSONRepository<Airplane> {
         if (item == null) {
             throw new IllegalArgumentException("Object must not be null");
         }
-        collection.insertOne(mapFrom(item));
+        collection.insertOne(super.mapFrom(item));
         return true;
     }
 
@@ -45,16 +45,8 @@ public class JSONAirplaneRepository extends JSONRepository<Airplane> {
         }
         final Document filter = new Document();
         filter.append("id", item.getId());
-        final Document newData = new Document();
-        newData.append("manufacturer", item.getManufacturer().getTitle());
-        newData.append("type", item.getType().getTitle());
-        newData.append("price", item.getPrice().doubleValue());
-        newData.append("model", item.getModel());
-        newData.append("count", item.getCount());
-        newData.append("details", item.getDetails());
-        newData.append("numberOfPassengerSeats", item.getNumberOfPassengerSeats());
         final Document updateObject = new Document();
-        updateObject.append("$set", newData);
+        updateObject.append("$set", super.mapFrom(item));
         collection.updateOne(filter, updateObject);
         return true;
     }

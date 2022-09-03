@@ -47,7 +47,7 @@ public class JSONInvoiceRepository extends JSONRepository<Invoice> {
         if (item == null) {
             throw new IllegalArgumentException("Object must not be null");
         }
-        collection.insertOne(mapFrom(item).append("vehicles", item.getVehicles()
+        collection.insertOne(super.mapFrom(item).append("vehicles", item.getVehicles()
                 .stream()
                 .map(Vehicle::getId)
                 .collect(Collectors.toList())));

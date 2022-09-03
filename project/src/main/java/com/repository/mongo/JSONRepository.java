@@ -21,7 +21,7 @@ public abstract class JSONRepository<T> implements CrudRepository<T> {
     private static final JsonSerializer<LocalDateTime> SERIALIZER = (src, typeOfSrc, context) -> src == null ? null
             : new JsonPrimitive(src.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")));
     private static final JsonDeserializer<LocalDateTime> DESERIALIZER = (jSon, typeOfT, context) -> jSon == null ? null
-            : LocalDateTime.parse(jSon.toString().substring(1, jSon.toString().length() - 1), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
+            : LocalDateTime.parse(jSon.getAsString(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
     protected static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, SERIALIZER)
             .registerTypeAdapter(LocalDateTime.class, DESERIALIZER).create();
