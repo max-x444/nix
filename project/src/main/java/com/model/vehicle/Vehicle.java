@@ -40,7 +40,7 @@ public abstract class Vehicle {
     protected VehicleType type;
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "detail", joinColumns = @JoinColumn(name = "vehicle_id", referencedColumnName = "vehicle_id"))
-    @Column
+    @Column(name = "name")
     protected List<String> details = new ArrayList<>();
     protected BigDecimal price;
     protected String model;
