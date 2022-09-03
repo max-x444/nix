@@ -75,6 +75,6 @@ class MotorbikeServiceTest {
                 0,
                 LocalDateTime.now(),
                 "$",
-                new Engine(0, "Brand"));
+                new Engine(UUID.randomUUID().toString(), 0, "Brand"));
     }
 }

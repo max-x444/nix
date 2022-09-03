@@ -15,12 +15,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class IOUtil {
+public final class IOUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(IOUtil.class);
     private static final Pattern PATTERN = Pattern.compile(
             "\"(?<keyJSON>\\w*)\": \"(?<valueJSON>.*)\"|<(?<keyXML>\\w*)( (?<keyCurrency>\\w*)=\"(?<valueCurrency>.*)\")?>(?<valueXML>.*)<");
 
-    public Map<String, Object> readFile(@NonNull final File file) {
+    private IOUtil() {
+    }
+
+    public static Map<String, Object> readFile(@NonNull final File file) {
         final Map<String, Object> map = new HashMap<>();
         if (file.exists()) {
             try (final FileReader fileReader = new FileReader(file);
@@ -36,7 +39,7 @@ public class IOUtil {
         return map;
     }
 
-    private void parseData(@NonNull final Map<String, Object> map, @NonNull final String line) {
+    private static void parseData(@NonNull final Map<String, Object> map, @NonNull final String line) {
         final Matcher matcher = PATTERN.matcher(line);
         final String checkKeyCurrency;
         if (matcher.find()) {

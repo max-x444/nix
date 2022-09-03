@@ -1,19 +1,32 @@
 package com.model.vehicle;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 public class Invoice {
+    @Id
+    @Column(name = "invoice_id")
     private String id;
     private LocalDateTime created;
-    private List<Vehicle> vehicles;
-
-    public Invoice(String id, LocalDateTime localDateTime, List<Vehicle> vehicles) {
-        this.id = id;
-        this.created = localDateTime;
-        this.vehicles = vehicles;
-    }
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Vehicle> vehicles = new LinkedHashSet<>();
 }

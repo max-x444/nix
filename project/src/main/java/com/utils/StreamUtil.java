@@ -39,7 +39,7 @@ public class StreamUtil<T extends Vehicle> {
         return list.stream()
                 .map(Vehicle::getDetails)
                 .flatMap(Collection::stream)
-                .anyMatch(y -> y.equals(detail));
+                .anyMatch(y -> y.getName().equals(detail));
     }
 
     public DoubleSummaryStatistics statistics(@NonNull final List<T> list) {

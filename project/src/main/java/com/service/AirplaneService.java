@@ -6,7 +6,7 @@ import com.model.constants.Manufacturer;
 import com.model.vehicle.Airplane;
 import com.repository.CrudRepository;
 import com.repository.collection.AirplaneRepository;
-import com.repository.jdbc.DBAirplaneRepository;
+import com.repository.hibernate.JPAAirplaneRepository;
 
 import java.math.BigDecimal;
 
@@ -21,14 +21,12 @@ public class AirplaneService extends VehicleService<Airplane> {
 
     public static AirplaneService getInstance() {
         if (instance == null) {
-            instance = new AirplaneService(DBAirplaneRepository.getInstance());
+            instance = new AirplaneService(JPAAirplaneRepository.getInstance());
         }
         return instance;
     }
 
     public Airplane create(String id, String model, Manufacturer manufacturer, BigDecimal price, int numberOfPassengerSeats, int count) {
-        final Airplane airplane = new Airplane(id, model, manufacturer, price, numberOfPassengerSeats, count);
-        crudRepository.save(airplane);
-        return airplane;
+        return new Airplane(id, model, manufacturer, price, numberOfPassengerSeats, count);
     }
 }
