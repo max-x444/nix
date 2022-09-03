@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mongodb.client.model.Filters.eq;
+
 public abstract class JSONRepository<T> implements CrudRepository<T> {
     private static final JsonSerializer<LocalDateTime> SERIALIZER = (src, typeOfSrc, context) -> src == null ? null
             : new JsonPrimitive(src.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")));
@@ -36,9 +38,7 @@ public abstract class JSONRepository<T> implements CrudRepository<T> {
         if (id.isEmpty()) {
             throw new IllegalArgumentException("Id must not be empty");
         }
-        final Document filter = new Document();
-        filter.append("id", id);
-        return Optional.ofNullable(collection.find(filter)
+        return Optional.ofNullable(collection.find(eq("id", id))
                 .map(x -> GSON.fromJson(x.toJson(), type))
                 .first());
     }
@@ -54,9 +54,7 @@ public abstract class JSONRepository<T> implements CrudRepository<T> {
         if (id.isEmpty()) {
             throw new IllegalArgumentException("Id must not be empty");
         }
-        final Document filter = new Document();
-        filter.append("id", id);
-        collection.deleteOne(filter);
+        collection.deleteOne(eq("id", id));
         return true;
     }
 

@@ -6,6 +6,8 @@ import org.bson.Document;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mongodb.client.model.Filters.eq;
+
 public class JSONMotorbikeRepository extends JSONRepository<Motorbike> {
     private static JSONMotorbikeRepository instance;
 
@@ -43,11 +45,9 @@ public class JSONMotorbikeRepository extends JSONRepository<Motorbike> {
         if (item == null) {
             throw new IllegalArgumentException("Object must not be null");
         }
-        final Document filter = new Document();
-        filter.append("id", item.getId());
         final Document updateObject = new Document();
         updateObject.append("$set", super.mapFrom(item));
-        collection.updateOne(filter, updateObject);
+        collection.updateOne(eq("id", item.getId()), updateObject);
         return true;
     }
 

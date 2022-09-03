@@ -22,6 +22,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.mongodb.client.model.Filters.eq;
+
 public class JSONInvoiceRepository extends JSONRepository<Invoice> {
     private static final MongoCollection<Document> COLLECTION_AUTO =
             MongoFactoryUtil.connect("nix").getCollection("auto");
@@ -68,13 +70,11 @@ public class JSONInvoiceRepository extends JSONRepository<Invoice> {
         if (item == null) {
             throw new IllegalArgumentException("Object must not be null");
         }
-        final Document filter = new Document();
-        filter.append("id", item.getId());
         final Document newData = new Document();
         newData.append("created", item.getCreated());
         final Document updateObject = new Document();
         updateObject.append("$set", newData);
-        collection.updateOne(filter, updateObject);
+        collection.updateOne(eq("id", item.getId()), updateObject);
         return true;
     }
 
@@ -86,9 +86,7 @@ public class JSONInvoiceRepository extends JSONRepository<Invoice> {
 
     @Override
     public Optional<Invoice> findById(String id) {
-        final Document filter = new Document();
-        filter.append("id", id);
-        final Document invoice = collection.find(filter).first();
+        final Document invoice = collection.find(eq("id", id)).first();
         return (invoice != null) ? Optional.of(createInvoice(invoice)) : Optional.empty();
     }
 
@@ -156,25 +154,19 @@ public class JSONInvoiceRepository extends JSONRepository<Invoice> {
     }
 
     private Auto getAuto(String id) {
-        final Document filter = new Document();
-        filter.append("id", id);
-        return COLLECTION_AUTO.find(filter)
+        return COLLECTION_AUTO.find(eq("id", id))
                 .map(x -> GSON.fromJson(x.toJson(), Auto.class))
                 .first();
     }
 
     private Airplane getAirplane(String id) {
-        final Document filter = new Document();
-        filter.append("id", id);
-        return COLLECTION_AIRPLANE.find(filter)
+        return COLLECTION_AIRPLANE.find(eq("id", id))
                 .map(x -> GSON.fromJson(x.toJson(), Airplane.class))
                 .first();
     }
 
     private Motorbike getMotorbike(String id) {
-        final Document filter = new Document();
-        filter.append("id", id);
-        return COLLECTION_MOTORBIKE.find(filter)
+        return COLLECTION_MOTORBIKE.find(eq("id", id))
                 .map(x -> GSON.fromJson(x.toJson(), Motorbike.class))
                 .first();
     }
