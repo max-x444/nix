@@ -1,12 +1,9 @@
 package com.repository.mongo;
 
 import com.model.vehicle.Airplane;
-import org.bson.Document;
 
 import java.util.List;
 import java.util.Optional;
-
-import static com.mongodb.client.model.Filters.eq;
 
 public class JSONAirplaneRepository extends JSONRepository<Airplane> {
     private static JSONAirplaneRepository instance;
@@ -24,31 +21,17 @@ public class JSONAirplaneRepository extends JSONRepository<Airplane> {
 
     @Override
     public boolean save(Airplane item) {
-        if (item == null) {
-            throw new IllegalArgumentException("Object must not be null");
-        }
-        collection.insertOne(super.mapFrom(item));
-        return true;
+        return super.save(item);
     }
 
     @Override
     public boolean save(List<Airplane> airplanes) {
-        if (airplanes.isEmpty()) {
-            throw new IllegalArgumentException("List must not be empty");
-        }
-        airplanes.forEach(this::save);
-        return true;
+        return super.save(airplanes);
     }
 
     @Override
     public boolean update(Airplane item) {
-        if (item == null) {
-            throw new IllegalArgumentException("Object must not be null");
-        }
-        final Document updateObject = new Document();
-        updateObject.append("$set", super.mapFrom(item));
-        collection.updateOne(eq("id", item.getId()), updateObject);
-        return true;
+        return super.update(item, item.getId());
     }
 
     @Override

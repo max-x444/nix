@@ -7,6 +7,8 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import com.repository.CrudRepository;
 import lombok.NonNull;
 import org.bson.Document;
@@ -27,7 +29,6 @@ public abstract class JSONRepository<T> implements CrudRepository<T> {
     protected static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, SERIALIZER)
             .registerTypeAdapter(LocalDateTime.class, DESERIALIZER).create();
-
     protected final MongoCollection<Document> collection;
 
     protected JSONRepository(@NonNull final String collectionName) {
@@ -50,12 +51,40 @@ public abstract class JSONRepository<T> implements CrudRepository<T> {
     }
 
     @Override
+    public boolean save(T item) {
+        if (item == null) {
+            throw new IllegalArgumentException("Object must not be null");
+        }
+        collection.insertOne(mapFrom(item));
+        return true;
+    }
+
+    @Override
+    public boolean save(List<T> motorbikes) {
+        if (motorbikes.isEmpty()) {
+            throw new IllegalArgumentException("List must not be empty");
+        }
+        motorbikes.forEach(this::save);
+        return true;
+    }
+
+    public boolean update(T item, String id) {
+        if (item == null || id.isEmpty()) {
+            throw new IllegalArgumentException("Object must not be null or id must not be empty");
+        }
+        final Document updateObject = new Document();
+        updateObject.append("$set", mapFrom(item));
+        final UpdateResult updateResult = collection.updateOne(eq("id", id), updateObject);
+        return !(updateResult.wasAcknowledged() && updateResult.getMatchedCount() == 0);
+    }
+
+    @Override
     public boolean delete(String id) {
         if (id.isEmpty()) {
             throw new IllegalArgumentException("Id must not be empty");
         }
-        collection.deleteOne(eq("id", id));
-        return true;
+        final DeleteResult deleteResult = collection.deleteOne(eq("id", id));
+        return !(deleteResult.wasAcknowledged() && deleteResult.getDeletedCount() == 0);
     }
 
     protected Document mapFrom(T item) {

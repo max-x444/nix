@@ -6,7 +6,6 @@ import com.model.vehicle.Auto;
 import com.model.vehicle.Invoice;
 import com.model.vehicle.Motorbike;
 import com.model.vehicle.Vehicle;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import lombok.NonNull;
 import org.bson.Document;
@@ -67,15 +66,7 @@ public class JSONInvoiceRepository extends JSONRepository<Invoice> {
 
     @Override
     public boolean update(Invoice item) {
-        if (item == null) {
-            throw new IllegalArgumentException("Object must not be null");
-        }
-        final Document newData = new Document();
-        newData.append("created", item.getCreated());
-        final Document updateObject = new Document();
-        updateObject.append("$set", newData);
-        collection.updateOne(eq("id", item.getId()), updateObject);
-        return true;
+        return super.update(item, item.getId());
     }
 
     @Override
@@ -93,8 +84,7 @@ public class JSONInvoiceRepository extends JSONRepository<Invoice> {
     @Override
     public List<Invoice> getAll() {
         final List<Invoice> invoices = new ArrayList<>();
-        final FindIterable<Document> documents = collection.find();
-        for (Document invoice : documents) {
+        for (Document invoice : collection.find()) {
             invoices.add(createInvoice(invoice));
         }
         return invoices;
