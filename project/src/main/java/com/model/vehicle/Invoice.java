@@ -1,5 +1,6 @@
 package com.model.vehicle;
 
+import com.interfaces.ContainIdAble;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Invoice {
+public class Invoice implements ContainIdAble {
     @Id
     @Column(name = "invoice_id")
     private String id;

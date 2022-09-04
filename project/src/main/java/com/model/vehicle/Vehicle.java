@@ -1,5 +1,6 @@
 package com.model.vehicle;
 
+import com.interfaces.ContainIdAble;
 import com.model.constants.Manufacturer;
 import com.model.constants.VehicleType;
 import lombok.Getter;
@@ -27,7 +28,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Vehicle {
+public abstract class Vehicle implements ContainIdAble {
     @Id
     @Column(name = "vehicle_id")
     protected String id;

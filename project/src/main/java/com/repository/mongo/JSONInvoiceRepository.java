@@ -33,7 +33,7 @@ public class JSONInvoiceRepository extends JSONRepository<Invoice> {
     private static JSONInvoiceRepository instance;
 
     private JSONInvoiceRepository() {
-        super("invoice");
+        super(Invoice.class);
     }
 
     public static JSONInvoiceRepository getInstance() {
@@ -41,38 +41,6 @@ public class JSONInvoiceRepository extends JSONRepository<Invoice> {
             instance = new JSONInvoiceRepository();
         }
         return instance;
-    }
-
-    @Override
-    public boolean save(Invoice item) {
-        if (item == null) {
-            throw new IllegalArgumentException("Object must not be null");
-        }
-        collection.insertOne(super.mapFrom(item).append("vehicles", item.getVehicles()
-                .stream()
-                .map(Vehicle::getId)
-                .collect(Collectors.toList())));
-        return true;
-    }
-
-    @Override
-    public boolean save(List<Invoice> invoices) {
-        if (invoices.isEmpty()) {
-            throw new IllegalArgumentException("List must not be empty");
-        }
-        invoices.forEach(this::save);
-        return true;
-    }
-
-    @Override
-    public boolean update(Invoice item) {
-        return super.update(item, item.getId());
-    }
-
-    @Override
-    public List<Invoice> delete(Invoice item) {
-        super.delete(item.getId());
-        return this.getAll();
     }
 
     @Override
@@ -91,8 +59,24 @@ public class JSONInvoiceRepository extends JSONRepository<Invoice> {
     }
 
     @Override
-    public boolean delete(String id) {
-        return super.delete(id);
+    public boolean save(Invoice item) {
+        if (item == null) {
+            throw new IllegalArgumentException("Object must not be null");
+        }
+        collection.insertOne(super.mapFrom(item).append("vehicles", item.getVehicles()
+                .stream()
+                .map(Vehicle::getId)
+                .collect(Collectors.toList())));
+        return true;
+    }
+
+    @Override
+    public boolean save(List<Invoice> items) {
+        if (items.isEmpty()) {
+            throw new IllegalArgumentException("List must not be empty");
+        }
+        items.forEach(this::save);
+        return true;
     }
 
     public long getTotalCountInvoices() {

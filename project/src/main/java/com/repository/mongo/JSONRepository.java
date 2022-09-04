@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
+import com.interfaces.ContainIdAble;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
@@ -21,7 +22,7 @@ import java.util.Optional;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public abstract class JSONRepository<T> implements CrudRepository<T> {
+public abstract class JSONRepository<T extends ContainIdAble> implements CrudRepository<T> {
     private static final JsonSerializer<LocalDateTime> SERIALIZER = (src, typeOfSrc, context) -> src == null ? null
             : new JsonPrimitive(src.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")));
     private static final JsonDeserializer<LocalDateTime> DESERIALIZER = (jSon, typeOfT, context) -> jSon == null ? null
@@ -29,13 +30,16 @@ public abstract class JSONRepository<T> implements CrudRepository<T> {
     protected static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, SERIALIZER)
             .registerTypeAdapter(LocalDateTime.class, DESERIALIZER).create();
+    private final Class<T> type;
     protected final MongoCollection<Document> collection;
 
-    protected JSONRepository(@NonNull final String collectionName) {
-        this.collection = MongoFactoryUtil.connect("nix").getCollection(collectionName);
+    protected JSONRepository(@NonNull final Class<T> type) {
+        this.type = type;
+        this.collection = MongoFactoryUtil.connect("nix").getCollection(type.getSimpleName().toLowerCase());
     }
 
-    protected Optional<T> findById(Class<T> type, String id) {
+    @Override
+    public Optional<T> findById(String id) {
         if (id.isEmpty()) {
             throw new IllegalArgumentException("Id must not be empty");
         }
@@ -44,7 +48,8 @@ public abstract class JSONRepository<T> implements CrudRepository<T> {
                 .first());
     }
 
-    protected List<T> getAll(Class<T> type) {
+    @Override
+    public List<T> getAll() {
         return collection.find()
                 .map(x -> GSON.fromJson(x.toJson(), type))
                 .into(new ArrayList<>());
@@ -60,21 +65,22 @@ public abstract class JSONRepository<T> implements CrudRepository<T> {
     }
 
     @Override
-    public boolean save(List<T> motorbikes) {
-        if (motorbikes.isEmpty()) {
+    public boolean save(List<T> items) {
+        if (items.isEmpty()) {
             throw new IllegalArgumentException("List must not be empty");
         }
-        motorbikes.forEach(this::save);
+        items.forEach(this::save);
         return true;
     }
 
-    public boolean update(T item, String id) {
-        if (item == null || id.isEmpty()) {
-            throw new IllegalArgumentException("Object must not be null or id must not be empty");
+    @Override
+    public boolean update(T item) {
+        if (item == null) {
+            throw new IllegalArgumentException("Object must not be null");
         }
         final Document updateObject = new Document();
         updateObject.append("$set", mapFrom(item));
-        final UpdateResult updateResult = collection.updateOne(eq("id", id), updateObject);
+        final UpdateResult updateResult = collection.updateOne(eq("id", item.getId()), updateObject);
         return !(updateResult.wasAcknowledged() && updateResult.getMatchedCount() == 0);
     }
 
@@ -85,6 +91,15 @@ public abstract class JSONRepository<T> implements CrudRepository<T> {
         }
         final DeleteResult deleteResult = collection.deleteOne(eq("id", id));
         return !(deleteResult.wasAcknowledged() && deleteResult.getDeletedCount() == 0);
+    }
+
+    @Override
+    public List<T> delete(T item) {
+        if (item == null) {
+            throw new IllegalArgumentException("Object must not be null");
+        }
+        delete(item.getId());
+        return getAll();
     }
 
     protected Document mapFrom(T item) {
