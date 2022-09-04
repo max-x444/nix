@@ -43,7 +43,7 @@ public abstract class JSONRepository<T extends ContainIdAble> implements CrudRep
         if (id.isEmpty()) {
             throw new IllegalArgumentException("Id must not be empty");
         }
-        return Optional.ofNullable(collection.find(eq("id", id))
+        return Optional.ofNullable(collection.find(eq("_id", id))
                 .map(x -> GSON.fromJson(x.toJson(), type))
                 .first());
     }
@@ -80,7 +80,7 @@ public abstract class JSONRepository<T extends ContainIdAble> implements CrudRep
         }
         final Document updateObject = new Document();
         updateObject.append("$set", mapFrom(item));
-        final UpdateResult updateResult = collection.updateOne(eq("id", item.getId()), updateObject);
+        final UpdateResult updateResult = collection.updateOne(eq("_id", item.getId()), updateObject);
         return !(updateResult.wasAcknowledged() && updateResult.getMatchedCount() == 0);
     }
 
@@ -89,7 +89,7 @@ public abstract class JSONRepository<T extends ContainIdAble> implements CrudRep
         if (id.isEmpty()) {
             throw new IllegalArgumentException("Id must not be empty");
         }
-        final DeleteResult deleteResult = collection.deleteOne(eq("id", id));
+        final DeleteResult deleteResult = collection.deleteOne(eq("_id", id));
         return !(deleteResult.wasAcknowledged() && deleteResult.getDeletedCount() == 0);
     }
 

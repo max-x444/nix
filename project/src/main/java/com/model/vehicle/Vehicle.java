@@ -1,5 +1,6 @@
 package com.model.vehicle;
 
+import com.google.gson.annotations.SerializedName;
 import com.interfaces.ContainIdAble;
 import com.model.constants.Manufacturer;
 import com.model.constants.VehicleType;
@@ -31,6 +32,7 @@ import java.util.List;
 public abstract class Vehicle implements ContainIdAble {
     @Id
     @Column(name = "vehicle_id")
+    @SerializedName("_id")
     protected String id;
     @Enumerated(value = EnumType.STRING)
     protected Manufacturer manufacturer;

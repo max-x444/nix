@@ -45,7 +45,7 @@ public class JSONInvoiceRepository extends JSONRepository<Invoice> {
 
     @Override
     public Optional<Invoice> findById(String id) {
-        final Document invoice = collection.find(eq("id", id)).first();
+        final Document invoice = collection.find(eq("_id", id)).first();
         return (invoice != null) ? Optional.of(createInvoice(invoice)) : Optional.empty();
     }
 
@@ -103,14 +103,14 @@ public class JSONInvoiceRepository extends JSONRepository<Invoice> {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    private Invoice createInvoice(Document invoice) {
+    private Invoice createInvoice(Document document) {
         final Set<Vehicle> vehicles = new HashSet<>();
-        invoice.getList("vehicles", String.class).stream()
+        document.getList("vehicles", String.class).stream()
                 .map(this::getVehicle)
                 .forEach(vehicles::add);
         return new Invoice(
-                invoice.getString("id"),
-                LocalDateTime.parse(invoice.getString("created"), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")),
+                document.getString("_id"),
+                LocalDateTime.parse(document.getString("created"), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")),
                 vehicles
         );
     }
@@ -128,19 +128,19 @@ public class JSONInvoiceRepository extends JSONRepository<Invoice> {
     }
 
     private Auto getAuto(String id) {
-        return COLLECTION_AUTO.find(eq("id", id))
+        return COLLECTION_AUTO.find(eq("_id", id))
                 .map(x -> GSON.fromJson(x.toJson(), Auto.class))
                 .first();
     }
 
     private Airplane getAirplane(String id) {
-        return COLLECTION_AIRPLANE.find(eq("id", id))
+        return COLLECTION_AIRPLANE.find(eq("_id", id))
                 .map(x -> GSON.fromJson(x.toJson(), Airplane.class))
                 .first();
     }
 
     private Motorbike getMotorbike(String id) {
-        return COLLECTION_MOTORBIKE.find(eq("id", id))
+        return COLLECTION_MOTORBIKE.find(eq("_id", id))
                 .map(x -> GSON.fromJson(x.toJson(), Motorbike.class))
                 .first();
     }
