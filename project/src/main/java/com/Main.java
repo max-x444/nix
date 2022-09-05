@@ -33,6 +33,9 @@ public class Main {
             Objects.requireNonNull(Main.class.getClassLoader().getResource("vehicle.json")).getFile();
     private static final String XML_PATH =
             Objects.requireNonNull(Main.class.getClassLoader().getResource("vehicle.xml")).getFile();
+    private static final String USER = System.getenv("USER");
+    private static final String PASSWORD = System.getenv("PASSWORD");
+    private static final String URL = System.getenv("URL");
 
     @SneakyThrows
     public static void main(String[] args) {
@@ -97,9 +100,7 @@ public class Main {
         System.out.println(INVOICE_SERVICE.delete(secondInvoice.getId()));
 
         final Flyway flyway = Flyway.configure()
-                .dataSource("jdbc:postgresql://ec2-3-224-125-117.compute-1.amazonaws.com:5432/dee4145r03oc3c",
-                        "wfizzbiikzjijl",
-                        "ae10f479cfea1f6ef1861b7e2e26f0d4876b759ac470aa46d203bd4ded7a5be7")
+                .dataSource(URL, USER, PASSWORD)
                 .baselineOnMigrate(true)
                 .locations("db/migration")
                 .load();
