@@ -6,9 +6,13 @@
     <session-factory>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.username">postgres</property>
-        <property name="hibernate.connection.password">root</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/nix</property>
+        <property name="hibernate.connection.username">wfizzbiikzjijl</property>
+        <property name="hibernate.connection.password">
+            ae10f479cfea1f6ef1861b7e2e26f0d4876b759ac470aa46d203bd4ded7a5be7
+        </property>
+        <property name="hibernate.connection.url">
+            jdbc:postgresql://ec2-3-224-125-117.compute-1.amazonaws.com:5432/dee4145r03oc3c
+        </property>
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
         <property name="hibernate.show_sql">false</property>
 
