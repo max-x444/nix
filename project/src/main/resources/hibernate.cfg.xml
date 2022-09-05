@@ -14,7 +14,6 @@
 
         <mapping class="com.model.vehicle.Airplane"/>
         <mapping class="com.model.vehicle.Auto"/>
-        <mapping class="com.model.vehicle.Detail"/>
         <mapping class="com.model.vehicle.Engine"/>
         <mapping class="com.model.vehicle.Invoice"/>
         <mapping class="com.model.vehicle.Motorbike"/>
