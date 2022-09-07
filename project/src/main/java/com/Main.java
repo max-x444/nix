@@ -1,9 +1,9 @@
 package com;
 
+import com.config.MongoFactoryUtil;
 import com.model.constants.Manufacturer;
 import com.model.vehicle.Airplane;
 import com.model.vehicle.Auto;
-import com.model.vehicle.Detail;
 import com.model.vehicle.Engine;
 import com.model.vehicle.Invoice;
 import com.model.vehicle.Motorbike;
@@ -37,90 +37,72 @@ public class Main {
 
     @SneakyThrows
     public static void main(String[] args) {
+        MongoFactoryUtil.connect("nix").drop();
         final Invoice invoice = new Invoice();
         invoice.setId(UUID.randomUUID().toString());
         invoice.setCreated(LocalDateTime.now());
         final Auto auto = AUTO_SERVICE.create(1).get(0);
-        System.out.println("Save first auto: " + AUTO_SERVICE.save(auto));
-        System.out.println("Get first auto: " + AUTO_SERVICE.findById(auto.getId()));
-        auto.setPrice(BigDecimal.valueOf(1_000));
+        System.out.println("Save auto: " + AUTO_SERVICE.save(auto));
+        auto.setPrice(BigDecimal.valueOf(1_000.0));
         auto.setCount(1);
         auto.setBodyType("coupe");
-        System.out.println("Update first auto: " + AUTO_SERVICE.update(auto));
-        System.out.println("Get first auto: " + AUTO_SERVICE.findById(auto.getId()));
         auto.setInvoice(invoice);
+        System.out.println("Update auto: " + AUTO_SERVICE.update(auto));
+        System.out.println("Get first auto: " + AUTO_SERVICE.findById(auto.getId()));
 
         final Invoice secondInvoice = new Invoice();
-        final Auto secondAuto = AUTO_SERVICE.create(1).get(0);
-        secondAuto.setCount(1);
-        secondAuto.setPrice(BigDecimal.valueOf(2_000));
-        secondAuto.setInvoice(secondInvoice);
-
         secondInvoice.setId(UUID.randomUUID().toString());
         secondInvoice.setCreated(LocalDateTime.now());
+        final Auto secondAuto = AUTO_SERVICE.create(1).get(0);
+        secondAuto.setCount(1);
+        secondAuto.setPrice(BigDecimal.valueOf(2_000.0));
+        secondAuto.setInvoice(secondInvoice);
+        System.out.println("Save second auto: " + AUTO_SERVICE.save(secondAuto));
+//        System.out.println("Delete first auto: " + AUTO_SERVICE.delete(auto.getId()));
+//        System.out.println("Delete second auto: " + AUTO_SERVICE.delete(secondAuto));
+        System.out.println("Get all autos: " + Arrays.toString(AUTO_SERVICE.getAll().toArray()));
         secondInvoice.setVehicles(Set.of(secondAuto));
         System.out.println("Save second invoice: " + INVOICE_SERVICE.save(secondInvoice));
-        System.out.println("Get second auto: " + AUTO_SERVICE.findById(secondAuto.getId()));
-        System.out.println("Get all autos:");
-        for (Auto a : AUTO_SERVICE.getAll()) {
-            System.out.println(a);
-        }
 
         final Airplane airplane = AIRPLANE_SERVICE.create(
                 UUID.randomUUID().toString(),
                 "S 3500 RR",
                 Manufacturer.BMW,
-                BigDecimal.valueOf(500),
+                BigDecimal.valueOf(500.0),
                 5,
                 1);
         airplane.setInvoice(invoice);
+        System.out.println("Save airplane: " + AIRPLANE_SERVICE.save(airplane));
+
         final Motorbike motorbike = MOTORBIKE_SERVICE.create(
                 UUID.randomUUID().toString(),
                 "S 3500 RR",
                 Manufacturer.BMW,
-                BigDecimal.valueOf(400),
+                BigDecimal.valueOf(500.0),
                 55.0,
                 1,
                 LocalDateTime.now(),
                 "$",
                 new Engine(UUID.randomUUID().toString(), 3, "BMW"));
-        final Detail firstDetail = new Detail(UUID.randomUUID().toString(), "wheels");
-        firstDetail.setVehicle(motorbike);
-        final Detail secondDetail = new Detail(UUID.randomUUID().toString(), "spoiler");
-        secondDetail.setVehicle(motorbike);
-
-        motorbike.setDetails(List.of(firstDetail, secondDetail));
+        motorbike.setDetails(List.of("wheels", "spoiler"));
         motorbike.setInvoice(invoice);
+        System.out.println("Save motorbike: " + MOTORBIKE_SERVICE.save(motorbike));
+        System.out.println("Get motorbike: " + MOTORBIKE_SERVICE.findById(motorbike.getId()));
 
-        invoice.setVehicles(Set.of(airplane, auto, motorbike));
+        invoice.setVehicles(Set.of(auto, airplane, motorbike));
         System.out.println("Save first invoice: " + INVOICE_SERVICE.save(invoice));
-        invoice.setCreated(LocalDateTime.now());
-        System.out.println("Update first invoice: " + INVOICE_SERVICE.update(invoice));
-        System.out.println("Get first invoice: " + INVOICE_SERVICE.findById(invoice.getId()));
         System.out.println("Get all invoices:");
-        for (Invoice in : INVOICE_SERVICE.getAll()) {
-            System.out.println(in);
-        }
-        System.out.println("Group by invoice use dto:");
-        for (Map.Entry<Invoice, BigDecimal> entry : INVOICE_SERVICE.groupByInvoiceDTO().entrySet()) {
-            System.out.println("Key: " + entry.getKey().getId() + " Value: " + entry.getValue());
-        }
-        System.out.println("Group by invoice use criteria:");
-        for (Map.Entry<Invoice, BigDecimal> entry : INVOICE_SERVICE.groupByInvoiceCriteria().entrySet()) {
-            System.out.println("Key: " + entry.getKey().getId() + " Value: " + entry.getValue());
-        }
-        System.out.println("Get invoice more expensive than 1000 use dto:");
-        for (Invoice i : INVOICE_SERVICE.getInvoiceMoreExpensiveThanAmountDTO(BigDecimal.valueOf(1_000))) {
-            System.out.println(i.getId());
+        for (Invoice i : INVOICE_SERVICE.getAll()) {
+            System.out.println(i);
         }
         System.out.println("Get total count invoices: " + INVOICE_SERVICE.getTotalCountInvoices());
-
-        System.out.println("Delete first invoice: " + INVOICE_SERVICE.delete(invoice.getId()));
-        System.out.println("Delete second invoice: " + INVOICE_SERVICE.delete(secondInvoice.getId()));
-        System.out.println("Get all autos:");
-        for (Auto a : AUTO_SERVICE.getAll()) {
-            System.out.println(a);
+        System.out.println("Group by total price:");
+        for (Map.Entry<BigDecimal, Long> entry : INVOICE_SERVICE.groupByTotalPrice().entrySet()) {
+            System.out.println("Key: " + entry.getKey() + " Value: " + entry.getValue());
         }
-        System.out.println("Get all invoices: " + Arrays.toString(INVOICE_SERVICE.getAll().toArray()));
+        System.out.println("Get invoice more expensive than 1000:");
+        for (Invoice in : INVOICE_SERVICE.getInvoiceMoreExpensiveThanAmount(BigDecimal.valueOf(1000))) {
+            System.out.println(in);
+        }
     }
 }

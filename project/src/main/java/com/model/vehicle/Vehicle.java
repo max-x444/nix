@@ -1,13 +1,16 @@
 package com.model.vehicle;
 
+import com.google.gson.annotations.SerializedName;
+import com.interfaces.ContainIdAble;
 import com.model.constants.Manufacturer;
 import com.model.constants.VehicleType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,7 +20,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +29,10 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Vehicle {
+public abstract class Vehicle implements ContainIdAble {
     @Id
     @Column(name = "vehicle_id")
+    @SerializedName("_id")
     protected String id;
     @Enumerated(value = EnumType.STRING)
     protected Manufacturer manufacturer;
@@ -38,8 +41,10 @@ public abstract class Vehicle {
     protected Invoice invoice;
     @Enumerated(value = EnumType.STRING)
     protected VehicleType type;
-    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    protected List<Detail> details = new ArrayList<>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "detail", joinColumns = @JoinColumn(name = "vehicle_id", referencedColumnName = "vehicle_id"))
+    @Column(name = "name")
+    protected List<String> details = new ArrayList<>();
     protected BigDecimal price;
     protected String model;
     protected int count;

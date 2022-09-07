@@ -1,24 +1,23 @@
 package com.service;
 
 import com.model.vehicle.Invoice;
-import com.repository.hibernate.JPAInvoiceRepository;
+import com.repository.mongo.JSONInvoiceRepository;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 public class InvoiceService {
     private static InvoiceService instance;
-    private static JPAInvoiceRepository repository;
+    private static JSONInvoiceRepository repository;
 
     private InvoiceService() {
+        repository = JSONInvoiceRepository.getInstance();
     }
 
     public static InvoiceService getInstance() {
         if (instance == null) {
-            repository = JPAInvoiceRepository.getInstance();
             instance = new InvoiceService();
         }
         return instance;
@@ -36,7 +35,7 @@ public class InvoiceService {
         return repository.save(invoice);
     }
 
-    public boolean save(Set<Invoice> invoiceList) {
+    public boolean save(List<Invoice> invoiceList) {
         return repository.save(invoiceList);
     }
 
@@ -52,19 +51,16 @@ public class InvoiceService {
         return repository.delete(invoice);
     }
 
-    public Map<Invoice, BigDecimal> groupByInvoiceCriteria() {
-        return repository.groupByInvoiceCriteria();
+
+    public Map<BigDecimal, Long> groupByTotalPrice() {
+        return repository.groupByTotalPrice();
     }
 
-    public Map<Invoice, BigDecimal> groupByInvoiceDTO() {
-        return repository.groupByInvoiceDTO();
+    public List<Invoice> getInvoiceMoreExpensiveThanAmount(BigDecimal amount) {
+        return repository.getInvoiceMoreExpensiveThanAmount(amount);
     }
 
-    public List<Invoice> getInvoiceMoreExpensiveThanAmountDTO(BigDecimal amount) {
-        return repository.getInvoiceMoreExpensiveThanAmountDTO(amount);
-    }
-
-    public int getTotalCountInvoices() {
+    public long getTotalCountInvoices() {
         return repository.getTotalCountInvoices();
     }
 }

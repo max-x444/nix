@@ -6,7 +6,7 @@ import com.model.constants.Manufacturer;
 import com.model.vehicle.Auto;
 import com.repository.CrudRepository;
 import com.repository.collection.AutoRepository;
-import com.repository.hibernate.JPAAutoRepository;
+import com.repository.mongo.JSONAutoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +29,7 @@ public class AutoService extends VehicleService<Auto> {
 
     public static AutoService getInstance() {
         if (instance == null) {
-            instance = new AutoService(JPAAutoRepository.getInstance());
+            instance = new AutoService(JSONAutoRepository.getInstance());
         }
         return instance;
     }

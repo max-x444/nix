@@ -23,11 +23,11 @@ public class JPAInvoiceRepository {
     private static EntityManager entityManager;
 
     private JPAInvoiceRepository() {
+        entityManager = HibernateFactoryUtil.getEntityManager();
     }
 
     public static JPAInvoiceRepository getInstance() {
         if (instance == null) {
-            entityManager = HibernateFactoryUtil.getEntityManager();
             instance = new JPAInvoiceRepository();
         }
         return instance;

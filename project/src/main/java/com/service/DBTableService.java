@@ -77,14 +77,8 @@ public class DBTableService {
     private void createDetail() {
         final String sql = """
                 CREATE TABLE IF NOT EXISTS detail (
-                detail_id VARCHAR(255) NOT NULL,
-                name VARCHAR(255),
-                vehicle_id VARCHAR(255) NOT NULL,
-                PRIMARY KEY (detail_id),
-                CONSTRAINT fk_vehicle
-                FOREIGN KEY(vehicle_id)
-                REFERENCES vehicle(vehicle_id)
-                ON DELETE CASCADE);""";
+                vehicle_id VARCHAR(255) NOT NULL PRIMARY KEY REFERENCES vehicle(vehicle_id) ON DELETE CASCADE,
+                name VARCHAR(255));""";
         statement.executeUpdate(sql);
     }
 

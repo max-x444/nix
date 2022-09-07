@@ -2,6 +2,7 @@ package com.repository.jdbc;
 
 import com.model.vehicle.Invoice;
 import com.model.vehicle.Vehicle;
+import com.repository.CrudRepository;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 
@@ -17,16 +18,16 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public class DBInvoiceRepository {
+public class DBInvoiceRepository implements CrudRepository<Invoice> {
     private static DBInvoiceRepository instance;
     private static DBVehicleRepository dbVehicleRepository;
 
     private DBInvoiceRepository() {
+        dbVehicleRepository = DBVehicleRepository.getInstance();
     }
 
     public static DBInvoiceRepository getInstance() {
         if (instance == null) {
-            dbVehicleRepository = DBVehicleRepository.getInstance();
             instance = new DBInvoiceRepository();
         }
         return instance;
@@ -59,6 +60,7 @@ public class DBInvoiceRepository {
     }
 
     @SneakyThrows
+    @Override
     public List<Invoice> getAll() {
         final List<Invoice> result = new ArrayList<>();
         final String sql = """
@@ -72,6 +74,7 @@ public class DBInvoiceRepository {
     }
 
     @SneakyThrows
+    @Override
     public boolean save(Invoice invoice) {
         if (invoice == null) {
             throw new IllegalArgumentException("Invoice must not be null");
@@ -98,6 +101,7 @@ public class DBInvoiceRepository {
         return false;
     }
 
+    @Override
     public boolean save(List<Invoice> invoiceList) {
         if (invoiceList.isEmpty()) {
             throw new IllegalArgumentException("List must not be empty");
@@ -107,6 +111,7 @@ public class DBInvoiceRepository {
     }
 
     @SneakyThrows
+    @Override
     public boolean update(Invoice invoice) {
         if (invoice == null) {
             throw new IllegalArgumentException("Invoice must not be null");
@@ -124,6 +129,7 @@ public class DBInvoiceRepository {
     }
 
     @SneakyThrows
+    @Override
     public boolean delete(String id) {
         if (id.isEmpty()) {
             throw new IllegalArgumentException("Id must not be empty");
@@ -138,6 +144,7 @@ public class DBInvoiceRepository {
         return resultSet.next();
     }
 
+    @Override
     public List<Invoice> delete(Invoice invoice) {
         if (invoice == null) {
             throw new IllegalArgumentException("Invoice must not be null");

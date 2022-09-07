@@ -15,11 +15,11 @@ public class DBAirplaneRepository implements CrudRepository<Airplane> {
     private static DBVehicleRepository dbVehicleRepository;
 
     private DBAirplaneRepository() {
+        dbVehicleRepository = DBVehicleRepository.getInstance();
     }
 
     public static DBAirplaneRepository getInstance() {
         if (instance == null) {
-            dbVehicleRepository = DBVehicleRepository.getInstance();
             instance = new DBAirplaneRepository();
         }
         return instance;

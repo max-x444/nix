@@ -4,7 +4,6 @@ import com.config.JDBCConfig;
 import com.model.constants.Manufacturer;
 import com.model.vehicle.Airplane;
 import com.model.vehicle.Auto;
-import com.model.vehicle.Detail;
 import com.model.vehicle.Engine;
 import com.model.vehicle.Motorbike;
 import com.model.vehicle.Vehicle;
@@ -54,10 +53,10 @@ public class DBVehicleRepository implements CrudRepository<Vehicle> {
         final ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
             final Vehicle vehicle = mapRowToObject(resultSet);
-            final List<Detail> details = new ArrayList<>();
-            details.add(new Detail(resultSet.getString("detail_id"), resultSet.getString("name")));
+            final List<String> details = new ArrayList<>();
+            details.add(resultSet.getString("name"));
             while (resultSet.next()) {
-                details.add(new Detail(resultSet.getString("detail_id"), resultSet.getString("name")));
+                details.add(resultSet.getString("name"));
             }
             vehicle.setDetails(details);
             return Optional.of(vehicle);
@@ -244,12 +243,11 @@ public class DBVehicleRepository implements CrudRepository<Vehicle> {
         if (!vehicle.getDetails().isEmpty()) {
             connection.setAutoCommit(false);
             final String sql = """
-                    INSERT INTO public."detail" (detail_id, name, vehicle_id) VALUES (?, ?, ?);""";
+                    INSERT INTO public."detail" (name, vehicle_id) VALUES (?, ?);""";
             final PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            for (Detail detail : vehicle.getDetails()) {
-                preparedStatement.setString(1, detail.getId());
-                preparedStatement.setString(2, detail.getName());
-                preparedStatement.setString(3, vehicleId);
+            for (String detail : vehicle.getDetails()) {
+                preparedStatement.setString(1, detail);
+                preparedStatement.setString(2, vehicleId);
                 preparedStatement.addBatch();
             }
             preparedStatement.executeBatch();
