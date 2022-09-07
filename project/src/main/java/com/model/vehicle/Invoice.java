@@ -31,5 +31,5 @@ public class Invoice implements ContainIdAble {
     private String id;
     private LocalDateTime created;
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private transient Set<Vehicle> vehicles = new LinkedHashSet<>();
+    private Set<Vehicle> vehicles = new LinkedHashSet<>();
 }
