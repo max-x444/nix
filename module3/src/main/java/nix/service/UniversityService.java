@@ -5,6 +5,7 @@ import nix.model.Student;
 import nix.model.Teacher;
 import nix.repository.JPAUniversityRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +40,7 @@ public class UniversityService {
         return jpaUniversityRepository.searchTeacherByNameOrSurname(name, surname);
     }
 
-    public Map<String, Double> getSubjectBestAndWorstResults() {
+    public Map<String, BigDecimal> getSubjectBestAndWorstResults() {
         return jpaUniversityRepository.getSubjectBestAndWorstResults();
     }
 

@@ -6,10 +6,12 @@ import nix.model.Student;
 import nix.model.Teacher;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class JPAUniversityRepository {
     private static JPAUniversityRepository instance;
@@ -38,8 +40,8 @@ public class JPAUniversityRepository {
                         FROM Gang g
                         JOIN Student s ON g.id = s.gang.id
                         GROUP BY g.name
-                        ORDER BY g.name DESC""", Map.class).
-                getResultList()
+                        ORDER BY g.name DESC""", Map.class)
+                .getResultList()
                 .stream()
                 .collect(Collectors.toMap(
                         x -> (String) x.get("name"),
@@ -74,8 +76,8 @@ public class JPAUniversityRepository {
     }
 
     @SuppressWarnings("unchecked")
-    public Map<String, Double> getSubjectBestAndWorstResults() {
-        final List<Object> list = entityManager.createNativeQuery("""
+    public Map<String, BigDecimal> getSubjectBestAndWorstResults() {
+        return ((Stream<Object[]>) entityManager.createNativeQuery("""
                         SELECT s.name AS name, g.avg_value AS avg_value
                         FROM (SELECT gr.subject_id AS subject_id, AVG(gr.value) AS avg_value
                         	 FROM Grade gr
@@ -89,14 +91,11 @@ public class JPAUniversityRepository {
                         							FROM (SELECT gr.subject_id, AVG(gr.value) AS avg_value
                         								  FROM Grade gr
                         								  GROUP BY gr.subject_id) g)""")
-                .getResultList();
-        final Map<String, Double> map = new LinkedHashMap<>();
-        Object[] row;
-        for (Object value : list) {
-            row = (Object[]) value;
-            map.put(row[0].toString(), Double.parseDouble(row[1].toString()));
-        }
-        return map;
+                .getResultStream())
+                .collect(Collectors.toMap(
+                        x -> (String) x[0],
+                        x -> (BigDecimal) x[1],
+                        (v1, v2) -> v1, LinkedHashMap::new));
     }
 
     public List<Student> getStudentWhoseAverageIsGreaterThanValue(@NonNull final Double value) {
