@@ -130,7 +130,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.nix.Main</mainClass>
+                            <mainClass>nix.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
