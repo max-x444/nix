@@ -78,19 +78,19 @@ public class JPAUniversityRepository {
     @SuppressWarnings("unchecked")
     public Map<String, BigDecimal> getSubjectBestAndWorstResults() {
         return ((Stream<Object[]>) entityManager.createNativeQuery("""
-                        SELECT s.name AS name, g.avg_value AS avg_value
-                        FROM (SELECT gr.subject_id AS subject_id, AVG(gr.value) AS avg_value
-                        	 FROM Grade gr
-                        	 GROUP BY gr.subject_id) g
-                        	 JOIN Subject s ON g.subject_id = s.subject_id
-                        	 WHERE g.avg_value = (SELECT max(g.avg_value)
-                        							FROM (SELECT gr.subject_id, AVG(gr.value) AS avg_value
-                        								  FROM Grade gr
-                        								  GROUP BY gr.subject_id) g)
-                        	 OR g.avg_value = (SELECT min(g.avg_value)
-                        							FROM (SELECT gr.subject_id, AVG(gr.value) AS avg_value
-                        								  FROM Grade gr
-                        								  GROUP BY gr.subject_id) g)""")
+                        SELECT name, avg_value
+                        FROM (SELECT subject_id, AVG(value) AS avg_value
+                        	  FROM Grade
+                        	  GROUP BY subject_id) g
+                        JOIN Subject USING(subject_id)
+                        WHERE avg_value = (SELECT MAX(avg_value)
+                        				   FROM (SELECT subject_id, AVG(value) AS avg_value
+                        	 					 FROM Grade
+                        	 					 GROUP BY subject_id) g)
+                           OR avg_value = (SELECT MIN(avg_value)
+                        				   FROM (SELECT subject_id, AVG(value) AS avg_value
+                        						 FROM Grade
+                        						 GROUP BY subject_id) g)""")
                 .getResultStream())
                 .collect(Collectors.toMap(
                         x -> (String) x[0],
