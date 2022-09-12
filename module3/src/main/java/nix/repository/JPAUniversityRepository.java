@@ -2,8 +2,8 @@ package nix.repository;
 
 import lombok.NonNull;
 import nix.config.HibernateFactoryUtil;
-import nix.model.Student;
-import nix.model.Teacher;
+import nix.model.human.Student;
+import nix.model.human.Teacher;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;

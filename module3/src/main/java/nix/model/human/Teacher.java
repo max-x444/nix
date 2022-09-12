@@ -1,8 +1,9 @@
-package nix.model;
+package nix.model.human;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import nix.model.Subject;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

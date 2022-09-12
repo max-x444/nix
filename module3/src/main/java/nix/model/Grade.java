@@ -1,6 +1,7 @@
 package nix.model;
 
 import lombok.Data;
+import nix.model.human.Student;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.CascadeType;

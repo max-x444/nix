@@ -1,6 +1,6 @@
 package nix.command;
 
-import nix.model.Teacher;
+import nix.model.human.Teacher;
 import nix.service.UniversityService;
 
 import java.util.Scanner;

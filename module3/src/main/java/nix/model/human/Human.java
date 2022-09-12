@@ -1,4 +1,4 @@
-package nix.model;
+package nix.model.human;
 
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;

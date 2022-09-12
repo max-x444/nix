@@ -1,7 +1,8 @@
-package nix.model;
+package nix.model.human;
 
 import lombok.Getter;
 import lombok.Setter;
+import nix.model.Gang;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
