@@ -14,6 +14,7 @@
         <module>solid</module>
         <module>module2</module>
         <module>module3</module>
+        <module>thread</module>
     </modules>
 
     <properties>
