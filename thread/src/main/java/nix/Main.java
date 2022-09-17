@@ -1,13 +1,13 @@
 package nix;
 
-import nix.util.MyThreadUtil;
-
-import java.util.List;
+import nix.service.FactoryService;
 
 public class Main {
     public static void main(String[] args) {
-        final List<Integer> numbers = List.of(0, 1, -5, 2, 4, 3, 5, 11, 33, 100, 7, 13, 25, 39, 11, 17, 150, 201);
-        MyThreadUtil.getFiftyThreads();
-        MyThreadUtil.getCountOfPrimeNumbers(numbers);
+        final long start = System.currentTimeMillis();
+        final FactoryService factoryService = FactoryService.getInstance();
+        System.out.println(factoryService.startFactory());
+        final long finish = System.currentTimeMillis();
+        System.out.println("Total execution time: " + (finish - start) + "ms");
     }
 }

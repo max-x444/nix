@@ -77,6 +77,12 @@ public class JPAUniversityRepository {
 
     @SuppressWarnings("unchecked")
     public Map<String, BigDecimal> getSubjectBestAndWorstResults() {
+        final String simpleSQL = """
+                SELECT name, avg_value FROM Subject
+                JOIN (SELECT subject_id, AVG(value) AS avg_value FROM Grade GROUP BY subject_id) g
+                USING(subject_id)
+                WHERE avg_value = (SELECT DISTINCT MAX(AVG(value)) OVER () FROM Grade GROUP BY subject_id)
+                OR avg_value = (SELECT DISTINCT MIN(AVG(value)) OVER () FROM Grade GROUP BY subject_id)""";
         return ((Stream<Object[]>) entityManager.createNativeQuery("""
                         SELECT name, avg_value
                         FROM (SELECT subject_id, AVG(value) AS avg_value

@@ -26,7 +26,7 @@ public final class MyThreadUtil {
     }
 
     @SneakyThrows
-    public static void getFiftyThreads() {
+    public static void startFiftyThreads() {
         final Thread[] threads = new Thread[50];
         for (int i = 49; i != -1; i--) {
             threads[i] = new Thread(() -> System.out.println("Hello from " + Thread.currentThread().getName()));
