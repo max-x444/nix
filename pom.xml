@@ -13,6 +13,7 @@
         <module>project</module>
         <module>solid</module>
         <module>module2</module>
+        <module>module3</module>
     </modules>
 
     <properties>
@@ -129,7 +130,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.Main</mainClass>
+                            <mainClass>nix.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
