@@ -15,6 +15,7 @@
         <module>module2</module>
         <module>module3</module>
         <module>thread</module>
+        <module>servlet</module>
     </modules>
 
     <properties>
